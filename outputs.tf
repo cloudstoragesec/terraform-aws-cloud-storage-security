@@ -13,8 +13,3 @@ output "proactive_notifications_topic_arn" {
   description = "ARN for the proactive notifications topic"
   value       = aws_sns_topic.notifications.arn
 }
-
-output "application_id" {
-  description = "The Application ID that identifies the Antivirus for Amazon S3 deployment"
-  value       = local.application_id
-}
