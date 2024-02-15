@@ -1,0 +1,136 @@
+resource "aws_ecs_task_definition" "console" {
+  family                   = "${var.service_name}Console-${local.app_id}"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = "512"
+  memory                   = "1024"
+  execution_role_arn       = aws_iam_role.execution.arn
+  task_role_arn            = aws_iam_role.console_task.arn
+  container_definitions = jsonencode([
+    {
+      name                   = "${var.service_name}Console-${local.app_id}"
+      image                  = "${local.console_image_url}"
+      cpu                    = 512
+      memory                 = 1024
+      memoryReservation      = 1024
+      readonlyRootFilesystem = true
+      environment : [
+        { "name" : "IMAGE_VERSION_CONSOLE", "value" : local.image_version_console },
+        { "name" : "IMAGE_VERSION_AGENT", "value" : local.image_version_agent },
+        { "name" : "AGENT_TASK_DEFINITION_ROLE_ARN", "value" : aws_iam_role.agent_task.arn },
+        { "name" : "APP_CONFIG_AGENT_APPLICATION_ID", "value" : local.app_id },
+        { "name" : "APP_CONFIG_AGENT_CONFIGURATION_PROFILE_ROLE_ARN", "value" : aws_iam_role.appconfig_agent_configuration_document.arn },
+        { "name" : "APP_CONFIG_AGENT_DEPLOYMENT_STRATEGY_ID", "value" : aws_appconfig_deployment_strategy.agent.id },
+        { "name" : "APP_CONFIG_AGENT_ENVIRONMENT_ID", "value" : aws_appconfig_environment.agent.environment_id },
+        { "name" : "EXECUTION_ROLE_ARN", "value" : aws_iam_role.execution.arn },
+        { "name" : "EC2_CONTAINER_ROLE_ARN", "value" : aws_iam_instance_profile.ec2_container.arn },
+        { "name" : "CONSOLE_VPC", "value" : var.vpc },
+        { "name" : "CONSOLE_SUBNET", "value" : "${var.subnet_a_id},${var.subnet_b_id}" },
+        { "name" : "PARAMETER_STORE_NAME_PREFIX", "value" : "/${var.parameter_prefix}-${local.app_id}" },
+        { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${aws_security_group.with_load_balancer[0].id}" : "${aws_security_group.main[0].id}" },
+        { "name" : "AGENT_AUTO_ASSIGN_PUBLIC_IP", "value" : "${var.agent_auto_assign_public_ip}" ? "ENABLED" : "DISABLED" },
+        { "name" : "BYOL_MODE", "value" : "False" },
+        { "name" : "BLANKET_KMS_ACCESS", "value" : "${var.allow_access_to_all_kms_keys}" ? "Yes" : "No" },
+        { "name" : "HAS_LOAD_BALANCER", "value" : "${tostring(var.configure_load_balancer)}" },
+        { "name" : "TRUSTED_LOAD_BALANCER_NETWORK", "value" : "${tostring(var.trusted_load_balancer_network)}" },
+        { "name" : "INFO_OPT_OUT", "value" : "${tostring(var.info_opt_out)}" },
+        { "name" : "QUARANTINE_BUCKET_NAME_PREFIX", "value" : "${var.quarantine_bucket_prefix}-${local.app_id}" },
+        { "name" : "DYNAMO_DB_TABLE_NAME_PREFIX", "value" : "${local.app_id}." },
+        { "name" : "CLUSTER_NAME", "value" : "${aws_ecs_cluster.main.name}" },
+        { "name" : "NOTIFICATIONS_TOPIC_NAME", "value" : aws_sns_topic.notifications.name },
+        { "name" : "APP_CONFIG_DOCUMENT_NAME", "value" : awscc_ssm_document.appconfig_document.name },
+        { "name" : "APP_CONFIG_DOCUMENT_SCHEMA_NAME", "value" : aws_ssm_document.appconfig_document_schema.name },
+        { "name" : "APP_CONFIG_PROFILE_ID", "value" : aws_appconfig_configuration_profile.agent.configuration_profile_id },
+        { "name" : "EVENT_BASED_SCAN_TOPIC_NAME", "value" : "${var.service_name}Topic-${local.app_id}" },
+        { "name" : "EVENT_BASED_SCAN_QUEUE_NAME", "value" : "${var.service_name}Queue-${local.app_id}" },
+        { "name" : "DC_EVENT_BASED_SCAN_QUEUE_NAME", "value" : "${var.service_name}Queue-DC-${local.app_id}" },
+        { "name" : "EFS_SCAN_QUEUE_NAME", "value" : "${var.service_name}Queue-EFS-${local.app_id}" },
+        { "name" : "RETRO_SCAN_QUEUE_NAME", "value" : "${var.service_name}RetroQueue-${local.app_id}" },
+        { "name" : "CONSOLE_TASK_NAME", "value" : "${var.service_name}Console-${local.app_id}" },
+        { "name" : "CONSOLE_SERVICE_NAME", "value" : "${var.configure_load_balancer}" ? "${var.service_name}ConsoleService-LB-${local.app_id}" : "${var.service_name}ConsoleService-${local.app_id}" },
+        { "name" : "CONSOLE_ROLE_ARN", "value" : aws_iam_role.console_task.arn },
+        { "name" : "EVENT_AGENT_TASK_NAME", "value" : "${var.service_name}Agent-${local.app_id}" },
+        { "name" : "DC_EVENT_AGENT_TASK_NAME", "value" : "${var.service_name}Agent-DC-${local.app_id}" },
+        { "name" : "EVENT_AGENT_SERVICE_NAME", "value" : "${var.service_name}AgentService-${local.app_id}" },
+        { "name" : "DC_EVENT_AGENT_SERVICE_NAME", "value" : "${var.service_name}AgentService-DC-${local.app_id}" },
+        { "name" : "EFS_AGENT_TASK_NAME", "value" : "${var.service_name}Agent-EFS-${local.app_id}" },
+        { "name" : "EBS_AGENT_TASK_NAME", "value" : "${var.service_name}Agent-EBS-${local.app_id}" },
+        { "name" : "EBS_DC_AGENT_TASK_NAME", "value" : "${var.service_name}Agent-EBS-DC-${local.app_id}" },
+        { "name" : "EC2_SCAN_TASK_NAME", "value" : "${var.service_name}-EC2Scan-${local.app_id}" },
+        { "name" : "LARGE_FILE_AGENT_TASK_NAME", "value" : "${var.service_name}LargeFileAgent-${local.app_id}" },
+        { "name" : "API_AGENT_TASK_NAME", "value" : "${var.service_name}ApiAgent-${local.app_id}" },
+        { "name" : "API_AGENT_SERVICE_NAME", "value" : "${var.service_name}ApiAgentService-${local.app_id}" },
+        { "name" : "EFS_AGENT_SERVICE_NAME", "value" : "${var.service_name}EfsAgentService-${local.app_id}" },
+        { "name" : "API_LB_NAME", "value" : "${var.service_name}ApiLB-${local.app_id}" },
+        { "name" : "API_LB_TG_NAME", "value" : "${var.service_name}ApiTG-${local.app_id}" },
+        { "name" : "RETRO_AGENT_TASK_NAME", "value" : "${var.service_name}RetroAgent-${local.app_id}" },
+        { "name" : "RETRO_AGENT_SERVICE_NAME", "value" : "${var.service_name}RetroAgentService-${local.app_id}" },
+        { "name" : "LARGE_EVENT_QUEUE_ALARM_NAME", "value" : "${var.service_name}LargeQueue-${local.app_id}" },
+        { "name" : "SMALL_EVENT_QUEUE_ALARM_NAME", "value" : "${var.service_name}SmallQueue-${local.app_id}" },
+        { "name" : "DECREASE_AGENTS_SCALING_POLICY_NAME", "value" : "DecreaseAgents-${local.app_id}" },
+        { "name" : "INCREASE_AGENTS_SCALING_POLICY_NAME", "value" : "IncreaseAgents-${local.app_id}" },
+        { "name" : "LARGE_DC_EVENT_QUEUE_ALARM_NAME", "value" : "${var.service_name}LargeQueue-DC-${local.app_id}" },
+        { "name" : "SMALL_DC_EVENT_QUEUE_ALARM_NAME", "value" : "${var.service_name}SmallQueue-DC-${local.app_id}" },
+        { "name" : "DECREASE_DC_AGENTS_SCALING_POLICY_NAME", "value" : "DecreaseAgents-DC-${local.app_id}" },
+        { "name" : "INCREASE_DC_AGENTS_SCALING_POLICY_NAME", "value" : "IncreaseAgents-DC-${local.app_id}" },
+        { "name" : "API_REQUEST_SCALING_POLICY_NAME", "value" : "${var.api_request_scaling_policy_prefix}-${local.app_id}" },
+        { "name" : "API_CPU_SCALING_POLICY_NAME", "value" : "ApiServiceCpuScaling-${local.app_id}" },
+        { "name" : "RETRO_QUEUE_NOT_EMPTY_ALARM_NAME", "value" : "${var.service_name}RetroQueueNotEmpty-${local.app_id}" },
+        { "name" : "RETRO_QUEUE_EMPTY_ALARM_NAME", "value" : "${var.service_name}RetroQueueEmpty-${local.app_id}" },
+        { "name" : "REMOVE_RETRO_AGENTS_SCALING_POLICY_NAME", "value" : "RemoveRetroAgents-${local.app_id}" },
+        { "name" : "SET_RETRO_AGENTS_SCALING_POLICY_NAME", "value" : "SetRetroAgents-${local.app_id}" },
+        { "name" : "AGENT_SECURITY_GROUP_NAME", "value" : "${var.service_name}AgentSecurityGroup-${local.app_id}" },
+        { "name" : "EFS_SCAN_SECURITY_GROUP_NAME", "value" : "${var.service_name}EFSScan-${local.app_id}" },
+        { "name" : "EBS_SCAN_SECURITY_GROUP_NAME", "value" : "${var.service_name}EBSScan-${local.app_id}" },
+        { "name" : "FSX_SCAN_SECURITY_GROUP_NAME", "value" : "${var.service_name}FSxScan-${local.app_id}" },
+        { "name" : "CROSS_ACCOUNT_ROLE_NAME", "value" : "${var.service_name}RemoteRole-${local.app_id}" },
+        { "name" : "CROSS_ACCOUNT_POLICY_NAME", "value" : "${var.service_name}RemotePolicy-${local.app_id}" },
+        { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_ROLE_NAME", "value" : aws_iam_role.event_bridge[0].name },
+        { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_POLICY_NAME", "value" : aws_iam_policy.event_bridge.name },
+        { "name" : "CUSTOM_RESOURCE_TAGS", "value" : join(",", [for key, value in var.custom_resource_tags : "${key}=${value}"]) },
+        { "name" : "DLP_CCL_DIR", "value" : "/cssdlp" },
+        { "name" : "DLP_CCL_FILE_NAME", "value" : "PredefinedContentControlLists.xml" },
+        { "name" : "PROXY_HOST", "value" : "${local.use_proxy}" ? "${var.proxy_host}" : "" },
+        { "name" : "PROXY_PORT", "value" : "${local.use_proxy}" ? "${var.proxy_port}" : "" },
+        { "name" : "PRODUCT_MODE", "value" : "${local.product_mode}" },
+        { "name" : "TEMPLATE_VARIATION", "value" : "default" },
+        { "name" : "DEPLOYMENT_TYPE", "value" : "terraform" },
+        { "name" : "BUCKETS_TO_PROTECT", "value" : "${var.buckets_to_protect}" },
+        { "name" : "LOG_LEVEL", "value" : "Info" },
+        { "name" : "RETRY_COUNT", "value" : "5" },
+        { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
+      ]
+      essential = true
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort      = 80
+        },
+        {
+          containerPort = 443
+          hostPort      = 443
+        }
+      ]
+      LogConfiguration = {
+        LogDriver = "awslogs"
+        Options = {
+          awslogs-group         = aws_cloudwatch_log_group.main.name
+          awslogs-region        = local.aws_region
+          awslogs-stream-prefix = "ecs"
+        }
+      }
+      HealthCheck = {
+        Command = [
+          "CMD-SHELL",
+          "curl -k -f https://localhost/api/health || exit 1"
+        ]
+        Interval = 60
+        Timeout  = 5
+        Retries  = 3
+      }
+    }
+  ])
+  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleTaskDefinition" },
+    var.custom_resource_tags
+  )
+}
