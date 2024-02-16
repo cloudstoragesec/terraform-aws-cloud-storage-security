@@ -183,7 +183,7 @@ resource "aws_dynamodb_table" "groups" {
 }
 
 resource "aws_dynamodb_table" "visible_groups" {
-  name         = "${local.app_id}.Username"
+  name         = "${local.app_id}.VisibleGroups"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Username"
   point_in_time_recovery {
