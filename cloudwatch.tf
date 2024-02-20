@@ -36,9 +36,9 @@ resource "aws_cloudwatch_metric_alarm" "health_check_console" {
 }
 
 resource "aws_cloudwatch_event_bus" "proactive_notifications" {
-  count = var.eventbridge_notifications_enabled ? 1 : 0
+  count = local.create_custom_event_bus ? 1 : 0
   name  = var.eventbridge_notifications_bus_name
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleTargetGroup" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ProactiveNotificationsEventBridgeBus" },
     var.custom_resource_tags
   )
 }

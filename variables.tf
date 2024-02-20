@@ -64,10 +64,46 @@ variable "trusted_load_balancer_network" {
   default     = ""
 }
 
+variable "lb_subnet_a_id" {
+  description = "A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic. ** Leave blank to use same subnet as Console. If specified, must be in same AZ as Console subnet. **"
+  type        = string
+  default     = null
+}
+
+variable "lb_subnet_b_id" {
+  description = "A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic. **Subnet B must be different from Subnet A and should be in a different Availability Zones. Leave blank to use same subnet as Console. If specified, must be in same AZ as Console subnet. **"
+  type        = string
+  default     = null
+}
+
 variable "internal_lb" {
   description = "If true, the load balancer will be internal. internet facing otherwise"
   type        = bool
   default     = false
+}
+
+variable "min_running_agents" {
+  description = "Default minimum number of running scan agents per region"
+  type        = number
+  default     = 1
+}
+
+variable "max_running_agents" {
+  description = "Default maximum number of running scan agents per region"
+  type        = number
+  default     = 12
+}
+
+variable "enable_large_file_scanning" {
+  description = "Set to true if you would like to have EC2 instances launched to scan files too large to be scanned by the normal agent"
+  type        = bool
+  default     = false
+}
+
+variable "large_file_disk_size" {
+  description = "Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. This only applies when using the Sophos scanning engine with EC2 large file scanning enabled."
+  type        = number
+  default     = 2000
 }
 
 variable "agent_scanning_engine" {

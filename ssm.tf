@@ -22,18 +22,26 @@ resource "aws_ssm_parameter" "agent_ecr_image_url" {
 resource "aws_ssm_parameter" "max_num_agents" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/MaxNumAgents"
   type  = "String"
-  value = "12"
+  value = var.max_running_agents
   lifecycle {
     ignore_changes = [value]
+    precondition {
+      condition     = var.max_running_agents >= var.min_running_agents
+      error_message = "`max_running_agents` Cannot be less than `min_running_agents`"
+    }
   }
 }
 
 resource "aws_ssm_parameter" "min_num_agents" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/MinNumAgents"
   type  = "String"
-  value = "1"
+  value = var.min_running_agents
   lifecycle {
     ignore_changes = [value]
+    precondition {
+      condition     = var.min_running_agents <= var.max_running_agents
+      error_message = "`min_running_agents` Cannot be greater than `max_running_agents`"
+    }
   }
 }
 
@@ -76,7 +84,7 @@ resource "aws_ssm_parameter" "agent_disk_size" {
 resource "aws_ssm_parameter" "enable_large_file_scanning" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/EnableLargeFileScanning"
   type  = "String"
-  value = "false"
+  value = var.enable_large_file_scanning
   lifecycle {
     ignore_changes = [value]
   }
@@ -94,9 +102,13 @@ resource "aws_ssm_parameter" "storage_assessment_enabled" {
 resource "aws_ssm_parameter" "large_file_disk_size" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/LargeFileDiskSize"
   type  = "String"
-  value = "2000"
+  value = var.large_file_disk_size
   lifecycle {
     ignore_changes = [value]
+    precondition {
+      condition     = var.large_file_disk_size  >= 20 && var.large_file_disk_size <= 16300
+      error_message = "`large_file_disk_size` must be between 20 and 16,300 GB"
+    }
   }
 }
 
@@ -288,10 +300,10 @@ resource "aws_ssm_parameter" "cloud_trail_lake_channel_arn" {
 resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/EventBridgeNotificationsEnabled"
   type  = "String"
-  value = tostring(var.eventbridge_notifications_enabled)
-  #lifecycle {
-  #  ignore_changes = [value]
-  #}
+  value = var.eventbridge_notifications_enabled
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {

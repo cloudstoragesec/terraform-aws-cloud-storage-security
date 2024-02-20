@@ -23,6 +23,12 @@ resource "aws_ecs_service" "main" {
   tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleService" },
     var.custom_resource_tags
   )
+  lifecycle {
+    precondition {
+      condition     = var.subnet_a_id != var.subnet_b_id
+      error_message = "Subnet A and Subnet B must be different"
+    }
+  }
 }
 
 
@@ -53,8 +59,8 @@ resource "aws_ecs_service" "with_load_balancer" {
 
   lifecycle {
     precondition {
-      condition     = var.existing_target_group_arn != null && !var.configure_load_balancer && var.trusted_load_balancer_network != ""
-      error_message = "`configure_load_balancer` must be `true`, and `trusted_load_balancer_network` must be specified when \"existing_target_group_arn\" is set."
+      condition     = var.existing_target_group_arn == null || !var.configure_load_balancer && var.trusted_load_balancer_network != ""
+      error_message = "`configure_load_balancer` must be `true`, and `trusted_load_balancer_network` must be specified when `existing_target_group_arn` is set."
     }
   }
 }
@@ -98,7 +104,7 @@ resource "aws_lb_listener" "main" {
   lifecycle {
     precondition {
       condition     = var.configure_load_balancer && var.lb_cert_arn != null
-      error_message = "\"lb_cert_arn\" is required when \"configure_load_balancer\" is true."
+      error_message = "`lb_cert_arn` is required when `configure_load_balancer` is true."
     }
   }
 }
@@ -110,8 +116,14 @@ resource "aws_lb" "main" {
   internal           = var.internal_lb
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer[0].id]
-  subnets            = [var.subnet_a_id, var.subnet_b_id]
+  subnets            = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
   tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleLoadBalancer" },
     var.custom_resource_tags
   )
+  lifecycle {
+    precondition {
+      condition     = !local.use_lb_subnets || var.lb_subnet_a_id != var.lb_subnet_b_id
+      error_message = "Load Balancer Subnet A and Subnet B must be different"
+    }
+  }
 }
