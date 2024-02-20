@@ -772,7 +772,7 @@ resource "aws_dynamodb_table" "classification_results" {
   )
 }
 
-resource "aws_dynamodb_table" "allowedInfected_files" {
+resource "aws_dynamodb_table" "allowed_infected_files" {
   name         = "${local.app_id}.AllowedInfectedFiles"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "BucketAndKey"

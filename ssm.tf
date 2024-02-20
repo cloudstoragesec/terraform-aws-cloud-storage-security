@@ -13,7 +13,7 @@ resource "aws_ssm_parameter" "dynamo_point_in_time_recovery_enabled" {
   }
 }
 
-resource "aws_ssm_parameter" "agent_ecrImage_url" {
+resource "aws_ssm_parameter" "agent_ecr_image_url" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/AgentEcrImageUrl"
   type  = "String"
   value = local.agent_image_url
@@ -267,7 +267,7 @@ resource "aws_ssm_parameter" "cloud_trail_lake_event_data_store_name" {
   }
 }
 
-resource "aws_ssm_parameter" "CloudTrailLakeChannelNameParameter" {
+resource "aws_ssm_parameter" "cloud_trail_lake_channel_name" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/CloudTrailLakeChannelName"
   type  = "String"
   value = "CloudStorageSecCloudTrailLake-${local.app_id}"
