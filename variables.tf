@@ -100,7 +100,7 @@ variable "enable_large_file_scanning" {
   default     = false
 }
 
-variable "large_file_disk_size" {
+variable "large_file_disk_size_gb" {
   description = "Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. This only applies when using the Sophos scanning engine with EC2 large file scanning enabled."
   type        = number
   default     = 2000

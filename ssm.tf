@@ -102,11 +102,11 @@ resource "aws_ssm_parameter" "storage_assessment_enabled" {
 resource "aws_ssm_parameter" "large_file_disk_size" {
   name  = "/${var.parameter_prefix}-${local.app_id}/Config/LargeFileDiskSize"
   type  = "String"
-  value = var.large_file_disk_size
+  value = var.large_file_disk_size_gb
   lifecycle {
     ignore_changes = [value]
     precondition {
-      condition     = var.large_file_disk_size  >= 20 && var.large_file_disk_size <= 16300
+      condition     = var.large_file_disk_size_gb >= 20 && var.large_file_disk_size_gb <= 16300
       error_message = "`large_file_disk_size` must be between 20 and 16,300 GB"
     }
   }

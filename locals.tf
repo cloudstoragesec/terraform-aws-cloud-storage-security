@@ -16,10 +16,10 @@ locals {
   use_proxy                = var.proxy_host != null
   create_event_bridge_role = var.event_bridge_role_name == null
   event_bridge_role_name   = coalesce(var.event_bridge_role_name, "Created by TF")
-  create_custom_event_bus =  var.eventbridge_notifications_enabled && var.eventbridge_notifications_bus_name != "default"
+  create_custom_event_bus  = var.eventbridge_notifications_enabled && var.eventbridge_notifications_bus_name != "default"
   use_dynamo_cmk           = var.dynamo_cmk_key_arn != null
   use_sns_cmk              = var.sns_cmk_key_arn != null
-  use_lb_subnets = var.lb_subnet_a_id != null && var.lb_subnet_b_id != null
+  use_lb_subnets           = var.lb_subnet_a_id != null && var.lb_subnet_b_id != null
   custom_key_list = compact([
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn
