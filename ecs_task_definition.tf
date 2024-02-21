@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "CROSS_ACCOUNT_ROLE_NAME", "value" : "${var.service_name}RemoteRole-${local.app_id}" },
         { "name" : "CROSS_ACCOUNT_POLICY_NAME", "value" : "${var.service_name}RemotePolicy-${local.app_id}" },
         { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_ROLE_NAME", "value" : aws_iam_role.event_bridge[0].name },
-        { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_POLICY_NAME", "value" : aws_iam_policy.event_bridge[0].name },
+        { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_POLICY_NAME", "value" : aws_iam_policy.event_bridge.name },
         { "name" : "CUSTOM_RESOURCE_TAGS", "value" : join(",", [for key, value in var.custom_resource_tags : "${key}=${value}"]) },
         { "name" : "DLP_CCL_DIR", "value" : "/cssdlp" },
         { "name" : "DLP_CCL_FILE_NAME", "value" : "PredefinedContentControlLists.xml" },
