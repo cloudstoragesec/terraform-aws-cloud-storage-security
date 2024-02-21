@@ -796,6 +796,7 @@ resource "aws_iam_role" "event_bridge" {
 }
 
 resource "aws_iam_policy" "event_bridge" {
+  count = local.create_event_bridge_role ? 1 : 0
   name = "${var.service_name}EventBridgePolicy-${local.app_id}"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -816,7 +817,7 @@ resource "aws_iam_policy" "event_bridge" {
 
 resource "aws_iam_role_policy_attachment" "event_bridge_policy_attach" {
   role       = local.create_event_bridge_role ? aws_iam_role.event_bridge[0].name : local.event_bridge_role_name
-  policy_arn = aws_iam_policy.event_bridge.arn
+  policy_arn = aws_iam_policy.event_bridge[0].arn
 }
 
 resource "aws_iam_policy" "proactive_notifications_event_bridge" {

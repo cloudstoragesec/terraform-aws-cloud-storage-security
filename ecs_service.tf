@@ -17,7 +17,7 @@ resource "aws_ecs_service" "main" {
   platform_version                   = "1.4.0"
   network_configuration {
     subnets          = [var.subnet_a_id, var.subnet_b_id]
-    security_groups  = [aws_security_group.main[0].id]
+    security_groups  = [aws_security_group.console[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
   tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleService" },
@@ -50,7 +50,7 @@ resource "aws_ecs_service" "with_load_balancer" {
 
   network_configuration {
     subnets          = [var.subnet_a_id, var.subnet_b_id]
-    security_groups  = [aws_security_group.with_load_balancer[0].id]
+    security_groups  = [aws_security_group.console_with_load_balancer[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
   tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleService" },
