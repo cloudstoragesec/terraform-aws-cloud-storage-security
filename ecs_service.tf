@@ -1,6 +1,6 @@
 resource "aws_ecs_cluster" "main" {
-  name = "${var.service_name}Cluster-${local.app_id}"
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleCluster" },
+  name = "${var.service_name}Cluster-${local.application_id}"
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleCluster" },
     var.custom_resource_tags
   )
 }
@@ -20,7 +20,7 @@ resource "aws_ecs_service" "main" {
     security_groups  = [aws_security_group.console[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleService" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleService" },
     var.custom_resource_tags
   )
   lifecycle {
@@ -44,7 +44,7 @@ resource "aws_ecs_service" "with_load_balancer" {
   platform_version                   = "1.4.0"
   load_balancer {
     target_group_arn = var.existing_target_group_arn == null ? aws_lb_target_group.main[0].arn : var.existing_target_group_arn
-    container_name   = "${var.service_name}Console-${local.app_id}"
+    container_name   = "${var.service_name}Console-${local.application_id}"
     container_port   = 443
   }
 
@@ -53,7 +53,7 @@ resource "aws_ecs_service" "with_load_balancer" {
     security_groups  = [aws_security_group.console_with_load_balancer[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleService" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleService" },
     var.custom_resource_tags
   )
 
@@ -67,7 +67,7 @@ resource "aws_ecs_service" "with_load_balancer" {
 
 resource "aws_lb_target_group" "main" {
   count    = var.configure_load_balancer && var.existing_target_group_arn == null ? 1 : 0
-  name     = "${var.service_name}TG-LB-${local.app_id}"
+  name     = "${var.service_name}TG-LB-${local.application_id}"
   port     = "443"
   protocol = "HTTPS"
   health_check {
@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "main" {
   target_type          = "ip"
   vpc_id               = var.vpc
   deregistration_delay = 60
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleTargetGroup" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleTargetGroup" },
     var.custom_resource_tags
   )
 }
@@ -97,7 +97,7 @@ resource "aws_lb_listener" "main" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main[0].arn
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleListener" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleListener" },
     var.custom_resource_tags
   )
 
@@ -111,13 +111,13 @@ resource "aws_lb_listener" "main" {
 
 resource "aws_lb" "main" {
   count              = var.configure_load_balancer && var.existing_target_group_arn == null ? 1 : 0
-  name               = "${var.service_name}LB-${local.app_id}"
+  name               = "${var.service_name}LB-${local.application_id}"
   idle_timeout       = 60
   internal           = var.internal_lb
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer[0].id]
   subnets            = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleLoadBalancer" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleLoadBalancer" },
     var.custom_resource_tags
   )
   lifecycle {

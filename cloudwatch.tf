@@ -1,13 +1,13 @@
 resource "aws_cloudwatch_log_group" "main" {
-  name = "${var.service_name}.ECS.${local.app_id}.Console"
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleTargetGroup" },
+  name = "${var.service_name}.ECS.${local.application_id}.Console"
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleTargetGroup" },
     var.custom_resource_tags
   )
   retention_in_days = 7
 }
 
 resource "aws_cloudwatch_metric_alarm" "health_check_console" {
-  alarm_name          = "${var.service_name}HealthCheck-Alarm-${local.app_id}"
+  alarm_name          = "${var.service_name}HealthCheck-Alarm-${local.application_id}"
   alarm_description   = "Alarm triggered if there is no data in the last 5 minutes"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "health_check_console" {
 resource "aws_cloudwatch_event_bus" "proactive_notifications" {
   count = local.create_custom_event_bus ? 1 : 0
   name  = var.eventbridge_notifications_bus_name
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ProactiveNotificationsEventBridgeBus" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ProactiveNotificationsEventBridgeBus" },
     var.custom_resource_tags
   )
 }

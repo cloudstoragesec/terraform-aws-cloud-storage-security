@@ -8,14 +8,14 @@ resource "aws_cognito_user_pool" "main" {
     }
   }
 
-  name              = "${var.service_name}UserPool-${local.app_id}"
+  name              = "${var.service_name}UserPool-${local.application_id}"
   mfa_configuration = "OPTIONAL"
   software_token_mfa_configuration {
     enabled = true
   }
 
   sms_configuration {
-    external_id    = "CloudStorageSecUserPoolExternal-${local.app_id}"
+    external_id    = "CloudStorageSecUserPoolExternal-${local.application_id}"
     sns_caller_arn = aws_iam_role.user_pool_sns.arn
     sns_region     = local.aws_region
   }
@@ -72,14 +72,14 @@ resource "aws_cognito_user_pool" "main" {
     }
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleUserPool" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleUserPool" },
     var.custom_resource_tags
   )
 }
 
 
 resource "aws_cognito_user_pool_client" "main" {
-  name            = "${var.service_name}UserPoolClient-${local.app_id}"
+  name            = "${var.service_name}UserPoolClient-${local.application_id}"
   user_pool_id    = aws_cognito_user_pool.main.id
   generate_secret = true
 }

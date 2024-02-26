@@ -1,6 +1,6 @@
 resource "aws_security_group" "console" {
   count       = var.configure_load_balancer ? 0 : 1
-  description = "${var.service_name}ConsoleSecurityGroup-${local.app_id}"
+  description = "${var.service_name}ConsoleSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
   ingress {
@@ -25,14 +25,14 @@ resource "aws_security_group" "console" {
     description = "CloudStorageSec Console default egress to internet"
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "SecurityGroup" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_security_group" "console_with_load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
-  description = "${var.service_name}LBSecurityGroup-${local.app_id}"
+  description = "${var.service_name}LBSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
   ingress {
@@ -58,14 +58,14 @@ resource "aws_security_group" "console_with_load_balancer" {
     description = "CloudStorageSec Console default egress to internet"
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "SecurityGroup" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_security_group" "load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
-  description = "${var.service_name}LBSecurityGroup-${local.app_id}"
+  description = "${var.service_name}LBSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
   ingress {
@@ -90,7 +90,7 @@ resource "aws_security_group" "load_balancer" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "CloudStorageSec Console default egress to internet"
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "SecurityGroup" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
     var.custom_resource_tags
   )
 }

@@ -1,6 +1,6 @@
 
 resource "aws_iam_role" "appconfig_agent_configuration_document" {
-  name = "AppConfigAgentConfigurationDocumentRole-${local.app_id}"
+  name = "AppConfigAgentConfigurationDocumentRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -14,13 +14,13 @@ resource "aws_iam_role" "appconfig_agent_configuration_document" {
       },
     ]
   })
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "AppConfigDocumentRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "AppConfigDocumentRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role_policy" "appconfig_agent_configuration_document" {
-  name = "AppConfigAgentConfigurationDocumentPolicy-${local.app_id}"
+  name = "AppConfigAgentConfigurationDocumentPolicy-${local.application_id}"
   role = aws_iam_role.appconfig_agent_configuration_document.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -37,7 +37,7 @@ resource "aws_iam_role_policy" "appconfig_agent_configuration_document" {
 }
 
 resource "aws_iam_role" "user_pool_sns" {
-  name = "${var.service_name}UserPoolRole-${local.app_id}"
+  name = "${var.service_name}UserPoolRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -51,13 +51,13 @@ resource "aws_iam_role" "user_pool_sns" {
       },
     ]
   })
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "UserPoolSnsRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "UserPoolSnsRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role_policy" "user_pool_sns" {
-  name = "${var.service_name}UserPoolPolicy-${local.app_id}"
+  name = "${var.service_name}UserPoolPolicy-${local.application_id}"
   role = aws_iam_role.user_pool_sns.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -73,7 +73,7 @@ resource "aws_iam_role_policy" "user_pool_sns" {
 }
 
 resource "aws_iam_role" "console_task" {
-  name        = "${var.service_name}ConsoleRole-${local.app_id}"
+  name        = "${var.service_name}ConsoleRole-${local.application_id}"
   description = "Console ECS Task IAM Role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -87,19 +87,19 @@ resource "aws_iam_role" "console_task" {
       },
     ]
   })
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleTaskRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleTaskRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role_policy" "console_task" {
-  name = "${var.service_name}ConsolePolicy-${local.app_id}"
+  name = "${var.service_name}ConsolePolicy-${local.application_id}"
   role = aws_iam_role.console_task.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "DeleteLargeFileScanningVolumes${local.app_id}"
+        Sid    = "DeleteLargeFileScanningVolumes${local.application_id}"
         Effect = "Allow"
         Condition = {
           StringEquals = {
@@ -150,7 +150,7 @@ resource "aws_iam_role_policy" "console_task" {
           "workdocs:*NotificationSubscription"
         ]
         Effect   = "Allow"
-        Sid      = "AllResources${local.app_id}"
+        Sid      = "AllResources${local.application_id}"
         Resource = "*"
       },
       {
@@ -197,7 +197,7 @@ resource "aws_iam_role_policy" "console_task" {
           "sqs:ListQueues"
         ]
         Effect = "Allow"
-        Sid    = "AllResourcesInService${local.app_id}"
+        Sid    = "AllResourcesInService${local.application_id}"
         Resource = [
           "arn:${data.aws_partition.current.partition}:cloudwatch:*:*:alarm:*",
           "arn:${data.aws_partition.current.partition}:ec2:*::image/*",
@@ -286,7 +286,7 @@ resource "aws_iam_role_policy" "console_task" {
           "ssm:*Parameter*"
         ]
         Effect = "Allow"
-        Sid    = "RestrictedResources${local.app_id}"
+        Sid    = "RestrictedResources${local.application_id}"
         Resource = [
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.agent_task.name}",
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.appconfig_agent_configuration_document.name}",
@@ -296,31 +296,31 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.execution.name}",
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.user_pool_sns.name}",
           local.create_event_bridge_role ? "arn:${data.aws_partition.current.partition}:iam::*:role/${aws_iam_role.event_bridge[0].name}" : local.event_bridge_role_name,
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:deploymentstrategy/${aws_appconfig_deployment_strategy.agent.id}",
           "arn:${data.aws_partition.current.partition}:cognito-idp:*:*:userpool/${aws_cognito_user_pool.main.id}",
-          "arn:${data.aws_partition.current.partition}:cloudwatch:*:*:alarm:*${local.app_id}",
-          "arn:${data.aws_partition.current.partition}:cloudwatch:*:*:alarm:TargetTracking-service/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:dynamodb:${local.aws_region}:*:table/${local.app_id}*",
-          "arn:${data.aws_partition.current.partition}:ecs:*:*:service/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:ecs:*:*:cluster/*${local.app_id}",
-          "arn:${data.aws_partition.current.partition}:ecs:*:*:task/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:ecs:*:*:task-definition/*${local.app_id}*",
-          "arn:${data.aws_partition.current.partition}:events:*:*:*/*${local.app_id}*",
+          "arn:${data.aws_partition.current.partition}:cloudwatch:*:*:alarm:*${local.application_id}",
+          "arn:${data.aws_partition.current.partition}:cloudwatch:*:*:alarm:TargetTracking-service/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:dynamodb:${local.aws_region}:*:table/${local.application_id}*",
+          "arn:${data.aws_partition.current.partition}:ecs:*:*:service/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:ecs:*:*:cluster/*${local.application_id}",
+          "arn:${data.aws_partition.current.partition}:ecs:*:*:task/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:ecs:*:*:task-definition/*${local.application_id}*",
+          "arn:${data.aws_partition.current.partition}:events:*:*:*/*${local.application_id}*",
           "arn:${data.aws_partition.current.partition}:events:*:*:*/default",
           "arn:${data.aws_partition.current.partition}:events:*:*:event-bus/${var.eventbridge_notifications_bus_name}",
           "arn:${data.aws_partition.current.partition}:events:*:*:rule/*",
           "arn:${data.aws_partition.current.partition}:iam::*:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
-          "arn:${data.aws_partition.current.partition}:s3:::*${local.app_id}-*",
-          "arn:${data.aws_partition.current.partition}:s3:::*${local.app_id}-*/*",
-          "arn:${data.aws_partition.current.partition}:sns:*:*:*${local.app_id}",
-          "arn:${data.aws_partition.current.partition}:sqs:*:*:*${local.app_id}*",
+          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}-*",
+          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}-*/*",
+          "arn:${data.aws_partition.current.partition}:sns:*:*:*${local.application_id}",
+          "arn:${data.aws_partition.current.partition}:sqs:*:*:*${local.application_id}*",
           "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/aws/service/ecs/optimized-ami/amazon-linux*/recommended/image_id",
           "arn:${data.aws_partition.current.partition}:ssm:*:*:document/${awscc_ssm_document.appconfig_document.name}",
           "arn:${data.aws_partition.current.partition}:ssm:*:*:document/${aws_ssm_document.appconfig_document_schema.name}",
-          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.app_id}",
+          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.application_id}",
           "arn:${data.aws_partition.current.partition}:ecr:${local.aws_region}:${local.ecr_account}:repository/cloudstoragesecurity/*",
           "arn:${data.aws_partition.current.partition}:securityhub:${local.aws_region}::product/cloud-storage-security/antivirus-for-amazon-s3",
           "arn:${data.aws_partition.current.partition}:securityhub:${local.aws_region}:*:product-subscription/cloud-storage-security/antivirus-for-amazon-s3",
@@ -329,7 +329,7 @@ resource "aws_iam_role_policy" "console_task" {
       },
       {
         Effect = "Allow"
-        Sid    = "Logs${local.app_id}"
+        Sid    = "Logs${local.application_id}"
         Action = [
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
@@ -344,8 +344,8 @@ resource "aws_iam_role_policy" "console_task" {
       {
         Action   = "sts:AssumeRole"
         Effect   = "Allow"
-        Sid      = "CrossAccount${local.app_id}"
-        Resource = "arn:${data.aws_partition.current.partition}:iam::*:role/*${local.app_id}"
+        Sid      = "CrossAccount${local.application_id}"
+        Resource = "arn:${data.aws_partition.current.partition}:iam::*:role/*${local.application_id}"
       },
       {
         Action = [
@@ -354,7 +354,7 @@ resource "aws_iam_role_policy" "console_task" {
           "kms:GenerateDataKey"
         ]
         Effect   = "Allow"
-        Sid      = "KmsConsole${local.app_id}"
+        Sid      = "KmsConsole${local.application_id}"
         Resource = var.allow_access_to_all_kms_keys ? "*" : "arn:${data.aws_partition.current.partition}:kms:::key/no-blanket-kms-access"
         Condition = {
           StringEquals = {
@@ -363,7 +363,7 @@ resource "aws_iam_role_policy" "console_task" {
         }
       },
       {
-        Sid      = "PutMetricData${local.app_id}"
+        Sid      = "PutMetricData${local.application_id}"
         Effect   = "Allow"
         Action   = "cloudwatch:PutMetricData"
         Resource = "*"
@@ -378,7 +378,7 @@ resource "aws_iam_role_policy" "console_task" {
 }
 
 resource "aws_iam_role_policy" "console_task_api_lb" {
-  name = "${var.service_name}ConsolePolicy-${local.app_id}-ApiLb"
+  name = "${var.service_name}ConsolePolicy-${local.application_id}-ApiLb"
   role = aws_iam_role.console_task.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -391,7 +391,7 @@ resource "aws_iam_role_policy" "console_task_api_lb" {
           "elasticloadbalancing:DescribeTargetGroups"
         ]
         Effect   = "Allow"
-        Sid      = "AllResources${local.app_id}"
+        Sid      = "AllResources${local.application_id}"
         Resource = "*"
       },
       {
@@ -404,11 +404,11 @@ resource "aws_iam_role_policy" "console_task_api_lb" {
           "iam:CreateServiceLinkedRole"
         ]
         Effect = "Allow"
-        Sid    = "RestrictedResources${local.app_id}"
+        Sid    = "RestrictedResources${local.application_id}"
         Resource = [
-          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:listener/*/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:loadbalancer/*/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:targetgroup/*${local.app_id}/*",
+          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:listener/*/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:loadbalancer/*/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:elasticloadbalancing:*:*:targetgroup/*${local.application_id}/*",
           "arn:${data.aws_partition.current.partition}:iam::*:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing"
         ]
       },
@@ -417,7 +417,7 @@ resource "aws_iam_role_policy" "console_task_api_lb" {
 }
 
 resource "aws_iam_role_policy" "console_task_aws_licensing" {
-  name = "${var.service_name}ConsolePolicy-${local.app_id}-AwsLicensing"
+  name = "${var.service_name}ConsolePolicy-${local.application_id}-AwsLicensing"
   role = aws_iam_role.console_task.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -428,7 +428,7 @@ resource "aws_iam_role_policy" "console_task_aws_licensing" {
           "license-manager:ListReceivedLicenses"
         ]
         Effect   = "Allow"
-        Sid      = "AllResources${local.app_id}"
+        Sid      = "AllResources${local.application_id}"
         Resource = "*"
       },
     ]
@@ -436,7 +436,7 @@ resource "aws_iam_role_policy" "console_task_aws_licensing" {
 }
 
 resource "aws_iam_role_policy" "cloud_trail_lake_policy" {
-  name = "${var.service_name}ConsolePolicy-${local.app_id}-CloudTrailLake"
+  name = "${var.service_name}ConsolePolicy-${local.application_id}-CloudTrailLake"
   role = aws_iam_role.console_task.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -473,7 +473,7 @@ resource "aws_iam_role_policy" "cloud_trail_lake_policy" {
 
 resource "aws_iam_policy" "custom_CMK" {
   count = (local.use_dynamo_cmk || local.use_sns_cmk) ? 1 : 0
-  name  = "${var.service_name}KMSPolicy-${local.app_id}-CustomCMK"
+  name  = "${var.service_name}KMSPolicy-${local.application_id}-CustomCMK"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -506,7 +506,7 @@ resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent_policy_attach" {
 }
 
 resource "aws_iam_role" "agent_task" {
-  name = "${var.service_name}AgentRole-${local.app_id}"
+  name = "${var.service_name}AgentRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -520,13 +520,13 @@ resource "aws_iam_role" "agent_task" {
       },
     ]
   })
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "AgentTaskRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "AgentTaskRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role_policy" "agent_task" {
-  name = "${var.service_name}AgentPolicy-${local.app_id}"
+  name = "${var.service_name}AgentPolicy-${local.application_id}"
   role = aws_iam_role.agent_task.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -542,7 +542,7 @@ resource "aws_iam_role_policy" "agent_task" {
           "workdocs:*Metadata"
         ]
         Effect   = "Allow"
-        Sid      = "AllResources${local.app_id}"
+        Sid      = "AllResources${local.application_id}"
         Resource = "*"
       },
       {
@@ -561,7 +561,7 @@ resource "aws_iam_role_policy" "agent_task" {
           "ssm:ListDocuments"
         ]
         Effect = "Allow"
-        Sid    = "AllResourcesInService${local.app_id}"
+        Sid    = "AllResourcesInService${local.application_id}"
         Resource = [
           "arn:${data.aws_partition.current.partition}:s3:::*",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:*",
@@ -602,37 +602,37 @@ resource "aws_iam_role_policy" "agent_task" {
           "ssm:GetParametersByPath"
         ]
         Effect = "Allow"
-        Sid    = "RestrictedResources${local.app_id}"
+        Sid    = "RestrictedResources${local.application_id}"
         #Add list
         Resource = [
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}/configurationprofile/*",
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}/environment/${aws_appconfig_environment.agent.environment_id}",
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}/environment/${aws_appconfig_environment.agent.environment_id}/configuration/*",
-          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.app_id}",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}/configurationprofile/*",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}/environment/${aws_appconfig_environment.agent.environment_id}",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}/environment/${aws_appconfig_environment.agent.environment_id}/configuration/*",
+          "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:deploymentstrategy/${aws_appconfig_deployment_strategy.agent.id}",
           "arn:${data.aws_partition.current.partition}:cognito-idp:*:*:userpool/${aws_cognito_user_pool.main.id}",
-          "arn:${data.aws_partition.current.partition}:dynamodb:${local.aws_region}:*:table/${local.app_id}.*",
+          "arn:${data.aws_partition.current.partition}:dynamodb:${local.aws_region}:*:table/${local.application_id}.*",
           "arn:${data.aws_partition.current.partition}:logs:*:*:*",
           "arn:${data.aws_partition.current.partition}:securityhub:${local.aws_region}::product/cloud-storage-security/antivirus-for-amazon-s3",
           "arn:${data.aws_partition.current.partition}:sns:*:*:awsworkdocs*",
-          "arn:${data.aws_partition.current.partition}:sns:*:*:*${local.app_id}",
-          "arn:${data.aws_partition.current.partition}:sqs:*:*:*${local.app_id}*",
-          "arn:${data.aws_partition.current.partition}:ssm:*:*:document/*${local.app_id}",
-          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.app_id}/*",
-          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.app_id}"
+          "arn:${data.aws_partition.current.partition}:sns:*:*:*${local.application_id}",
+          "arn:${data.aws_partition.current.partition}:sqs:*:*:*${local.application_id}*",
+          "arn:${data.aws_partition.current.partition}:ssm:*:*:document/*${local.application_id}",
+          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.application_id}/*",
+          "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/*${local.application_id}"
         ]
       },
       {
         Action   = "logs:CreateLogGroup"
         Effect   = "Allow"
-        Sid      = "Logs${local.app_id}"
+        Sid      = "Logs${local.application_id}"
         Resource = "arn:${data.aws_partition.current.partition}:logs:*:*:*"
       },
       {
         Action   = "sts:AssumeRole"
         Effect   = "Allow"
-        Sid      = "CrossAccount${local.app_id}"
-        Resource = "arn:${data.aws_partition.current.partition}:iam::*:role/*${local.app_id}"
+        Sid      = "CrossAccount${local.application_id}"
+        Resource = "arn:${data.aws_partition.current.partition}:iam::*:role/*${local.application_id}"
       },
       {
         Action = [
@@ -641,7 +641,7 @@ resource "aws_iam_role_policy" "agent_task" {
           "kms:GenerateDataKey"
         ]
         Effect   = "Allow"
-        Sid      = "Kms${local.app_id}"
+        Sid      = "Kms${local.application_id}"
         Resource = "*"
         Condition = {
           StringLike = { "kms:ViaService" = "s3.*.amazonaws.com" }
@@ -653,7 +653,7 @@ resource "aws_iam_role_policy" "agent_task" {
 
 #This is exec role
 resource "aws_iam_role" "execution" {
-  name = "${var.service_name}ExecutionRole-${local.app_id}"
+  name = "${var.service_name}ExecutionRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -669,13 +669,13 @@ resource "aws_iam_role" "execution" {
   })
   managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ExecutionRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ExecutionRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role" "ec2_container" {
-  name = "${var.service_name}Ec2ContainerRole-${local.app_id}"
+  name = "${var.service_name}Ec2ContainerRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -691,13 +691,13 @@ resource "aws_iam_role" "ec2_container" {
   })
   managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "Ec2ContainerRole" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "Ec2ContainerRole" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_iam_role_policy" "ec2_container" {
-  name = "${var.service_name}Ec2ContainerPolicy-${local.app_id}"
+  name = "${var.service_name}Ec2ContainerPolicy-${local.application_id}"
   role = aws_iam_role.ec2_container.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -774,13 +774,13 @@ resource "aws_iam_role_policy" "ec2_container" {
 }
 
 resource "aws_iam_instance_profile" "ec2_container" {
-  name = "${var.service_name}Ec2ContainerRole-${local.app_id}"
+  name = "${var.service_name}Ec2ContainerRole-${local.application_id}"
   role = aws_iam_role.ec2_container.name
 }
 
 resource "aws_iam_role" "event_bridge" {
   count = local.create_event_bridge_role ? 1 : 0
-  name  = "${var.service_name}EventBridgeRole-${local.app_id}"
+  name  = "${var.service_name}EventBridgeRole-${local.application_id}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -796,18 +796,18 @@ resource "aws_iam_role" "event_bridge" {
 }
 
 resource "aws_iam_policy" "event_bridge" {
-  name = "${var.service_name}EventBridgePolicy-${local.app_id}"
+  name = "${var.service_name}EventBridgePolicy-${local.application_id}"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "PutEvents${local.app_id}"
+        Sid    = "PutEvents${local.application_id}"
         Effect = "Allow"
         Action = [
           "events:PutEvents"
         ]
         Resource = [
-          "arn:${data.aws_partition.current.partition}:events:*:${local.account_id}:event-bus/*${local.app_id}"
+          "arn:${data.aws_partition.current.partition}:events:*:${local.account_id}:event-bus/*${local.application_id}"
         ]
       }
     ]
@@ -821,12 +821,12 @@ resource "aws_iam_role_policy_attachment" "event_bridge_policy_attach" {
 
 resource "aws_iam_policy" "proactive_notifications_event_bridge" {
   count = local.create_custom_event_bus ? 1 : 0
-  name  = "ProactiveNotificationsEventBridgePolicy-${local.app_id}"
+  name  = "ProactiveNotificationsEventBridgePolicy-${local.application_id}"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "PutEvents${local.app_id}"
+        Sid    = "PutEvents${local.application_id}"
         Effect = "Allow"
         Action = [
           "events:PutEvents"

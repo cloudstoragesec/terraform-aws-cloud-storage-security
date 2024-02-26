@@ -1,9 +1,9 @@
 resource "aws_sns_topic" "notifications" {
-  name = "${var.service_name}NotificationsTopic-${local.app_id}"
+  name = "${var.service_name}NotificationsTopic-${local.application_id}"
 
   kms_master_key_id = var.sns_cmk_key_arn
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "ConsoleSnsTopic" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleSnsTopic" },
     var.custom_resource_tags
   )
 }
