@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "buckets" {
-  name         = "${local.app_id}.Buckets"
+  name         = "${local.application_id}.Buckets"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Name"
   point_in_time_recovery {
@@ -16,13 +16,13 @@ resource "aws_dynamodb_table" "buckets" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "efs_volumes" {
-  name         = "${local.app_id}.EfsVolumes"
+  name         = "${local.application_id}.EfsVolumes"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Id"
   point_in_time_recovery {
@@ -39,13 +39,13 @@ resource "aws_dynamodb_table" "efs_volumes" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "ebs_volumes" {
-  name         = "${local.app_id}.EbsVolumes"
+  name         = "${local.application_id}.EbsVolumes"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Id"
   point_in_time_recovery {
@@ -62,13 +62,13 @@ resource "aws_dynamodb_table" "ebs_volumes" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "subnets" {
-  name         = "${local.app_id}.Subnets"
+  name         = "${local.application_id}.Subnets"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Region"
   point_in_time_recovery {
@@ -85,13 +85,13 @@ resource "aws_dynamodb_table" "subnets" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "console" {
-  name         = "${local.app_id}.Console"
+  name         = "${local.application_id}.Console"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "ApplicationId"
   point_in_time_recovery {
@@ -108,13 +108,13 @@ resource "aws_dynamodb_table" "console" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "linked_accounts" {
-  name         = "${local.app_id}.LinkedAccounts"
+  name         = "${local.application_id}.LinkedAccounts"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AccountId"
   point_in_time_recovery {
@@ -131,13 +131,13 @@ resource "aws_dynamodb_table" "linked_accounts" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "work_docs_connections" {
-  name         = "${local.app_id}.WorkDocsConnections"
+  name         = "${local.application_id}.WorkDocsConnections"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "OrganizationId"
   point_in_time_recovery {
@@ -154,13 +154,13 @@ resource "aws_dynamodb_table" "work_docs_connections" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "groups" {
-  name         = "${local.app_id}.Groups"
+  name         = "${local.application_id}.Groups"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Id"
   point_in_time_recovery {
@@ -177,13 +177,13 @@ resource "aws_dynamodb_table" "groups" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "visible_groups" {
-  name         = "${local.app_id}.VisibleGroups"
+  name         = "${local.application_id}.VisibleGroups"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Username"
   point_in_time_recovery {
@@ -200,13 +200,13 @@ resource "aws_dynamodb_table" "visible_groups" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "scheduled_scans" {
-  name         = "${local.app_id}.ScheduledScans"
+  name         = "${local.application_id}.ScheduledScans"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "ScheduleName"
   point_in_time_recovery {
@@ -223,13 +223,13 @@ resource "aws_dynamodb_table" "scheduled_scans" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "scheduled_classifications" {
-  name         = "${local.app_id}.ScheduledClassifications"
+  name         = "${local.application_id}.ScheduledClassifications"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Name"
   point_in_time_recovery {
@@ -246,13 +246,13 @@ resource "aws_dynamodb_table" "scheduled_classifications" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "deployment_status" {
-  name         = "${local.app_id}.DeploymentStatus"
+  name         = "${local.application_id}.DeploymentStatus"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Region"
   point_in_time_recovery {
@@ -269,13 +269,13 @@ resource "aws_dynamodb_table" "deployment_status" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "proactive_monitor_statuses" {
-  name         = "${local.app_id}.ProactiveMonitorStatuses"
+  name         = "${local.application_id}.ProactiveMonitorStatuses"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Name"
   range_key    = "Region"
@@ -298,13 +298,13 @@ resource "aws_dynamodb_table" "proactive_monitor_statuses" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "storage_analysis" {
-  name         = "${local.app_id}.StorageAnalysis"
+  name         = "${local.application_id}.StorageAnalysis"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "BucketName"
   range_key    = "ScanDate"
@@ -339,13 +339,13 @@ resource "aws_dynamodb_table" "storage_analysis" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "file_count" {
-  name         = "${local.app_id}.FileCount"
+  name         = "${local.application_id}.FileCount"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "ScanDate"
   range_key    = "Guid"
@@ -380,13 +380,13 @@ resource "aws_dynamodb_table" "file_count" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "agents" {
-  name         = "${local.app_id}.Agents"
+  name         = "${local.application_id}.Agents"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AgentId"
   range_key    = "DeactivationDate"
@@ -421,13 +421,13 @@ resource "aws_dynamodb_table" "agents" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "agent_data" {
-  name         = "${local.app_id}.AgentData"
+  name         = "${local.application_id}.AgentData"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AgentId"
   range_key    = "Tstp"
@@ -462,13 +462,13 @@ resource "aws_dynamodb_table" "agent_data" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "bucket_scan_statistics" {
-  name         = "${local.app_id}.BucketScanStatistics"
+  name         = "${local.application_id}.BucketScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "BucketName"
   range_key    = "Date"
@@ -503,13 +503,13 @@ resource "aws_dynamodb_table" "bucket_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "bucket_classification_statistics" {
-  name         = "${local.app_id}.BucketClassificationStatistics"
+  name         = "${local.application_id}.BucketClassificationStatistics"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "BucketName"
   range_key    = "Date"
@@ -538,13 +538,13 @@ resource "aws_dynamodb_table" "bucket_classification_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "sophos_tap_data" {
-  name         = "${local.app_id}.SophosTapData"
+  name         = "${local.application_id}.SophosTapData"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Date"
   range_key    = "Tstp"
@@ -567,12 +567,12 @@ resource "aws_dynamodb_table" "sophos_tap_data" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 resource "aws_dynamodb_table" "daily_scan_statistics" {
-  name         = "${local.app_id}.DailyScanStatistics"
+  name         = "${local.application_id}.DailyScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AccountId"
   range_key    = "Date"
@@ -621,13 +621,13 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "monthly_scan_statistics" {
-  name         = "${local.app_id}.MonthlyScanStatistics"
+  name         = "${local.application_id}.MonthlyScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AccountId"
   range_key    = "Date"
@@ -676,13 +676,13 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "problem_files" {
-  name         = "${local.app_id}.ProblemFiles"
+  name         = "${local.application_id}.ProblemFiles"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Guid"
   range_key    = "DateScanned"
@@ -727,13 +727,13 @@ resource "aws_dynamodb_table" "problem_files" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "classification_results" {
-  name         = "${local.app_id}.ClassificationResults"
+  name         = "${local.application_id}.ClassificationResults"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Date"
   range_key    = "Guid"
@@ -767,13 +767,13 @@ resource "aws_dynamodb_table" "classification_results" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "allowed_infected_files" {
-  name         = "${local.app_id}.AllowedInfectedFiles"
+  name         = "${local.application_id}.AllowedInfectedFiles"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "BucketAndKey"
   range_key    = "VirusName"
@@ -811,13 +811,13 @@ resource "aws_dynamodb_table" "allowed_infected_files" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "group_membership" {
-  name         = "${local.app_id}.GroupMembership"
+  name         = "${local.application_id}.GroupMembership"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "ParentGroupId"
   range_key    = "ChildGroupId"
@@ -840,13 +840,13 @@ resource "aws_dynamodb_table" "group_membership" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "jobs" {
-  name         = "${local.app_id}.Jobs"
+  name         = "${local.application_id}.Jobs"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Type"
   range_key    = "Date"
@@ -898,13 +898,13 @@ resource "aws_dynamodb_table" "jobs" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "linked_account_membership" {
-  name         = "${local.app_id}.LinkedAccountMembership"
+  name         = "${local.application_id}.LinkedAccountMembership"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "GroupId"
   range_key    = "AccountId"
@@ -927,13 +927,13 @@ resource "aws_dynamodb_table" "linked_account_membership" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "license_file_history" {
-  name         = "${local.app_id}.LicenseFileHistory"
+  name         = "${local.application_id}.LicenseFileHistory"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Type"
   range_key    = "DateApplied"
@@ -956,13 +956,13 @@ resource "aws_dynamodb_table" "license_file_history" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "notifications" {
-  name         = "${local.app_id}.Notifications"
+  name         = "${local.application_id}.Notifications"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Guid"
   range_key    = "Date"
@@ -1007,13 +1007,13 @@ resource "aws_dynamodb_table" "notifications" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 resource "aws_dynamodb_table" "fsx_volumes" {
-  name         = "${local.app_id}.FsxVolumes"
+  name         = "${local.application_id}.FsxVolumes"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "Id"
   point_in_time_recovery {
@@ -1027,14 +1027,14 @@ resource "aws_dynamodb_table" "fsx_volumes" {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
 
 resource "aws_dynamodb_table" "job_networking" {
-  name         = "${local.app_id}.JobNetworking"
+  name         = "${local.application_id}.JobNetworking"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "PK"
   range_key    = "SK"
@@ -1053,7 +1053,7 @@ resource "aws_dynamodb_table" "job_networking" {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.app_id}"])) = "DynamoTable" },
+  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
