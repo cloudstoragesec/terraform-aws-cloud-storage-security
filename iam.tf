@@ -295,7 +295,7 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:iam::*:instance-profile/${aws_iam_role.ec2_container.name}",
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.execution.name}",
           "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${aws_iam_role.user_pool_sns.name}",
-          local.create_event_bridge_role ? "arn:${data.aws_partition.current.partition}:iam::*:role/${aws_iam_role.event_bridge[0].name}" : local.event_bridge_role_name,
+          "arn:${data.aws_partition.current.partition}:iam::*:role/${local.event_bridge_role_name}",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}/*",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:application/${local.application_id}",
           "arn:${data.aws_partition.current.partition}:appconfig:*:*:deploymentstrategy/${aws_appconfig_deployment_strategy.agent.id}",
@@ -493,13 +493,13 @@ resource "aws_iam_policy" "custom_CMK" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "dynamo_cmk_console_policy_attach" {
+resource "aws_iam_role_policy_attachment" "dynamo_cmk_console" {
   count      = (local.use_dynamo_cmk || local.use_sns_cmk) ? 1 : 0
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.custom_CMK[0].arn
 }
 
-resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent_policy_attach" {
+resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent" {
   count      = (local.use_dynamo_cmk || local.use_sns_cmk) ? 1 : 0
   role       = aws_iam_role.agent_task.name
   policy_arn = aws_iam_policy.custom_CMK[0].arn
@@ -780,7 +780,7 @@ resource "aws_iam_instance_profile" "ec2_container" {
 
 resource "aws_iam_role" "event_bridge" {
   count = local.create_event_bridge_role ? 1 : 0
-  name  = "${var.service_name}EventBridgeRole-${local.application_id}"
+  name  = local.event_bridge_role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -814,7 +814,7 @@ resource "aws_iam_policy" "event_bridge" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "event_bridge_policy_attach" {
+resource "aws_iam_role_policy_attachment" "event_bridge" {
   role       = local.create_event_bridge_role ? aws_iam_role.event_bridge[0].name : local.event_bridge_role_name
   policy_arn = aws_iam_policy.event_bridge.arn
 }
@@ -839,13 +839,13 @@ resource "aws_iam_policy" "proactive_notifications_event_bridge" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "custom_event_bridge_console_policy_attach" {
+resource "aws_iam_role_policy_attachment" "custom_event_bridge_console" {
   count      = local.create_custom_event_bus ? 1 : 0
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.proactive_notifications_event_bridge[0].arn
 }
 
-resource "aws_iam_role_policy_attachment" "custom_event_bridge_agent_policy_attach" {
+resource "aws_iam_role_policy_attachment" "custom_event_bridge_agent" {
   count      = local.create_custom_event_bus ? 1 : 0
   role       = aws_iam_role.agent_task.name
   policy_arn = aws_iam_policy.proactive_notifications_event_bridge[0].arn

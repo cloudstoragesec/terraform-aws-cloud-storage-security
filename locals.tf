@@ -2,8 +2,8 @@ locals {
   # Terraform module and the associated app version are tightly coupled for compatibility. 
   # Specified 'image_version' corresponds to a tested combination of Terraform and app release.
   # Avoid manually changing the 'image_version' unless you have explicit instructions to do so.
-  image_version_console    = "v7.05.001"
-  image_version_agent      = "v7.05.000"
+  image_version_console    = "v7.06.000"
+  image_version_agent      = "v7.06.000"
   ecr_account              = coalesce(var.ecr_account, "${local.aws_region}" == "us-gov-west-1" ? "822167061992" : "564477214187")
   console_image_url        = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/console:${local.image_version_console}"
   agent_image_url          = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
@@ -14,8 +14,6 @@ locals {
   product_mode             = "AV"
   is_antivirus             = local.product_mode == "AV"
   use_proxy                = var.proxy_host != null
-  create_event_bridge_role = var.event_bridge_role_name == null
-  event_bridge_role_name   = coalesce(var.event_bridge_role_name, "Created by TF")
   create_custom_event_bus  = var.eventbridge_notifications_enabled && var.eventbridge_notifications_bus_name != "default"
   use_dynamo_cmk           = var.dynamo_cmk_key_arn != null
   use_sns_cmk              = var.sns_cmk_key_arn != null
@@ -23,6 +21,10 @@ locals {
   custom_key_list = compact([
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn
-  ])
+  ]) 
+  create_event_bridge_role = var.event_bridge_role_name == null
+  event_bridge_role_name   = coalesce(var.event_bridge_role_name, "${var.service_name}EventBridgeRole-${local.application_id}")
   ecs_service_name = "${var.service_name}ConsoleService-${local.application_id}"
+  cross_account_role_name = "${var.service_name}RemoteRole-${local.application_id}"
+  cross_account_policy_name = "${var.service_name}RemotePolicy-${local.application_id}"
 }
