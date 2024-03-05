@@ -75,7 +75,7 @@ resource "aws_iam_policy" "remote_access" {
           "ec2:DeleteSnapshot"
         ]
         Resource = [
-          "arn:aws:ec2:*::snapshot/*"
+          "arn:${data.aws_partition.current.partition}:ec2:*::snapshot/*"
         ]
       },
       {
