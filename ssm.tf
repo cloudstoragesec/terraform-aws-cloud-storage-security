@@ -1,11 +1,11 @@
 resource "aws_ssm_parameter" "dynamo_table_name_prefix" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/DynamoTableNamePrefix"
+  name  = "/${local.ssm_path_prefix}/Config/DynamoTableNamePrefix"
   type  = "String"
   value = "${local.application_id}."
 }
 
 resource "aws_ssm_parameter" "dynamo_point_in_time_recovery_enabled" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/DynamoPointInTimeRecoveryEnabled"
+  name  = "/${local.ssm_path_prefix}/Config/DynamoPointInTimeRecoveryEnabled"
   type  = "String"
   value = "false"
   lifecycle {
@@ -14,13 +14,13 @@ resource "aws_ssm_parameter" "dynamo_point_in_time_recovery_enabled" {
 }
 
 resource "aws_ssm_parameter" "agent_ecr_image_url" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AgentEcrImageUrl"
+  name  = "/${local.ssm_path_prefix}/Config/AgentEcrImageUrl"
   type  = "String"
   value = local.agent_image_url
 }
 
 resource "aws_ssm_parameter" "max_num_agents" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/MaxNumAgents"
+  name  = "/${local.ssm_path_prefix}/Config/MaxNumAgents"
   type  = "String"
   value = var.max_running_agents
   lifecycle {
@@ -33,7 +33,7 @@ resource "aws_ssm_parameter" "max_num_agents" {
 }
 
 resource "aws_ssm_parameter" "min_num_agents" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/MinNumAgents"
+  name  = "/${local.ssm_path_prefix}/Config/MinNumAgents"
   type  = "String"
   value = var.min_running_agents
   lifecycle {
@@ -46,7 +46,7 @@ resource "aws_ssm_parameter" "min_num_agents" {
 }
 
 resource "aws_ssm_parameter" "queue_scaling_threshold" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/QueueScalingThreshold"
+  name  = "/${local.ssm_path_prefix}/Config/QueueScalingThreshold"
   type  = "String"
   value = "1000"
   lifecycle {
@@ -55,7 +55,7 @@ resource "aws_ssm_parameter" "queue_scaling_threshold" {
 }
 
 resource "aws_ssm_parameter" "agent_cpu" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AgentCpu"
+  name  = "/${local.ssm_path_prefix}/Config/AgentCpu"
   type  = "String"
   value = "1024"
   lifecycle {
@@ -64,7 +64,7 @@ resource "aws_ssm_parameter" "agent_cpu" {
 }
 
 resource "aws_ssm_parameter" "agent_memory" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AgentMemory"
+  name  = "/${local.ssm_path_prefix}/Config/AgentMemory"
   type  = "String"
   value = "3072"
   lifecycle {
@@ -73,7 +73,7 @@ resource "aws_ssm_parameter" "agent_memory" {
 }
 
 resource "aws_ssm_parameter" "agent_disk_size" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AgentDiskSize"
+  name  = "/${local.ssm_path_prefix}/Config/AgentDiskSize"
   type  = "String"
   value = "20"
   lifecycle {
@@ -82,7 +82,7 @@ resource "aws_ssm_parameter" "agent_disk_size" {
 }
 
 resource "aws_ssm_parameter" "enable_large_file_scanning" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/EnableLargeFileScanning"
+  name  = "/${local.ssm_path_prefix}/Config/EnableLargeFileScanning"
   type  = "String"
   value = var.enable_large_file_scanning
   lifecycle {
@@ -91,7 +91,7 @@ resource "aws_ssm_parameter" "enable_large_file_scanning" {
 }
 
 resource "aws_ssm_parameter" "storage_assessment_enabled" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/StorageAssessmentEnabled"
+  name  = "/${local.ssm_path_prefix}/Config/StorageAssessmentEnabled"
   type  = "String"
   value = "false"
   lifecycle {
@@ -100,7 +100,7 @@ resource "aws_ssm_parameter" "storage_assessment_enabled" {
 }
 
 resource "aws_ssm_parameter" "large_file_disk_size" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/LargeFileDiskSize"
+  name  = "/${local.ssm_path_prefix}/Config/LargeFileDiskSize"
   type  = "String"
   value = var.large_file_disk_size_gb
   lifecycle {
@@ -113,7 +113,7 @@ resource "aws_ssm_parameter" "large_file_disk_size" {
 }
 
 resource "aws_ssm_parameter" "large_file_ec2_tags" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/LargeFileEC2Tags"
+  name  = "/${local.ssm_path_prefix}/Config/LargeFileEC2Tags"
   type  = "String"
   value = "CloudStorageSec-[appId]=EC2Instance"
   lifecycle {
@@ -122,7 +122,7 @@ resource "aws_ssm_parameter" "large_file_ec2_tags" {
 }
 
 resource "aws_ssm_parameter" "subdomain" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/Subdomain"
+  name  = "/${local.ssm_path_prefix}/Config/Subdomain"
   type  = "String"
   value = "${local.account_id}-${local.application_id}"
   lifecycle {
@@ -131,25 +131,25 @@ resource "aws_ssm_parameter" "subdomain" {
 }
 
 resource "aws_ssm_parameter" "email" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/Email"
+  name  = "/${local.ssm_path_prefix}/Config/Email"
   type  = "String"
   value = var.email
 }
 
 resource "aws_ssm_parameter" "user_name" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/UserName"
+  name  = "/${local.ssm_path_prefix}/Config/UserName"
   type  = "String"
   value = var.username
 }
 
 resource "aws_ssm_parameter" "stack_name" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/StackName"
+  name  = "/${local.ssm_path_prefix}/Config/StackName"
   type  = "String"
   value = var.service_name
 }
 
 resource "aws_ssm_parameter" "private_mirror" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/PrivateMirror"
+  name  = "/${local.ssm_path_prefix}/Config/PrivateMirror"
   type  = "String"
   value = "!!none_chosen!!"
   lifecycle {
@@ -158,7 +158,7 @@ resource "aws_ssm_parameter" "private_mirror" {
 }
 
 resource "aws_ssm_parameter" "last_upgrade_notes_seen" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/LastUpgradeNotesSeen"
+  name  = "/${local.ssm_path_prefix}/Config/LastUpgradeNotesSeen"
   type  = "String"
   value = "v1.00.000"
   lifecycle {
@@ -167,7 +167,7 @@ resource "aws_ssm_parameter" "last_upgrade_notes_seen" {
 }
 
 resource "aws_ssm_parameter" "last_post_upgrade_procedure" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/LastPostUpgradeProcedure"
+  name  = "/${local.ssm_path_prefix}/Config/LastPostUpgradeProcedure"
   type  = "String"
   value = "v1.00.000"
   lifecycle {
@@ -176,30 +176,30 @@ resource "aws_ssm_parameter" "last_post_upgrade_procedure" {
 }
 
 resource "aws_ssm_parameter" "region" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/AWS/Region"
+  name  = "/${local.ssm_path_prefix}/AWS/Region"
   type  = "String"
   value = local.aws_region
 }
 
 resource "aws_ssm_parameter" "user_pool_client_id" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/AWS/UserPoolClientId"
+  name  = "/${local.ssm_path_prefix}/AWS/UserPoolClientId"
   type  = "String"
   value = aws_cognito_user_pool_client.main.id
 }
 
 resource "aws_ssm_parameter" "user_pool_client_secret" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/AWS/UserPoolClientSecret"
+  name  = "/${local.ssm_path_prefix}/AWS/UserPoolClientSecret"
   type  = "String"
   value = aws_cognito_user_pool_client.main.client_secret
 }
 resource "aws_ssm_parameter" "user_pool_id" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/AWS/UserPoolId"
+  name  = "/${local.ssm_path_prefix}/AWS/UserPoolId"
   type  = "String"
   value = aws_cognito_user_pool.main.id
 }
 
 resource "aws_ssm_parameter" "only_scan_when_queue_threshold_exceeded" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/OnlyScanWhenQueueThresholdExceeded"
+  name  = "/${local.ssm_path_prefix}/Config/OnlyScanWhenQueueThresholdExceeded"
   type  = "String"
   value = "false"
   lifecycle {
@@ -208,7 +208,7 @@ resource "aws_ssm_parameter" "only_scan_when_queue_threshold_exceeded" {
 }
 
 resource "aws_ssm_parameter" "quarantine_in_primary_account" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/QuarantineInPrimaryAccount"
+  name  = "/${local.ssm_path_prefix}/Config/QuarantineInPrimaryAccount"
   type  = "String"
   value = "false"
   lifecycle {
@@ -217,7 +217,7 @@ resource "aws_ssm_parameter" "quarantine_in_primary_account" {
 }
 
 resource "aws_ssm_parameter" "security_hub_enabled" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/SecurityHubEnabled"
+  name  = "/${local.ssm_path_prefix}/Config/SecurityHubEnabled"
   type  = "String"
   value = "false"
   lifecycle {
@@ -226,25 +226,25 @@ resource "aws_ssm_parameter" "security_hub_enabled" {
 }
 
 resource "aws_ssm_parameter" "agent_scanning_engine" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AgentScanningEngine"
+  name  = "/${local.ssm_path_prefix}/Config/AgentScanningEngine"
   type  = "String"
   value = var.agent_scanning_engine
 }
 
 resource "aws_ssm_parameter" "multi_engine_scanning_mode" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/MultiEngineScanningMode"
+  name  = "/${local.ssm_path_prefix}/Config/MultiEngineScanningMode"
   type  = "String"
   value = var.multi_engine_scanning_mode
 }
 
 resource "aws_ssm_parameter" "ecr_account_id" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/EcrAccountId"
+  name  = "/${local.ssm_path_prefix}/Config/EcrAccountId"
   type  = "String"
   value = local.ecr_account
 }
 
 resource "aws_ssm_parameter" "quarantine_bucket_days_to_expire" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/QuarantineBucketDaysToExpire"
+  name  = "/${local.ssm_path_prefix}/Config/QuarantineBucketDaysToExpire"
   type  = "String"
   value = "0"
   lifecycle {
@@ -253,7 +253,7 @@ resource "aws_ssm_parameter" "quarantine_bucket_days_to_expire" {
 }
 
 resource "aws_ssm_parameter" "auto_protect_bucket_tag_key" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/AutoProtectBucketTagKey"
+  name  = "/${local.ssm_path_prefix}/Config/AutoProtectBucketTagKey"
   type  = "String"
   value = "CloudStorageSecAutoProtect-${local.application_id}"
   lifecycle {
@@ -262,7 +262,7 @@ resource "aws_ssm_parameter" "auto_protect_bucket_tag_key" {
 }
 
 resource "aws_ssm_parameter" "cloud_trail_lake_enabled" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/CloudTrailLakeEnabled"
+  name  = "/${local.ssm_path_prefix}/Config/CloudTrailLakeEnabled"
   type  = "String"
   value = "false"
   lifecycle {
@@ -271,7 +271,7 @@ resource "aws_ssm_parameter" "cloud_trail_lake_enabled" {
 }
 
 resource "aws_ssm_parameter" "cloud_trail_lake_event_data_store_name" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/CloudTrailLakeEventDataStoreName"
+  name  = "/${local.ssm_path_prefix}/Config/CloudTrailLakeEventDataStoreName"
   type  = "String"
   value = "CloudTrailLakeEventDataStoreName-${local.application_id}"
   lifecycle {
@@ -280,7 +280,7 @@ resource "aws_ssm_parameter" "cloud_trail_lake_event_data_store_name" {
 }
 
 resource "aws_ssm_parameter" "cloud_trail_lake_channel_name" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/CloudTrailLakeChannelName"
+  name  = "/${local.ssm_path_prefix}/Config/CloudTrailLakeChannelName"
   type  = "String"
   value = "CloudStorageSecCloudTrailLake-${local.application_id}"
   lifecycle {
@@ -289,7 +289,7 @@ resource "aws_ssm_parameter" "cloud_trail_lake_channel_name" {
 }
 
 resource "aws_ssm_parameter" "cloud_trail_lake_channel_arn" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/CloudTrailLakeArn"
+  name  = "/${local.ssm_path_prefix}/Config/CloudTrailLakeArn"
   type  = "String"
   value = "unknown"
   lifecycle {
@@ -298,7 +298,7 @@ resource "aws_ssm_parameter" "cloud_trail_lake_channel_arn" {
 }
 
 resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/EventBridgeNotificationsEnabled"
+  name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsEnabled"
   type  = "String"
   value = var.eventbridge_notifications_enabled
   lifecycle {
@@ -307,7 +307,7 @@ resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
 }
 
 resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
-  name  = "/${var.parameter_prefix}-${local.application_id}/Config/EventBridgeNotificationsBusName"
+  name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsBusName"
   type  = "String"
   value = var.eventbridge_notifications_bus_name
   lifecycle {
