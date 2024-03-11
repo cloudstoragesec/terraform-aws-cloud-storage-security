@@ -3,7 +3,7 @@ variable "vpc" {
 }
 
 variable "cidr" {
-  description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/24 for open access)"
+  description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
 }
 
 variable "subnet_a_id" {
