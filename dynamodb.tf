@@ -16,7 +16,7 @@ resource "aws_dynamodb_table" "buckets" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -39,7 +39,7 @@ resource "aws_dynamodb_table" "efs_volumes" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -62,7 +62,7 @@ resource "aws_dynamodb_table" "ebs_volumes" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -85,7 +85,7 @@ resource "aws_dynamodb_table" "subnets" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -108,7 +108,7 @@ resource "aws_dynamodb_table" "console" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -131,7 +131,7 @@ resource "aws_dynamodb_table" "linked_accounts" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -154,7 +154,7 @@ resource "aws_dynamodb_table" "work_docs_connections" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -177,7 +177,7 @@ resource "aws_dynamodb_table" "groups" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -200,7 +200,7 @@ resource "aws_dynamodb_table" "visible_groups" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -223,7 +223,7 @@ resource "aws_dynamodb_table" "scheduled_scans" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -246,7 +246,7 @@ resource "aws_dynamodb_table" "scheduled_classifications" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -269,7 +269,7 @@ resource "aws_dynamodb_table" "deployment_status" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -298,7 +298,7 @@ resource "aws_dynamodb_table" "proactive_monitor_statuses" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -339,7 +339,7 @@ resource "aws_dynamodb_table" "storage_analysis" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -380,7 +380,7 @@ resource "aws_dynamodb_table" "file_count" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -421,7 +421,7 @@ resource "aws_dynamodb_table" "agents" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -462,7 +462,7 @@ resource "aws_dynamodb_table" "agent_data" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -503,7 +503,7 @@ resource "aws_dynamodb_table" "bucket_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -538,7 +538,7 @@ resource "aws_dynamodb_table" "bucket_classification_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -567,7 +567,7 @@ resource "aws_dynamodb_table" "sophos_tap_data" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -621,7 +621,7 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -676,7 +676,7 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -727,7 +727,7 @@ resource "aws_dynamodb_table" "problem_files" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -767,7 +767,7 @@ resource "aws_dynamodb_table" "classification_results" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -811,7 +811,7 @@ resource "aws_dynamodb_table" "allowed_infected_files" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -840,7 +840,7 @@ resource "aws_dynamodb_table" "group_membership" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -898,7 +898,7 @@ resource "aws_dynamodb_table" "jobs" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -927,7 +927,7 @@ resource "aws_dynamodb_table" "linked_account_membership" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -956,7 +956,7 @@ resource "aws_dynamodb_table" "license_file_history" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -1007,7 +1007,7 @@ resource "aws_dynamodb_table" "notifications" {
     kms_key_arn = var.dynamo_cmk_key_arn
   }
 
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -1027,7 +1027,7 @@ resource "aws_dynamodb_table" "fsx_volumes" {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
@@ -1053,7 +1053,7 @@ resource "aws_dynamodb_table" "job_networking" {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
-  tags = merge({ "${local.application_tag_key}" = "DynamoTable" },
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }

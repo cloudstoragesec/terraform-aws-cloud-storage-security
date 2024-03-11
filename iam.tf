@@ -14,7 +14,7 @@ resource "aws_iam_role" "appconfig_agent_configuration_document" {
       },
     ]
   })
-  tags = merge({ "${local.application_tag_key}" = "AppConfigDocumentRole" },
+  tags = merge({ (local.application_tag_key) = "AppConfigDocumentRole" },
     var.custom_resource_tags
   )
 }
@@ -51,7 +51,7 @@ resource "aws_iam_role" "user_pool_sns" {
       },
     ]
   })
-  tags = merge({ "${local.application_tag_key}" = "UserPoolSnsRole" },
+  tags = merge({ (local.application_tag_key) = "UserPoolSnsRole" },
     var.custom_resource_tags
   )
 }
@@ -87,7 +87,7 @@ resource "aws_iam_role" "console_task" {
       },
     ]
   })
-  tags = merge({ "${local.application_tag_key}" = "ConsoleTaskRole" },
+  tags = merge({ (local.application_tag_key) = "ConsoleTaskRole" },
     var.custom_resource_tags
   )
 }
@@ -520,7 +520,7 @@ resource "aws_iam_role" "agent_task" {
       },
     ]
   })
-  tags = merge({ "${local.application_tag_key}" = "AgentTaskRole" },
+  tags = merge({ (local.application_tag_key) = "AgentTaskRole" },
     var.custom_resource_tags
   )
 }
@@ -669,7 +669,7 @@ resource "aws_iam_role" "execution" {
   })
   managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
 
-  tags = merge({ "${local.application_tag_key}" = "ExecutionRole" },
+  tags = merge({ (local.application_tag_key) = "ExecutionRole" },
     var.custom_resource_tags
   )
 }
@@ -691,7 +691,7 @@ resource "aws_iam_role" "ec2_container" {
   })
   managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]
 
-  tags = merge({ "${local.application_tag_key}" = "Ec2ContainerRole" },
+  tags = merge({ (local.application_tag_key) = "Ec2ContainerRole" },
     var.custom_resource_tags
   )
 }

@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_log_group" "main" {
   name = "${var.service_name}.ECS.${local.application_id}.Console"
-  tags = merge({ "${local.application_tag_key}" = "ConsoleTargetGroup" },
+  tags = merge({ (local.application_tag_key) = "ConsoleTargetGroup" },
     var.custom_resource_tags
   )
   retention_in_days = 7
@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "health_check_console" {
 resource "aws_cloudwatch_event_bus" "proactive_notifications" {
   count = local.create_custom_event_bus ? 1 : 0
   name  = var.eventbridge_notifications_bus_name
-  tags = merge({ "${local.application_tag_key}" = "ProactiveNotificationsEventBridgeBus" },
+  tags = merge({ (local.application_tag_key) = "ProactiveNotificationsEventBridgeBus" },
     var.custom_resource_tags
   )
 }
