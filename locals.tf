@@ -10,7 +10,7 @@ locals {
   application_id          = aws_appconfig_application.agent.id
   account_id              = coalesce(var.aws_account, data.aws_caller_identity.current.account_id)
   aws_region              = data.aws_region.current.name
-  is_gov                  = contains(["us-gov-east-1", "us-gov-west-1"], local.aws_region)
+  is_gov                  = data.aws_partition.current.partition == "aws-us-gov"
   console_url             = "${var.configure_load_balancer && var.existing_target_group_arn == null}" ? "https://${aws_lb.main[0].dns_name}" : "https://${local.account_id}-${local.application_id}.cloudstoragesecapp.com"
   product_mode            = "AV"
   is_antivirus            = local.product_mode == "AV"
