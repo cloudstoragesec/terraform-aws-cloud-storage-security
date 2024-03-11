@@ -3,7 +3,7 @@ resource "aws_sns_topic" "notifications" {
 
   kms_master_key_id = var.sns_cmk_key_arn
 
-  tags = merge({ "${local.application_tag_key}" = "ConsoleSnsTopic" },
+  tags = merge({ (local.application_tag_key) = "ConsoleSnsTopic" },
     var.custom_resource_tags
   )
 }

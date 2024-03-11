@@ -15,7 +15,7 @@ resource "aws_appconfig_environment" "agent" {
   name           = "${var.service_name}Env-${local.application_id}"
   description    = "AppConfig Environment for CloudStorageSec Agents"
   application_id = local.application_id
-  tags = merge({ "${local.application_tag_key}" = "ConfigEnvironment" },
+  tags = merge({ (local.application_tag_key) = "ConfigEnvironment" },
     var.custom_resource_tags
   )
 }
@@ -29,7 +29,7 @@ resource "aws_appconfig_deployment_strategy" "agent" {
   growth_type                    = "LINEAR"
   replicate_to                   = "NONE"
 
-  tags = merge({ "${local.application_tag_key}" = "ConfigStartegy" },
+  tags = merge({ (local.application_tag_key) = "ConfigStartegy" },
     var.custom_resource_tags
   )
 }
@@ -40,7 +40,7 @@ resource "aws_ssm_document" "appconfig_document_schema" {
   document_format = "JSON"
   content         = file("${path.module}/appconfig_schema.json")
 
-  tags = merge({ "${local.application_tag_key}" = "ConfigSchema" },
+  tags = merge({ (local.application_tag_key) = "ConfigSchema" },
     var.custom_resource_tags
   )
 }
@@ -88,7 +88,7 @@ resource "aws_appconfig_configuration_profile" "agent" {
   name               = "${var.service_name}Config-Profile-${local.application_id}"
   location_uri       = "ssm-document://${awscc_ssm_document.appconfig_document.name}"
   retrieval_role_arn = aws_iam_role.appconfig_agent_configuration_document.arn
-  tags = merge({ "${local.application_tag_key}" = "ConfigProfile" },
+  tags = merge({ (local.application_tag_key) = "ConfigProfile" },
     var.custom_resource_tags
   )
   depends_on = [time_sleep.wait_30_for_policy]
@@ -102,7 +102,7 @@ resource "aws_appconfig_deployment" "agent" {
   description              = "AppConfig Deployment for CloudStorageSec Agents"
   environment_id           = aws_appconfig_environment.agent.environment_id
 
-  tags = merge({ "${local.application_tag_key}" = "ConfigDeployment" },
+  tags = merge({ (local.application_tag_key) = "ConfigDeployment" },
     var.custom_resource_tags
   )
 }

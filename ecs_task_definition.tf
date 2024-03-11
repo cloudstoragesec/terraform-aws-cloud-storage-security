@@ -130,7 +130,7 @@ resource "aws_ecs_task_definition" "console" {
       }
     }
   ])
-  tags = merge({ "${local.application_tag_key}" = "ConsoleTaskDefinition" },
+  tags = merge({ (local.application_tag_key) = "ConsoleTaskDefinition" },
     var.custom_resource_tags
   )
 }
