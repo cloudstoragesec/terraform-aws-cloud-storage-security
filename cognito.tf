@@ -72,7 +72,7 @@ resource "aws_cognito_user_pool" "main" {
     }
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleUserPool" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleUserPool" },
     var.custom_resource_tags
   )
 }

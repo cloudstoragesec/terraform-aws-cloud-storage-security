@@ -1,6 +1,6 @@
 resource "aws_ecs_cluster" "main" {
   name = "${var.service_name}Cluster-${local.application_id}"
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleCluster" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleCluster" },
     var.custom_resource_tags
   )
 }
@@ -20,7 +20,7 @@ resource "aws_ecs_service" "main" {
     security_groups  = [aws_security_group.console[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleService" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleService" },
     var.custom_resource_tags
   )
   lifecycle {
@@ -53,7 +53,7 @@ resource "aws_ecs_service" "with_load_balancer" {
     security_groups  = [aws_security_group.console_with_load_balancer[0].id]
     assign_public_ip = var.console_auto_assign_public_ip
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleService" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleService" },
     var.custom_resource_tags
   )
 
@@ -80,7 +80,7 @@ resource "aws_lb_target_group" "main" {
   target_type          = "ip"
   vpc_id               = var.vpc
   deregistration_delay = 60
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleTargetGroup" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleTargetGroup" },
     var.custom_resource_tags
   )
 }
@@ -97,7 +97,7 @@ resource "aws_lb_listener" "main" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main[0].arn
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleListener" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleListener" },
     var.custom_resource_tags
   )
 
@@ -117,7 +117,7 @@ resource "aws_lb" "main" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer[0].id]
   subnets            = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "ConsoleLoadBalancer" },
+  tags = merge({ "${local.application_tag_key}" = "ConsoleLoadBalancer" },
     var.custom_resource_tags
   )
   lifecycle {

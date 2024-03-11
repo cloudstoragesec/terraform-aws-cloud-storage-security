@@ -25,7 +25,7 @@ resource "aws_security_group" "console" {
     description = "CloudStorageSec Console default egress to internet"
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
+  tags = merge({ "${local.application_tag_key}" = "SecurityGroup" },
     var.custom_resource_tags
   )
 }
@@ -58,7 +58,7 @@ resource "aws_security_group" "console_with_load_balancer" {
     description = "CloudStorageSec Console default egress to internet"
   }
 
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
+  tags = merge({ "${local.application_tag_key}" = "SecurityGroup" },
     var.custom_resource_tags
   )
 }
@@ -90,7 +90,7 @@ resource "aws_security_group" "load_balancer" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "CloudStorageSec Console default egress to internet"
   }
-  tags = merge({ (join("-", ["${var.service_name}", "${local.application_id}"])) = "SecurityGroup" },
+  tags = merge({ "${local.application_tag_key}" = "SecurityGroup" },
     var.custom_resource_tags
   )
 }
