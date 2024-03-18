@@ -35,7 +35,10 @@ variable "username" {
 }
 
 variable "buckets_to_protect" {
-  description = "Enter any pre-existing buckets that you would like to automatically enable event-based protection on. Bucket names must be separated by commas (e.g. bucket1,bucket2,bucket3). Protected buckets can be managed after deployment in the CSS Console."
+  description = <<EOF
+    Enter any pre-existing buckets that you would like to automatically enable event-based protection on.
+    Bucket names must be separated by commas (e.g. bucket1,bucket2,bucket3). Protected buckets can be managed after deployment in the CSS Console.
+  EOF
   type        = string
   default     = ""
 }
@@ -47,7 +50,10 @@ variable "configure_load_balancer" {
 }
 
 variable "existing_target_group_arn" {
-  description = "If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with. If configured, 'configure_load_balancer' must be 'true', and 'trusted_load_balancer_network' must be specified."
+  description = <<EOF
+    If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with. 
+    If configured, 'configure_load_balancer' must be 'true', and 'trusted_load_balancer_network' must be specified.
+  EOF
   type        = string
   default     = null
 }
@@ -59,19 +65,30 @@ variable "lb_cert_arn" {
 }
 
 variable "trusted_load_balancer_network" {
-  description = "If you are using your own load balancer or other appliance to forward traffic to the Console, enter the trusted IP address range (CIDR notation) that will be routing traffic to the Console. Leave blank if you are not supplying your own load balancer."
+  description = <<EOF
+    If you are using your own load balancer or other appliance to forward traffic to the Console, 
+    enter the trusted IP address range (CIDR notation) that will be routing traffic to the Console. 
+    Leave blank if you are not supplying your own load balancer.
+  EOF
   type        = string
   default     = ""
 }
 
 variable "lb_subnet_a_id" {
-  description = "A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic. ** Leave blank to use same subnet as Console. If specified, must be in same AZ as Console subnet. **"
+  description = <<EOF
+    A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic.
+    ** Leave blank to use same subnet as Console. If specified, must be in same AZ as Console subnet. **
+  EOF
   type        = string
   default     = null
 }
 
 variable "lb_subnet_b_id" {
-  description = "A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic. **Subnet B must be different from Subnet A and should be in a different Availability Zones. Leave blank to use same subnet as Console. If specified, must be in same AZ as Console subnet. **"
+  description = <<EOF
+    A subnet in your VPC in which the Load Balancer can be placed. Ensure this subnet allows outbound internet traffic.
+    **Subnet B must be different from Subnet A and should be in a different Availability Zones. Leave blank to use same subnet as Console.
+    If specified, must be in same AZ as Console subnet. **
+  EOF
   type        = string
   default     = null
 }
@@ -101,25 +118,43 @@ variable "enable_large_file_scanning" {
 }
 
 variable "large_file_disk_size_gb" {
-  description = "Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. This only applies when using the Sophos scanning engine with EC2 large file scanning enabled."
+  description = <<EOF
+    Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. 
+    This only applies when using the Sophos scanning engine with EC2 large file scanning enabled.
+  EOF
   type        = number
   default     = 2000
 }
 
 variable "agent_scanning_engine" {
-  description = "The scanning engine to use. ClamAV is included with no additional charges. Premium engines such as `Sophos` incurr an additional licensing charge per GB (see Marketplace listing for pricing) Valid values: `ClamAV`, `Sophos`"
+  description = <<EOF
+    The scanning engine to use. ClamAV is included with no additional charges.
+    Premium engines such as `Sophos` incurr an additional licensing charge per GB (see Marketplace listing for pricing) Valid values: `ClamAV`, `Sophos`
+  EOF
   type        = string
   default     = "ClamAV"
 }
 
 variable "multi_engine_scanning_mode" {
-  description = "Whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos`. When set to `All`, every file will be scanned by both engines. When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos`, and 2GB and smaller will be scanned with `ClamAV`. Valid values: `Disabled`, `All`, `LargeFiles`"
+  description = <<EOF
+    Whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos`.
+    When set to `All`, every file will be scanned by both engines. 
+    When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos`, and 2GB and smaller will be scanned with `ClamAV`.
+    Valid values: `Disabled`, `All`, `LargeFiles`
+  EOF
   type        = string
   default     = "Disabled"
 }
 
 variable "info_opt_out" {
-  description = "Would you like to opt-out from sending statistics to Cloud Storage Security? This is performed via an API call to an AWS Lambda in CSS' AWS Account. No sensitive information is ever sent to CSS. This option should only be set to false if you are deploying behind a load balancer, as it would prevent us from registering a friendly DNS address for your deployment. Without a DNS address, the only way to reach the console would be to get the IP address from ECS each time the console task is restarted. Selecting 'Yes' will cause custom DNS registration and trial eligibility checks to not work. Given this, you must use your own Load Balancer to opt-out. If you opt-out and still would like a trial, please contact support@cloudstoragesec.com."
+  description = <<EOF
+    Would you like to opt-out from sending statistics to Cloud Storage Security?
+    This is performed via an API call to an AWS Lambda in CSS' AWS Account. No sensitive information is ever sent to CSS.
+    This option should only be set to `false` if you are deploying behind a load balancer, as it would prevent us from registering a friendly DNS address for your deployment.
+    Without a DNS address, the only way to reach the console would be to get the IP address from ECS each time the console task is restarted.
+    Selecting `true` will cause custom DNS registration and trial eligibility checks to not work. Given this, you must use your own Load Balancer to opt-out.
+    If you opt-out and still would like a trial, please contact support@cloudstoragesec.com.
+  EOF
   type        = bool
   default     = false
 }
@@ -131,31 +166,49 @@ variable "custom_resource_tags" {
 }
 
 variable "ecr_account" {
-  description = "The AWS Account ID which contains the ECR repositories used for the CSS Console and Agent images. If customized, you must ensure that you have replicated the appropriate images to repositories in the specified account, and the repository names must be `cloudstoragesecurity/console` and `cloudstoragesecurity/agent`"
+  description = <<EOF
+    The AWS Account ID which contains the ECR repositories used for the CSS Console and Agent images.
+    If customized, you must ensure that you have replicated the appropriate images to repositories in the specified account, 
+    and the repository names must be `cloudstoragesecurity/console` and `cloudstoragesecurity/agent`
+  EOF
   type        = string
   default     = null
 }
 
 variable "dynamo_cmk_key_arn" {
-  description = "Optional ARN for the CMK that should be used for the AWS KMS encryption if the key is different from the default KMS-managed DynamoDB key. Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key."
+  description = <<EOF
+    Optional ARN for the CMK that should be used for the AWS KMS encryption if the key is different from the default KMS-managed DynamoDB key. 
+    Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
+  EOF
   type        = string
   default     = null
 }
 
 variable "sns_cmk_key_arn" {
-  description = "Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key."
+  description = <<EOF
+    Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic. 
+    Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
+  EOF
   type        = string
   default     = null
 }
 
 variable "console_auto_assign_public_ip" {
-  description = "Whether a public IP should be assigned to the console. If set to false, there will need to be a proxy, nat gateway, or other mechanism in place to allow the Console to reach AWS services. You may configure VPC Endpoints for most AWS services we utilize, but a few do not yet support VPC Endpoints. (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow access to the console.)"
+  description = <<EOF
+    Whether a public IP should be assigned to the console.
+    If set to false, there will need to be a proxy, nat gateway, or other mechanism in place to allow the Console to reach AWS services.
+    You may configure VPC Endpoints for most AWS services we utilize, but a few do not yet support VPC Endpoints. 
+    (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow access to the console.)
+  EOF
   type        = bool
   default     = true
 }
 
 variable "agent_auto_assign_public_ip" {
-  description = "Should public IPs be assigned to the Agents? (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow the agents to reach AWS services over the internet.)"
+  description = <<EOF
+    Should public IPs be assigned to the Agents? 
+    (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow the agents to reach AWS services over the internet.)
+  EOF
   type        = bool
   default     = true
 }
@@ -197,7 +250,11 @@ variable "event_bridge_role_name" {
 }
 
 variable "service_name" {
-  description = "A prefix to place on resources that this Terraform template creates. May be overriden if there is an organizational standard for resource name prefixes that needs to be followed. values: any string, but should be short to avoid possibly attempting to create resources with names that exceed the max allowed length"
+  description = <<EOF
+    A prefix to place on resources that this Terraform template creates.
+    May be overriden if there is an organizational standard for resource name prefixes that needs to be followed.
+    values: any string, but should be short to avoid possibly attempting to create resources with names that exceed the max allowed length
+  EOF
   type        = string
   default     = "CloudStorageSec"
 }

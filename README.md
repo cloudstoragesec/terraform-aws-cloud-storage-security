@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Terraform module facilitates the seamless setup and deployment of Cloud Storage Security (CSS) within an AWS environment as an alternative to the primary CloudFormation deployment method.
+This Terraform module facilitates the seamless setup and deployment of Cloud Storage Security (CSS) within an AWS environment as an alternative to the CloudFormation deployment method.
 
 ## Prerequisites
 Subscribe to AWS Marketplace Listing
@@ -27,13 +27,13 @@ module "cloud-storage-security" {
 ```
 Refer to the inputs/outputs tabs for additional customization options and their descriptions.
 
-Follow these steps to deploy the module:
+### Follow these steps to deploy the module:
 
-Module Initialization: Use Terraform to initialize the module.
-Configure Variables: Set the necessary variables for your deployment.
-Apply: Execute the Terraform plan and apply the deployment.
+* Module Initialization: Use Terraform to initialize the module.
+* Configure Variables: Set the necessary variables for your deployment.
+* Apply: Execute the Terraform plan and apply the deployment.
 
-Upon completion, the module provides outputs such as console_web_address and username. Refer to these outputs for accessing the deployed CSS Console.
+Upon completion, the module provides outputs such as `console_web_address` and `username`. Refer to these outputs for accessing the deployed CSS Console.
 ```hcl
 output "console_web_address" {
   value = module.cloud-storage-security.console_web_address
@@ -41,6 +41,18 @@ output "console_web_address" {
 output "username" {
   value = module.cloud-storage-security.username
 }
+Additionally the module provides the outputs for use in the linked account sub-module used to link an additional AWS account to the main Cloud Storage Security (CSS) deployment.
+
+## Solution Cleanup / Uninstall
+
+After the deployment, additional items may be created through console operations. 
+Before initiating the `terraform destroy` command, it is recommended to use the built-in application cleanup method to ensure the removal of all items created by the console. 
+Refer to the [Help Docs](https://help.cloudstoragesec.com/console-overview/monitoring/deployment-overview#solution-cleanup-uninstall) for detailed instructions on the cleanup process.
+
+**Note:** The AWS Terraform provider does not currently support deleting SSM schema documents as of this release. To address this, you may need to manually delete them by running the following AWS CLI command:
+```bash
+aws ssm delete-document --name CloudStorageSecConfig-Schema-application_id --force
 ```
+Where `application_id` is the unique ID that identifies the deployment and is provided as an output.
 
 For additional information and detailed help documentation, please visit the [Cloud Storage Security Help Docs](https://help.cloudstoragesec.com/) 
