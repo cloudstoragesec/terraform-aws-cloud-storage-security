@@ -41,6 +41,7 @@ output "console_web_address" {
 output "username" {
   value = module.cloud-storage-security.username
 }
+```
 Additionally the module provides the outputs for use in the linked account sub-module used to link an additional AWS account to the main Cloud Storage Security (CSS) deployment.
 
 ## Solution Cleanup / Uninstall
