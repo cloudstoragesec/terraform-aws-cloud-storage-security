@@ -82,11 +82,17 @@ resource "aws_iam_role" "console_task" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "ecs-tasks.amazonaws.com"
+          Service = [
+            "ecs.amazonaws.com",
+            "ecs-tasks.amazonaws.com"
+          ]
         }
       },
     ]
   })
+  managed_policy_arns = [
+    "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSInfrastructureRolePolicyForVolumes"
+  ]
   tags = merge({ (local.application_tag_key) = "ConsoleTaskRole" },
     var.custom_resource_tags
   )
@@ -123,6 +129,7 @@ resource "aws_iam_role_policy" "console_task" {
           "cloudwatch:GetMetricStatistics",
           "ec2:AcceptVpcPeeringConnection",
           "ec2:CreateVpcPeeringConnection",
+          "ec2:DescribeAvailabilityZones",
           "ec2:DescribeVpcPeeringConnections",
           "ec2:DescribeInternetGateways",
           "ec2:DescribeInstances",
