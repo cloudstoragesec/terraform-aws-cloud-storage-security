@@ -91,7 +91,7 @@ resource "aws_iam_role" "console_task" {
     ]
   })
   managed_policy_arns = [
-    "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSInfrastructureRolePolicyForVolumes"
+    local.is_gov ? null : "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSInfrastructureRolePolicyForVolumes"
   ]
   tags = merge({ (local.application_tag_key) = "ConsoleTaskRole" },
     var.custom_resource_tags
