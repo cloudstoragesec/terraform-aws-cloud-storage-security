@@ -18,6 +18,7 @@ Example of a minimal deploy using only required inputs:
 ```hcl
 module "cloud-storage-security" {
   source       = "cloudstoragesec/cloud-storage-security/aws"
+  version      = "" # Latest version of the module from Provision Instructions
   cidr         = "0.0.0.0/0" #The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)
   email        = "admin@example.com" #The email address to be used for the initial admin account created for the CSS Console
   subnet_a_id  = "subnet-aaa" #A subnet ID within the VPC that may be used for ECS tasks for this deployment
