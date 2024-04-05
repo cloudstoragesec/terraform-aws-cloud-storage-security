@@ -218,6 +218,7 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:elasticfilesystem:*:*:file-system",
           "arn:${data.aws_partition.current.partition}:elasticfilesystem:*:*:file-system/*",
           "arn:${data.aws_partition.current.partition}:servicequotas:*:*:ebs/L-D18FCD1D",
+          "arn:${data.aws_partition.current.partition}:servicequotas:*:*:ebs/L-7A658B76",
           "arn:${data.aws_partition.current.partition}:sns:*:*:*",
           "arn:${data.aws_partition.current.partition}:sqs:*:*:*"
         ]
