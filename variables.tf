@@ -100,19 +100,28 @@ variable "internal_lb" {
 }
 
 variable "min_running_agents" {
-  description = "Default minimum number of running scan agents per region"
+  description = <<EOF
+  Initial default minimum number of running scan agents per region
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
   type        = number
   default     = 1
 }
 
 variable "max_running_agents" {
-  description = "Default maximum number of running scan agents per region"
+  description = <<EOF
+  Default maximum number of running scan agents per region.
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
   type        = number
   default     = 12
 }
 
 variable "enable_large_file_scanning" {
-  description = "Set to true if you would like to have EC2 instances launched to scan files too large to be scanned by the normal agent"
+  description = <<EOF
+  Set to true if you would like to have EC2 instances launched to scan files too large to be scanned by the normal agent
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
   type        = bool
   default     = false
 }
@@ -121,6 +130,7 @@ variable "large_file_disk_size_gb" {
   description = <<EOF
     Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. 
     This only applies when using the Sophos scanning engine with EC2 large file scanning enabled.
+    This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
   EOF
   type        = number
   default     = 2000
@@ -128,8 +138,9 @@ variable "large_file_disk_size_gb" {
 
 variable "agent_scanning_engine" {
   description = <<EOF
-    The scanning engine to use. ClamAV is included with no additional charges.
-    Premium engines such as `Sophos` incurr an additional licensing charge per GB (see Marketplace listing for pricing) Valid values: `ClamAV`, `Sophos`
+    The initial scanning engine to use. ClamAV is included with no additional charges.
+    Premium engines such as `Sophos` incur an additional licensing charge per GB (see Marketplace listing for pricing) Valid values: `ClamAV`, `Sophos`
+    This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
   EOF
   type        = string
   default     = "ClamAV"
@@ -137,10 +148,11 @@ variable "agent_scanning_engine" {
 
 variable "multi_engine_scanning_mode" {
   description = <<EOF
-    Whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos`.
+    Initial setting for whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos`.
     When set to `All`, every file will be scanned by both engines. 
     When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos`, and 2GB and smaller will be scanned with `ClamAV`.
     Valid values: `Disabled`, `All`, `LargeFiles`
+    This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
   EOF
   type        = string
   default     = "Disabled"
@@ -232,13 +244,19 @@ variable "proxy_port" {
 }
 
 variable "eventbridge_notifications_enabled" {
-  description = "If true Proactive Notifications will also be sent to AWS EventBridge"
+  description = <<EOF
+  If true Proactive Notifications will also be sent to AWS EventBridge
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
   type        = bool
   default     = false
 }
 
 variable "eventbridge_notifications_bus_name" {
-  description = "Enter the EventBridge bus name to use for notifications, if desired to be one other than default."
+  description = <<EOF
+  Enter the EventBridge bus name to use for notifications, if desired to be one other than default.
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
   type        = string
   default     = "default"
 }
@@ -271,6 +289,11 @@ variable "quarantine_bucket_prefix" {
   default     = "cloudstoragesecquarantine"
 }
 
+variable "dashboard_reports_bucket_prefix" {
+  description = "Prefix for the Dashboard Reports bucket name"
+  type        = string
+  default     = "cloudstoragesecreports"
+}
 variable "api_request_scaling_policy_prefix" {
   description = "Prefix for the AutoScaling policy for the API Service."
   type        = string

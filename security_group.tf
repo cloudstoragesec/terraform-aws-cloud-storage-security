@@ -1,5 +1,6 @@
 resource "aws_security_group" "console" {
   count       = var.configure_load_balancer ? 0 : 1
+  name        = "${var.service_name}ConsoleSecurityGroup-${local.application_id}"
   description = "${var.service_name}ConsoleSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
@@ -32,7 +33,8 @@ resource "aws_security_group" "console" {
 
 resource "aws_security_group" "console_with_load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
-  description = "${var.service_name}LBSecurityGroup-${local.application_id}"
+  name        = "${var.service_name}ContainerSecurityGroupWithLB-${local.application_id}"
+  description = "${var.service_name}ContainerSecurityGroupWithLB-${local.application_id}"
   vpc_id      = var.vpc
 
   ingress {
@@ -65,7 +67,8 @@ resource "aws_security_group" "console_with_load_balancer" {
 
 resource "aws_security_group" "load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
-  description = "${var.service_name}LBSecurityGroup-${local.application_id}"
+  name = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"
+  description = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
   ingress {

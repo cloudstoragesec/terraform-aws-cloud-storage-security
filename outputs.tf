@@ -14,6 +14,11 @@ output "proactive_notifications_topic_arn" {
   value       = aws_sns_topic.notifications.arn
 }
 
+output "lb_arn" {
+  description = "ARN for the console Load Balancer if LB is used"
+  value = var.configure_load_balancer && var.existing_target_group_arn == null ? aws_lb.main[0].arn : null
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # These outputs are provided for convenience to be used in the linked account module.
 # ---------------------------------------------------------------------------------------------------------------------
