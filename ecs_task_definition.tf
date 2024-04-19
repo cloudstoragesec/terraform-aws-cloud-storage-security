@@ -97,7 +97,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "DEPLOYMENT_TYPE", "value" : "terraform" },
         { "name" : "BUCKETS_TO_PROTECT", "value" : "${var.buckets_to_protect}" },
         { "name" : "LOG_LEVEL", "value" : "Info" },
-        { "name" : "DASHBOARD_REPORTS_BUCKET_NAME", "value": aws_s3_bucket.dashboard_reports_bucket.id},
+        { "name" : "DASHBOARD_REPORTS_BUCKET_NAME", "value" : aws_s3_bucket.dashboard_reports_bucket.id },
         { "name" : "RETRY_COUNT", "value" : "5" },
         { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
       ]

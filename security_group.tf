@@ -67,7 +67,7 @@ resource "aws_security_group" "console_with_load_balancer" {
 
 resource "aws_security_group" "load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
-  name = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"
+  name        = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"
   description = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"
   vpc_id      = var.vpc
 
