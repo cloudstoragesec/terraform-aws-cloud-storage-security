@@ -29,6 +29,11 @@ resource "aws_security_group" "console" {
   tags = merge({ (local.application_tag_key) = "SecurityGroup" },
     var.custom_resource_tags
   )
+  lifecycle {
+    ignore_changes = [
+      name
+    ]
+  }
 }
 
 resource "aws_security_group" "console_with_load_balancer" {
@@ -63,6 +68,11 @@ resource "aws_security_group" "console_with_load_balancer" {
   tags = merge({ (local.application_tag_key) = "SecurityGroup" },
     var.custom_resource_tags
   )
+  lifecycle {
+    ignore_changes = [
+      name
+    ]
+  }
 }
 
 resource "aws_security_group" "load_balancer" {
