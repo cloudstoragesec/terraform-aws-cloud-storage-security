@@ -21,6 +21,29 @@ resource "aws_dynamodb_table" "buckets" {
   )
 }
 
+resource "aws_dynamodb_table" "dashboard_reports" {
+  name         = "${local.application_id}.Reports"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "Id"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+
+  attribute {
+    name = "Id"
+    type = "S"
+  }
+
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
+
 resource "aws_dynamodb_table" "efs_volumes" {
   name         = "${local.application_id}.EfsVolumes"
   billing_mode = "PAY_PER_REQUEST"

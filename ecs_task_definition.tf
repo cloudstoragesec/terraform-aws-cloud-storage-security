@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "CONSOLE_VPC", "value" : var.vpc },
         { "name" : "CONSOLE_SUBNET", "value" : "${var.subnet_a_id},${var.subnet_b_id}" },
         { "name" : "PARAMETER_STORE_NAME_PREFIX", "value" : "/${var.parameter_prefix}-${local.application_id}" },
-        { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${aws_security_group.console_with_load_balancer[0].id}" : "${aws_security_group.console[0].id}" },
+        { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${aws_security_group.load_balancer[0].id}" : "${aws_security_group.console[0].id}" },
         { "name" : "AGENT_AUTO_ASSIGN_PUBLIC_IP", "value" : "${var.agent_auto_assign_public_ip}" ? "ENABLED" : "DISABLED" },
         { "name" : "BYOL_MODE", "value" : "False" },
         { "name" : "BLANKET_KMS_ACCESS", "value" : "${tostring(var.allow_access_to_all_kms_keys)}" },
@@ -97,6 +97,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "DEPLOYMENT_TYPE", "value" : "terraform" },
         { "name" : "BUCKETS_TO_PROTECT", "value" : "${var.buckets_to_protect}" },
         { "name" : "LOG_LEVEL", "value" : "Info" },
+        { "name" : "DASHBOARD_REPORTS_BUCKET_NAME", "value" : aws_s3_bucket.dashboard_reports_bucket.id },
         { "name" : "RETRY_COUNT", "value" : "5" },
         { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
       ]

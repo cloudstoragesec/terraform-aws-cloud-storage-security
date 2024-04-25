@@ -229,12 +229,18 @@ resource "aws_ssm_parameter" "agent_scanning_engine" {
   name  = "/${local.ssm_path_prefix}/Config/AgentScanningEngine"
   type  = "String"
   value = var.agent_scanning_engine
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ssm_parameter" "multi_engine_scanning_mode" {
   name  = "/${local.ssm_path_prefix}/Config/MultiEngineScanningMode"
   type  = "String"
   value = var.multi_engine_scanning_mode
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ssm_parameter" "ecr_account_id" {
