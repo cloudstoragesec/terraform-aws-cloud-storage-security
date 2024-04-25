@@ -100,6 +100,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "DASHBOARD_REPORTS_BUCKET_NAME", "value" : aws_s3_bucket.dashboard_reports_bucket.id },
         { "name" : "RETRY_COUNT", "value" : "5" },
         { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
+        { "name" : "ENABLED_REGIONS", "value" : "" },
       ]
       essential = true
       portMappings = [
