@@ -3,7 +3,7 @@ variable "vpc" {
 }
 
 variable "cidr" {
-  type        = list[string]
+  type        = list(string)
   description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
   default     = ["0.0.0.0/0"]
 }
