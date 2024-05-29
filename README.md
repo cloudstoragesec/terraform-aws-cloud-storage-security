@@ -45,6 +45,17 @@ output "username" {
 ```
 Additionally the module provides the outputs for use in the linked account sub-module used to link an additional AWS account to the main Cloud Storage Security (CSS) deployment.
 
+## Warning
+This module uses `aws` and `awscc` providers, and both providers must be set to the same region. Below is an example configuration:
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "awscc" {
+  region = "us-east-1"
+}
+```
 ## Solution Cleanup / Uninstall
 
 After the deployment, additional items may be created through console operations. 
