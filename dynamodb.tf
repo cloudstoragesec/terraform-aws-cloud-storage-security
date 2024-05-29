@@ -22,15 +22,21 @@ resource "aws_dynamodb_table" "buckets" {
 }
 
 resource "aws_dynamodb_table" "dashboard_reports" {
-  name         = "${local.application_id}.Reports"
+  name         = "${local.application_id}.DashboardReports"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
+  hash_key     = "PK"
+  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
 
   attribute {
-    name = "Id"
+    name = "PK"
+    type = "S"
+  }
+
+  attribute {
+    name = "SK"
     type = "S"
   }
 

@@ -123,13 +123,13 @@ resource "aws_lb_listener" "main" {
 }
 
 resource "aws_lb" "main" {
-  count              = var.configure_load_balancer && var.existing_target_group_arn == null ? 1 : 0
-  name               = "${var.service_name}LB-${local.application_id}"
-  idle_timeout       = 60
-  internal           = var.internal_lb
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.load_balancer[0].id]
-  subnets            = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
+  count                      = var.configure_load_balancer && var.existing_target_group_arn == null ? 1 : 0
+  name                       = "${var.service_name}LB-${local.application_id}"
+  idle_timeout               = 60
+  internal                   = var.internal_lb
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.load_balancer[0].id]
+  subnets                    = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
   drop_invalid_header_fields = true
   tags = merge({ (local.application_tag_key) = "ConsoleLoadBalancer" },
     var.custom_resource_tags

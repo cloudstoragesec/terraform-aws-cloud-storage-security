@@ -4,7 +4,7 @@ variable "vpc" {
 
 variable "cidr" {
   type        = list(string)
-  description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
+  description = "The CIDR blocks which are allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
 }
 
 variable "subnet_a_id" {
@@ -326,10 +326,10 @@ variable "quarantine_bucket_prefix" {
   default     = "cloudstoragesecquarantine"
 }
 
-variable "dashboard_reports_bucket_prefix" {
-  description = "Prefix for the Dashboard Reports bucket name"
+variable "application_bucket_prefix" {
+  description = "Prefix for the main application bucket name"
   type        = string
-  default     = "cloudstoragesecreports"
+  default     = "cloudstoragesec"
 }
 
 variable "api_request_scaling_policy_prefix" {
