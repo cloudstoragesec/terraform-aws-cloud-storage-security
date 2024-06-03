@@ -19,7 +19,7 @@ Example of a minimal deploy using only required inputs:
 module "cloud-storage-security" {
   source       = "cloudstoragesec/cloud-storage-security/aws"
   version      = "" # Latest version of the module from Provision Instructions
-  cidr         = "0.0.0.0/0" #The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)
+  cidr         = ["1.2.3.4/32", "4.5.6.7/24"] # Comma separated list of CIDR blocks that are allowed access to the CSS Console (default value is ["0.0.0.0/0"] for open access)
   email        = "admin@example.com" #The email address to be used for the initial admin account created for the CSS Console
   subnet_a_id  = "subnet-aaa" #A subnet ID within the VPC that may be used for ECS tasks for this deployment
   subnet_b_id  = "subnet-bbb" #A second subnet ID within the VPC that may be used for ECS tasks for this deployment. We recommend choosing subnets in different availability zones

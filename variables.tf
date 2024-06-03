@@ -3,6 +3,7 @@ variable "vpc" {
 }
 
 variable "cidr" {
+  type        = list(string)
   description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
 }
 
@@ -306,3 +307,4 @@ variable "aws_bedrock_enabled" {
   type        = bool
   default     = false
 }
+
