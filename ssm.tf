@@ -303,6 +303,42 @@ resource "aws_ssm_parameter" "cloud_trail_lake_channel_arn" {
   }
 }
 
+resource "aws_ssm_parameter" "guard_duty_s3_integration_enabled_regions" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3IntegrationEnabledRegions"
+  type  = "String"
+  value = var.guard_duty_s3_integration_enabled_regions
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "guard_duty_s3_malware_result_types" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3MalwareResultTypes"
+  type  = "String"
+  value = var.guard_duty_s3_malware_result_types
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "guard_duty_s3_malware_additional_scanning" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3MalwareAdditionalScanning"
+  type  = "String"
+  value = var.guard_duty_s3_malware_additional_scanning
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "retro_scan_on_detected_infection" {
+  name  = "/${local.ssm_path_prefix}/Config/RetroScanOnDetectedInfection"
+  type  = "String"
+  value = var.retro_scan_on_detected_infection
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsEnabled"
   type  = "String"
