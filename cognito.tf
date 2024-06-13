@@ -116,6 +116,11 @@ resource "aws_cognito_user" "admin" {
     email          = "${var.email}"
     email_verified = true
   }
+  lifecycle {
+    ignore_changes = [
+      attributes
+    ]
+  }
 }
 
 resource "aws_cognito_user_in_group" "admin" {
