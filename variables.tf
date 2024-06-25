@@ -244,6 +244,42 @@ variable "proxy_port" {
   default     = null
 }
 
+variable "guard_duty_s3_integration_enabled_regions" {
+  description = <<EOF
+  If you are utilizing GuardDuty S3 Malware scanning, you may enable an integration with CSS. To enable, specify the regions to enable, pipe-delimited. Example: "us-east-1|us-west-2|ca-central-1|eu-west-1"
+  EOF
+  type        = string
+  default     = "DISABLED"
+}
+
+variable "guard_duty_s3_malware_result_types" {
+  description = <<EOF
+  Choose the GuardDuty S3 Malware result types that should be processed.
+  Note: Only applicable if `guard_duty_s3_integration_enabled_regions` is not `DISABLED`
+  Valid Values: "All Scan Results", "Infected Only"
+  EOF
+  type        = string
+  default     = "All Scan Results"
+}
+
+variable "guard_duty_s3_malware_additional_scanning" {
+  description = <<EOF
+  Choose whether or not you would like perform an additional scan on GuardDuty S3 Malware findings with the CSS engines configured.
+  Note: Only applicable if `guard_duty_s3_integration_enabled_regions` is not `DISABLED`
+  EOF
+  type        = bool
+  default     = true
+}
+
+variable "retro_scan_on_detected_infection" {
+  description = <<EOF
+  Choose if you would like CSS to perform a scan on all unscanned files in a bucket when we identify malware in that bucket.
+  This is a global setting and applies for any method of scanning files in S3 that we provide.
+  EOF
+  type        = bool
+  default     = false
+}
+
 variable "eventbridge_notifications_enabled" {
   description = <<EOF
   If true Proactive Notifications will also be sent to AWS EventBridge
@@ -307,4 +343,3 @@ variable "aws_bedrock_enabled" {
   type        = bool
   default     = false
 }
-
