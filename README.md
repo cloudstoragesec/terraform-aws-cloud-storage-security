@@ -51,6 +51,7 @@ This module uses `aws` and `awscc` providers, and both providers must be set to 
 provider "aws" {
   region = "us-east-1"
 }
+
 provider "awscc" {
   region = "us-east-1"
 }
