@@ -19,6 +19,10 @@
       "type": "boolean",
       "description": "Indicates whether tags should be added to the scanned objects."
     },
+    "classificationCustomRulesLastUpdated": {
+      "type": "string",
+      "description": "Last time a Classification Custom Rule was updated."
+    },
     "scanTagsExcluded": {
       "type": "array",
       "description": "Scan tags to not be added to scanned objects",

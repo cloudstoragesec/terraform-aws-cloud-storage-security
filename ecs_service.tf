@@ -130,6 +130,7 @@ resource "aws_lb" "main" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer[0].id]
   subnets            = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
+  drop_invalid_header_fields = true
   tags = merge({ (local.application_tag_key) = "ConsoleLoadBalancer" },
     var.custom_resource_tags
   )

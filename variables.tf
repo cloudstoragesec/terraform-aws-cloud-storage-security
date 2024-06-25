@@ -3,6 +3,7 @@ variable "vpc" {
 }
 
 variable "cidr" {
+  type        = list(string)
   description = "The CIDR block which is allowed access to the CSS Console (e.g. 0.0.0.0/0 for open access)"
 }
 
@@ -330,8 +331,15 @@ variable "dashboard_reports_bucket_prefix" {
   type        = string
   default     = "cloudstoragesecreports"
 }
+
 variable "api_request_scaling_policy_prefix" {
   description = "Prefix for the AutoScaling policy for the API Service."
   type        = string
   default     = "ApiServiceRequestScaling"
+}
+
+variable "aws_bedrock_enabled" {
+  description = "Set to true if you would like to use Aws Bedrock features"
+  type        = bool
+  default     = false
 }
