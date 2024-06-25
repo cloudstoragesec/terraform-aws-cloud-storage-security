@@ -122,6 +122,7 @@ resource "aws_iam_role_policy" "console_task" {
           "acm:RequestCertificate",
           "application-autoscaling:*ScalableTarget*",
           "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:TagResource",
           "aws-marketplace:MeterUsage",
           "cloudformation:GetTemplateSummary",
           "cloudwatch:GetMetricStatistics",
