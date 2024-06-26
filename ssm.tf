@@ -229,12 +229,18 @@ resource "aws_ssm_parameter" "agent_scanning_engine" {
   name  = "/${local.ssm_path_prefix}/Config/AgentScanningEngine"
   type  = "String"
   value = var.agent_scanning_engine
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ssm_parameter" "multi_engine_scanning_mode" {
   name  = "/${local.ssm_path_prefix}/Config/MultiEngineScanningMode"
   type  = "String"
   value = var.multi_engine_scanning_mode
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_ssm_parameter" "ecr_account_id" {
@@ -292,6 +298,42 @@ resource "aws_ssm_parameter" "cloud_trail_lake_channel_arn" {
   name  = "/${local.ssm_path_prefix}/Config/CloudTrailLakeArn"
   type  = "String"
   value = "unknown"
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "guard_duty_s3_integration_enabled_regions" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3IntegrationEnabledRegions"
+  type  = "String"
+  value = var.guard_duty_s3_integration_enabled_regions
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "guard_duty_s3_malware_result_types" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3MalwareResultTypes"
+  type  = "String"
+  value = var.guard_duty_s3_malware_result_types
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "guard_duty_s3_malware_additional_scanning" {
+  name  = "/${local.ssm_path_prefix}/Config/GuardDutyS3MalwareAdditionalScanning"
+  type  = "String"
+  value = var.guard_duty_s3_malware_additional_scanning
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "retro_scan_on_detected_infection" {
+  name  = "/${local.ssm_path_prefix}/Config/RetroScanOnDetectedInfection"
+  type  = "String"
+  value = var.retro_scan_on_detected_infection
   lifecycle {
     ignore_changes = [value]
   }

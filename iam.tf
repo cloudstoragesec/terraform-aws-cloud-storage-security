@@ -122,6 +122,7 @@ resource "aws_iam_role_policy" "console_task" {
           "acm:RequestCertificate",
           "application-autoscaling:*ScalableTarget*",
           "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:TagResource",
           "aws-marketplace:MeterUsage",
           "cloudformation:GetTemplateSummary",
           "cloudwatch:GetMetricStatistics",
@@ -176,6 +177,8 @@ resource "aws_iam_role_policy" "console_task" {
           "logs:GetQueryResults",
           "logs:PutLogEvents",
           "logs:*Query",
+          "logs:ListTagsForResource",
+          "logs:TagResource",
           "s3:CreateBucket",
           "s3:GetBucket*",
           "s3:Get*Configuration",
@@ -511,6 +514,32 @@ resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent" {
   count      = (local.use_dynamo_cmk || local.use_sns_cmk) ? 1 : 0
   role       = aws_iam_role.agent_task.name
   policy_arn = aws_iam_policy.custom_CMK[0].arn
+}
+
+resource "aws_iam_policy" "aws_bedrock" {
+  count = var.aws_bedrock_enabled ? 1 : 0
+  name = "${var.service_name}ConsolePolicy-${local.application_id}-AwsBedrock"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "bedrock:InvokeModel",
+          "bedrock:GetFoundationModel",
+          "bedrock:ListFoundationModels"
+        ]
+        Effect   = "Allow"
+        Sid      = "Bedrock"
+        Resource = "arn:aws:bedrock:*::foundation-model/*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "aws_bedrock_console" {
+  count = var.aws_bedrock_enabled ? 1 : 0
+  role       = aws_iam_role.console_task.name
+  policy_arn = aws_iam_policy.aws_bedrock[0].arn
 }
 
 resource "aws_iam_role" "agent_task" {
