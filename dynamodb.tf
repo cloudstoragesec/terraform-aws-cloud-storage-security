@@ -1080,3 +1080,23 @@ resource "aws_dynamodb_table" "job_networking" {
     var.custom_resource_tags
   )
 }
+
+resource "aws_dynamodb_table" "classification_custom_rules" {
+  name         = "${local.application_id}.ClassificationCustomRules"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "Id"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+  attribute {
+    name = "Id"
+    type = "S"
+  }
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
