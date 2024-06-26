@@ -45,10 +45,6 @@
       "uniqueItems": true,
       "additionalProperties": false
     },
-    "classificationCustomRulesLastUpdated": {
-      "type": "string",
-      "description": "Last time a Classification Custom Rule was updated."
-    },
     "avEventProtectedBuckets": {
       "type": "array",
       "items": {
