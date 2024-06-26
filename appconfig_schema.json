@@ -12,8 +12,7 @@
     "scanTaggingEnabled",
     "scanTagsExcluded",
     "classificationTaggingEnabled",
-    "classificationTagsExcluded",
-    "classificationCustomRulesLastUpdated"
+    "classificationTagsExcluded"
   ],
   "properties": {
     "scanTaggingEnabled": {
