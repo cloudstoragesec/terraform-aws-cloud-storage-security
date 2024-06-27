@@ -323,8 +323,8 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:events:*:*:event-bus/${var.eventbridge_notifications_bus_name}",
           "arn:${data.aws_partition.current.partition}:events:*:*:rule/*",
           "arn:${data.aws_partition.current.partition}:iam::*:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
-          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}-*",
-          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}-*/*",
+          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}*",
+          "arn:${data.aws_partition.current.partition}:s3:::*${local.application_id}*/*",
           "arn:${data.aws_partition.current.partition}:sns:*:*:*${local.application_id}",
           "arn:${data.aws_partition.current.partition}:sqs:*:*:*${local.application_id}*",
           "arn:${data.aws_partition.current.partition}:ssm:*:*:parameter/aws/service/ecs/optimized-ami/amazon-linux*/recommended/image_id",
@@ -518,7 +518,7 @@ resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent" {
 
 resource "aws_iam_policy" "aws_bedrock" {
   count = var.aws_bedrock_enabled ? 1 : 0
-  name = "${var.service_name}ConsolePolicy-${local.application_id}-AwsBedrock"
+  name  = "${var.service_name}ConsolePolicy-${local.application_id}-AwsBedrock"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -537,7 +537,7 @@ resource "aws_iam_policy" "aws_bedrock" {
 }
 
 resource "aws_iam_role_policy_attachment" "aws_bedrock_console" {
-  count = var.aws_bedrock_enabled ? 1 : 0
+  count      = var.aws_bedrock_enabled ? 1 : 0
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.aws_bedrock[0].arn
 }
