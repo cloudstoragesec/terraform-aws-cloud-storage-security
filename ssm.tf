@@ -356,3 +356,12 @@ resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "set_log_group_retention_policy" {
+  name  = "/${local.ssm_path_prefix}/Config/SetLogGroupRetentionPolicy"
+  type  = "String"
+  value = var.set_log_group_retention_policy
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
