@@ -343,3 +343,23 @@ variable "aws_bedrock_enabled" {
   type        = bool
   default     = false
 }
+
+variable "product_mode" {
+  description = "Set to true if you would like to use Aws Bedrock features"
+  type        = string
+  default     = "AV"
+  validation {
+    condition     = contains(["AV", "DC", "Both"], var.product_mode)
+    error_message = "product_type must be one of 'AV', 'DC', 'Both'."
+  }
+}
+
+variable "product_listing" {
+  description = "Set to true if you would like to use Aws Bedrock features"
+  type        = string
+  default     = "AV"
+  validation {
+    condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi"], var.product_listing)
+    error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi'."
+  }
+}

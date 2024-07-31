@@ -356,3 +356,12 @@ resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "product_isting" {
+  name  = "/${local.ssm_path_prefix}/Config/ProductListing"
+  type  = "String"
+  value = var.product_listing
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
