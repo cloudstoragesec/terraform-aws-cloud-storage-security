@@ -12,8 +12,6 @@ locals {
   aws_region              = data.aws_region.current.name
   is_gov                  = data.aws_partition.current.partition == "aws-us-gov"
   console_url             = "${var.configure_load_balancer && var.existing_target_group_arn == null}" ? "https://${aws_lb.main[0].dns_name}" : "https://${local.account_id}-${local.application_id}.cloudstoragesecapp.com"
-  product_mode            = "AV"
-  is_antivirus            = local.product_mode == "AV"
   use_proxy               = var.proxy_host != null
   create_custom_event_bus = var.eventbridge_notifications_enabled && var.eventbridge_notifications_bus_name != "default"
   use_dynamo_cmk          = var.dynamo_cmk_key_arn != null
@@ -31,4 +29,28 @@ locals {
   cross_account_policy_name = "${var.service_name}RemotePolicy-${local.application_id}"
   ssm_path_prefix           = "${var.parameter_prefix}-${local.application_id}"
   application_bucket_name   = "${var.application_bucket_prefix}-${local.application_id}"
+  product_name = lookup(
+    {
+      "AV"    = "Antivirus"
+      "DC"    = "Data Classification"
+      "S3"    = "Malware protection for Amazon S3"
+      "MFT"   = "Antivirus for Managed File Transfers"
+      "DLP"   = "Data Loss Prevention (DLP) for Amazon S3 & EC2"
+      "EFS"   = "Malware protection for EFS"
+      "GenAi" = "GenAI Secure Malware protection & Data Loss Prevention (DLP)"
+    },
+    var.product_listing,
+    "Antivirus"
+  )
+  product_mode = lookup(
+    {
+      "S3"    = "Both"
+      "MFT"   = "Both"
+      "DLP"   = "Both"
+      "EFS"   = "Both"
+      "GenAi" = "Both"
+    },
+    var.product_listing,
+    var.product_mode
+  )
 }
