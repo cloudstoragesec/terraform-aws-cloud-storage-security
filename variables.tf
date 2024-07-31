@@ -343,3 +343,9 @@ variable "aws_bedrock_enabled" {
   type        = bool
   default     = false
 }
+
+variable "set_log_group_retention_policy" {
+  description = "Whether we should set a retention policy on CSS created log groups. AWS Landing Zone Accelerator environments must set this to false."
+  type        = bool
+  default     = true
+}

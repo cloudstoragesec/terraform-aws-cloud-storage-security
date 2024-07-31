@@ -3,7 +3,7 @@ resource "aws_cloudwatch_log_group" "main" {
   tags = merge({ (local.application_tag_key) = "ConsoleTargetGroup" },
     var.custom_resource_tags
   )
-  retention_in_days = 7
+  retention_in_days = var.set_log_group_retention_policy ? 7 : null
 }
 
 resource "aws_cloudwatch_metric_alarm" "health_check_console" {
