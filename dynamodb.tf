@@ -774,20 +774,23 @@ resource "aws_dynamodb_table" "classification_results" {
     name = "Date"
     type = "S"
   }
-
+  attribute {
+    name = "DateTime"
+    type = "S"
+  }
   attribute {
     name = "Guid"
     type = "S"
   }
   attribute {
-    name = "AccountId"
+    name = "AccountIdResultType"
     type = "S"
   }
 
   global_secondary_index {
-    name            = "AccountIdAndGuid"
-    hash_key        = "AccountId"
-    range_key       = "Guid"
+    name            = "AccountIdResultTypeAndDateTime"
+    hash_key        = "AccountIdResultType"
+    range_key       = "DateTime"
     projection_type = "ALL"
   }
 
