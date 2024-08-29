@@ -173,7 +173,7 @@ variable "info_opt_out" {
 }
 
 variable "custom_resource_tags" {
-  description = "Map of custom tags to apply to resources. Example: {\"CustomTag_A\" = \"Value A\"\"CustomTag_B\" = \"Value B\"}"
+  description = "Map of custom tags to apply to resources. Example: {\"CustomTag_A\" = \"Value A\",\"CustomTag_B\" = \"Value B\"}"
   type        = map(string)
   default     = {}
 }
