@@ -638,6 +638,8 @@ resource "aws_iam_role_policy" "agent_task" {
           "securityhub:BatchImportFindings",
           "sns:ConfirmSubscription",
           "sns:Publish",
+          "sns:GetSubscriptionAttributes",
+          "sns:ListSubscriptionsByTopic",
           "sqs:*Message",
           "sqs:GetQueueAttributes",
           "ssm:GetDocument",
