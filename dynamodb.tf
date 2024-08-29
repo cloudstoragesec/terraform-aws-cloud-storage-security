@@ -149,6 +149,18 @@ resource "aws_dynamodb_table" "linked_accounts" {
     type = "S"
   }
 
+  attribute {
+    name = "CloudProvider"
+    type = "N"
+  }
+
+  global_secondary_index {
+    name            = "CloudProvider"
+    hash_key        = "CloudProvider"
+    range_key       = "AccountId"
+    projection_type = "ALL"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
@@ -1071,6 +1083,59 @@ resource "aws_dynamodb_table" "job_networking" {
   attribute {
     name = "SK"
     type = "S"
+  }
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
+
+resource "aws_dynamodb_table" "azure" {
+  name         = "${local.application_id}.Azure"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "PK"
+  range_key    = "SK"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+  attribute {
+    name = "PK"
+    type = "S"
+  }
+  attribute {
+    name = "SK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI1PK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI1SK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI2PK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI2SK"
+    type = "S"
+  }
+  global_secondary_index {
+    name            = "GSI1"
+    hash_key        = "GSI1PK"
+    range_key       = "GSI1SK"
+    projection_type = "ALL"
+  }
+  global_secondary_index {
+    name            = "GSI2"
+    hash_key        = "GSI2PK"
+    range_key       = "GSI2SK"
+    projection_type = "ALL"
   }
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
