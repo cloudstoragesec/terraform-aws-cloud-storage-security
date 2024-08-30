@@ -171,6 +171,12 @@ resource "aws_cognito_user_group" "api" {
   description  = "Accounts with API level access and Managed by Terraform"
 }
 
+resource "aws_cognito_user_group" "readonly" {
+  name         = "ReadOnly"
+  user_pool_id = aws_cognito_user_pool.main.id
+  description  = "Accounts with Read Only level access and Managed by Terraform"
+}
+
 resource "aws_cognito_user_group" "primary" {
   name         = "Primary"
   user_pool_id = aws_cognito_user_pool.main.id
