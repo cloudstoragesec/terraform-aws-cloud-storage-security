@@ -292,6 +292,7 @@ resource "aws_iam_role_policy" "console_task" {
           "secretsmanager:DescribeSecret",
           "secretsmanager:GetSecretValue",
           "secretsmanager:PutSecretValue",
+          "secretsmanager:RestoreSecret",
           "secretsmanager:TagResource",
           "sns:AddPermission",
           "sns:*Topic",
