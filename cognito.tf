@@ -2,7 +2,7 @@ resource "aws_cognito_user_pool" "main" {
   admin_create_user_config {
     allow_admin_create_user_only = true
     invite_message_template {
-      email_subject = "${local.is_antivirus ? "Antivirus" : "Data Classification"} for Amazon S3 - Console Account Information"
+      email_subject = "${local.product_name} - Console Account Information"
       email_message = <<-EOT
       <html>
       <body style="font-family: Arial, sans-serif;">

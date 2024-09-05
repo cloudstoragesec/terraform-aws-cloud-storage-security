@@ -365,3 +365,12 @@ resource "aws_ssm_parameter" "set_log_group_retention_policy" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "product_isting" {
+  name  = "/${local.ssm_path_prefix}/Config/ProductListing"
+  type  = "String"
+  value = var.product_listing
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
