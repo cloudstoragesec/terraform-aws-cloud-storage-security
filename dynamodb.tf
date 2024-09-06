@@ -795,6 +795,10 @@ resource "aws_dynamodb_table" "classification_results" {
     type = "S"
   }
   attribute {
+    name = "AccountId"
+    type = "S"
+  }
+  attribute {
     name = "AccountIdResultType"
     type = "S"
   }
@@ -803,6 +807,13 @@ resource "aws_dynamodb_table" "classification_results" {
     name            = "AccountIdResultTypeAndDateTime"
     hash_key        = "AccountIdResultType"
     range_key       = "DateTime"
+    projection_type = "ALL"
+  }
+
+  global_secondary_index {
+    name            = "AccountIdAndGuid"
+    hash_key        = "AccountId"
+    range_key       = "Guid"
     projection_type = "ALL"
   }
 
