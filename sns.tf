@@ -14,6 +14,12 @@ resource "aws_sns_topic_policy" "notifications_topic" {
 }
 
 locals {
+  # Module consumers cannot define `aws_iam_policy_document` data sources with
+  # statement resource attributes that target the 'Notifications' SNS topic ARN without
+  # encountering a circular dependency error.
+  # Instead, users can omit the 'Reousrces' attribute from their statements and the module will
+  # process `var.sns_topic_policy_override_policy_documents` and add/override the `Resource` attribute
+  # of each statement in each document.
   sns_notifications_overrides = [
     for doc in var.sns_topic_policy_override_policy_documents :
     jsonencode(merge(
