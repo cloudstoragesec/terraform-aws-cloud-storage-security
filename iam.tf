@@ -531,7 +531,9 @@ resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent" {
 }
 
 resource "aws_iam_policy" "aws_bedrock" {
-  name  = "${var.service_name}ConsolePolicy-${local.application_id}-AwsBedrock"
+  count = var.aws_bedrock_enabled ? 1 : 0
+
+  name = "${var.service_name}ConsolePolicy-${local.application_id}-AwsBedrock"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -550,6 +552,8 @@ resource "aws_iam_policy" "aws_bedrock" {
 }
 
 resource "aws_iam_role_policy_attachment" "aws_bedrock_console" {
+  count = var.aws_bedrock_enabled ? 1 : 0
+
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.aws_bedrock[0].arn
 }
