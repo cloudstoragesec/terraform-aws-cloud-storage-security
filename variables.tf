@@ -52,7 +52,7 @@ variable "configure_load_balancer" {
 
 variable "existing_target_group_arn" {
   description = <<EOF
-    If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with. 
+    If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with.
     If configured, 'configure_load_balancer' must be 'true', and 'trusted_load_balancer_network' must be specified.
   EOF
   type        = string
@@ -67,8 +67,8 @@ variable "lb_cert_arn" {
 
 variable "trusted_load_balancer_network" {
   description = <<EOF
-    If you are using your own load balancer or other appliance to forward traffic to the Console, 
-    enter the trusted IP address range (CIDR notation) that will be routing traffic to the Console. 
+    If you are using your own load balancer or other appliance to forward traffic to the Console,
+    enter the trusted IP address range (CIDR notation) that will be routing traffic to the Console.
     Leave blank if you are not supplying your own load balancer.
   EOF
   type        = string
@@ -129,7 +129,7 @@ variable "enable_large_file_scanning" {
 
 variable "large_file_disk_size_gb" {
   description = <<EOF
-    Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size. 
+    Choose a larger disk size (between 20 - 16,300 GB) to enable scanning larger files, up to 5 GB fewer than the total disk size.
     This only applies when using the Sophos scanning engine with EC2 large file scanning enabled.
     This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
   EOF
@@ -150,7 +150,7 @@ variable "agent_scanning_engine" {
 variable "multi_engine_scanning_mode" {
   description = <<EOF
     Initial setting for whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos`.
-    When set to `All`, every file will be scanned by both engines. 
+    When set to `All`, every file will be scanned by both engines.
     When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos`, and 2GB and smaller will be scanned with `ClamAV`.
     Valid values: `Disabled`, `All`, `LargeFiles`
     This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
@@ -181,7 +181,7 @@ variable "custom_resource_tags" {
 variable "ecr_account" {
   description = <<EOF
     The AWS Account ID which contains the ECR repositories used for the CSS Console and Agent images.
-    If customized, you must ensure that you have replicated the appropriate images to repositories in the specified account, 
+    If customized, you must ensure that you have replicated the appropriate images to repositories in the specified account,
     and the repository names must be `cloudstoragesecurity/console` and `cloudstoragesecurity/agent`
   EOF
   type        = string
@@ -190,7 +190,7 @@ variable "ecr_account" {
 
 variable "dynamo_cmk_key_arn" {
   description = <<EOF
-    Optional ARN for the CMK that should be used for the AWS KMS encryption if the key is different from the default KMS-managed DynamoDB key. 
+    Optional ARN for the CMK that should be used for the AWS KMS encryption if the key is different from the default KMS-managed DynamoDB key.
     Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
   EOF
   type        = string
@@ -199,7 +199,7 @@ variable "dynamo_cmk_key_arn" {
 
 variable "sns_cmk_key_arn" {
   description = <<EOF
-    Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic. 
+    Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic.
     Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
   EOF
   type        = string
@@ -210,7 +210,7 @@ variable "console_auto_assign_public_ip" {
   description = <<EOF
     Whether a public IP should be assigned to the console.
     If set to false, there will need to be a proxy, nat gateway, or other mechanism in place to allow the Console to reach AWS services.
-    You may configure VPC Endpoints for most AWS services we utilize, but a few do not yet support VPC Endpoints. 
+    You may configure VPC Endpoints for most AWS services we utilize, but a few do not yet support VPC Endpoints.
     (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow access to the console.)
   EOF
   type        = bool
@@ -219,7 +219,7 @@ variable "console_auto_assign_public_ip" {
 
 variable "agent_auto_assign_public_ip" {
   description = <<EOF
-    Should public IPs be assigned to the Agents? 
+    Should public IPs be assigned to the Agents?
     (WARNING: do not set to disabled unless you have configured your AWS VPC in a manner that would still allow the agents to reach AWS services over the internet.)
   EOF
   type        = bool
@@ -368,4 +368,16 @@ variable "product_listing" {
     condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi"], var.product_listing)
     error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi'."
   }
+}
+
+variable "sns_topic_policy_override_policy_documents" {
+  description = <<EOT
+    List of IAM policy documents that are merged together into the default SNS 'Notifications' Topic.
+    Passed in via `override_policy_documents` in `aws_iam_policy_document` data source.
+    Users should omit definition of the `resources` attribute in statement(s) as the module will
+    set resources to target only the 'Notifications' SNS topic.
+    https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document#override_policy_documents
+  EOT
+  type        = list(string)
+  default     = []
 }

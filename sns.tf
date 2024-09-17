@@ -13,7 +13,28 @@ resource "aws_sns_topic_policy" "notifications_topic" {
   policy = data.aws_iam_policy_document.notifications_topic.json
 }
 
+locals {
+  sns_notifications_overrides = [
+    for doc in var.sns_topic_policy_override_policy_documents :
+    jsonencode(merge(
+      jsondecode(doc),
+      {
+        Statement = [
+          for stmt in lookup(jsondecode(doc), "Statement", []) : merge(
+            stmt,
+            {
+              Resource = [aws_sns_topic.notifications.arn]
+            }
+          )
+        ]
+      }
+    ))
+  ]
+}
+
 data "aws_iam_policy_document" "notifications_topic" {
+  override_policy_documents = local.sns_notifications_overrides
+
   policy_id = "2012-10-17"
 
   statement {
