@@ -551,7 +551,7 @@ resource "aws_iam_policy" "aws_bedrock" {
 
 resource "aws_iam_role_policy_attachment" "aws_bedrock_console" {
   role       = aws_iam_role.console_task.name
-  policy_arn = aws_iam_policy.aws_bedrock[0].arn
+  policy_arn = aws_iam_policy.aws_bedrock.arn
 }
 
 resource "aws_iam_role" "agent_task" {
