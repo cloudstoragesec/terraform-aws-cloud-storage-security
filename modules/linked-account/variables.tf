@@ -53,6 +53,12 @@ variable cross_account_policy_name {
   default = null
 }
 
+variable cross_account_ec2_policy_name {
+  description = "Cross-Account EC2 Scanning Policy Name"
+  type = string
+  default = null
+}
+
 variable cross_account_event_bridge_role_name {
   description = "Cross-Account Event Bridge Scanning Role Name"
   type = string
@@ -85,3 +91,18 @@ variable pre_existing_event_bridge_role_name {
   default = null
 }
 
+variable s3_allowed_bucket_prefixes {
+  description = <<EOF
+    OPTIONAL Custom List of S3 Bucket Prefixes. If specified, this deployment will not create a new role.
+    S3 bucket prefixes that you wish to restrict the application's access to. Note that any buckets not matching the specified prefixes won't work. 
+    Use a comma-separated list in the format: arn:{AWSPartition}:s3:::{BucketPrefix}*.
+  EOF
+  type = string
+  default = "*"
+}
+
+variable "create_workdocs_permissions" {
+  description = "Pick true if you would like to use the AWS Workdocs service"
+  type        = bool
+  default     = false
+}

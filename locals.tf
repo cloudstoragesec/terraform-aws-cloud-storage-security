@@ -21,14 +21,15 @@ locals {
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn
   ])
-  application_tag_key       = (join("-", ["${var.service_name}", "${local.application_id}"]))
-  create_event_bridge_role  = var.event_bridge_role_name == null
-  event_bridge_role_name    = coalesce(var.event_bridge_role_name, "${var.service_name}EventBridgeRole-${local.application_id}")
-  ecs_service_name          = "${var.service_name}ConsoleService-${local.application_id}"
-  cross_account_role_name   = "${var.service_name}RemoteRole-${local.application_id}"
-  cross_account_policy_name = "${var.service_name}RemotePolicy-${local.application_id}"
-  ssm_path_prefix           = "${var.parameter_prefix}-${local.application_id}"
-  application_bucket_name   = "${var.application_bucket_prefix}-${local.application_id}"
+  application_tag_key           = (join("-", ["${var.service_name}", "${local.application_id}"]))
+  create_event_bridge_role      = var.event_bridge_role_name == null
+  event_bridge_role_name        = coalesce(var.event_bridge_role_name, "${var.service_name}EventBridgeRole-${local.application_id}")
+  ecs_service_name              = "${var.service_name}ConsoleService-${local.application_id}"
+  cross_account_role_name       = "${var.service_name}RemoteRole-${local.application_id}"
+  cross_account_policy_name     = "${var.service_name}RemotePolicy-${local.application_id}"
+  cross_account_ec2_policy_name = "${var.service_name}EC2RemotePolicy-${local.application_id}"
+  ssm_path_prefix               = "${var.parameter_prefix}-${local.application_id}"
+  application_bucket_name       = "${var.application_bucket_prefix}-${local.application_id}"
   product_name = lookup(
     {
       "AV"    = "Antivirus"
