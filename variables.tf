@@ -338,12 +338,6 @@ variable "api_request_scaling_policy_prefix" {
   default     = "ApiServiceRequestScaling"
 }
 
-variable "aws_bedrock_enabled" {
-  description = "Set to true if you would like to use Aws Bedrock features"
-  type        = bool
-  default     = false
-}
-
 variable "set_log_group_retention_policy" {
   description = "Whether we should set a retention policy on CSS created log groups. AWS Landing Zone Accelerator environments must set this to false."
   type        = bool
@@ -368,4 +362,16 @@ variable "product_listing" {
     condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi"], var.product_listing)
     error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi'."
   }
+}
+
+variable "sns_topic_policy_override_policy_documents" {
+  description = <<EOT
+    List of IAM policy documents that are merged together into the default SNS 'Notifications' Topic.
+    Passed in via `override_policy_documents` in `aws_iam_policy_document` data source.
+    Users should omit definition of the `resources` attribute in statement(s) as the module will
+    set resources to target only the 'Notifications' SNS topic.
+    https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document#override_policy_documents
+  EOT
+  type        = list(string)
+  default     = []
 }

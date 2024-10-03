@@ -100,7 +100,6 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "APPLICATION_BUCKET_NAME", "value" : aws_s3_bucket.application.id },
         { "name" : "RETRY_COUNT", "value" : "5" },
         { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
-        { "name" : "AWS_BEDROCK_ENABLED", "value" : "${tostring(var.aws_bedrock_enabled)}" },
         { "name" : "ENABLED_REGIONS", "value" : "" },
       ]
       essential = true
