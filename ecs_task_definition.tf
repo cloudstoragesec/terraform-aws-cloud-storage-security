@@ -46,6 +46,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "DC_EVENT_BASED_SCAN_QUEUE_NAME", "value" : "${var.service_name}Queue-DC-${local.application_id}" },
         { "name" : "EFS_SCAN_QUEUE_NAME", "value" : "${var.service_name}Queue-EFS-${local.application_id}" },
         { "name" : "RETRO_SCAN_QUEUE_NAME", "value" : "${var.service_name}RetroQueue-${local.application_id}" },
+        { "name" : "SCANNED_ITEMS_QUEUE_NAME", "value" : aws_sqs_queue.scanned_items_queue.name },
         { "name" : "CONSOLE_TASK_NAME", "value" : "${var.service_name}Console-${local.application_id}" },
         { "name" : "CONSOLE_SERVICE_NAME", "value" : "${var.configure_load_balancer}" ? "${var.service_name}ConsoleService-LB-${local.application_id}" : "${var.service_name}ConsoleService-${local.application_id}" },
         { "name" : "CONSOLE_ROLE_ARN", "value" : aws_iam_role.console_task.arn },
