@@ -60,6 +60,7 @@ allow_access_to_all_kms_keys                 = module.cloud-storage-security.all
 quarantine_bucket_prefix                     = module.cloud-storage-security.quarantine_bucket_prefix
 cross_account_role_name                      = module.cloud-storage-security.cross_account_role_name
 cross_account_policy_name                    = module.cloud-storage-security.cross_account_policy_name
+cross_account_ec2_policy_name                = module.cloud-storage-security.cross_account_ec2_policy_name
 cross_account_event_bridge_role_name         = module.cloud-storage-security.cross_account_event_bridge_role_name
 cross_account_event_bridge_policy_name       = module.cloud-storage-security.cross_account_event_bridge_policy_name
 }

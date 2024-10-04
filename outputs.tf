@@ -53,12 +53,17 @@ output "cross_account_policy_name" {
   value       = local.cross_account_policy_name
 }
 
+output "cross_account_ec2_policy_name" {
+  description = "Cross-Account EC2 Scanning Policy Name"
+  value       = local.cross_account_ec2_policy_name
+}
+
 output "cross_account_event_bridge_role_name" {
   description = "Cross-Account Event Bridge Scanning Role Name"
   value       = local.event_bridge_role_name
 }
 
 output "cross_account_event_bridge_policy_name" {
-  description = "Cross-Account Event Bridge Scanning Role Name"
+  description = "Cross-Account Event Bridge Scanning Policy Name"
   value       = aws_iam_policy.event_bridge.name
 }
