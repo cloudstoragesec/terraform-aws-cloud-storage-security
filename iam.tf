@@ -762,6 +762,7 @@ resource "aws_iam_role_policy" "ec2_container" {
           }
         }
         Action = [
+          "ec2:TerminateInstances",
           "ec2:DeleteSnapshot",
           "ec2:DeleteVolume",
           "ec2:DescribeVolumeAttribute",
