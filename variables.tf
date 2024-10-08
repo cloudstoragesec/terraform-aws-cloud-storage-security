@@ -375,3 +375,21 @@ variable "sns_topic_policy_override_policy_documents" {
   type        = list(string)
   default     = []
 }
+
+variable "azure_min_running_agents" {
+  description = <<EOF
+  Initial default minimum number of running scan Azure agents
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
+  type        = number
+  default     = 1
+}
+
+variable "azure_max_running_agents" {
+  description = <<EOF
+  Default maximum number of running scan Azure agents.
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
+  type        = number
+  default     = 12
+}
