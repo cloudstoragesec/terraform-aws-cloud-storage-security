@@ -374,3 +374,47 @@ resource "aws_ssm_parameter" "product_isting" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "azure_max_num_agents" {
+  name  = "/${local.ssm_path_prefix}/Config/AzureMaxNumAgents"
+  type  = "String"
+  value = var.azure_max_running_agents
+  lifecycle {
+    ignore_changes = [value]
+    precondition {
+      condition     = var.azure_max_running_agents >= var.azure_min_running_agents
+      error_message = "`azure_max_running_agents` Cannot be less than `azure_min_running_agents`"
+    }
+  }
+}
+
+resource "aws_ssm_parameter" "azure_min_num_agents" {
+  name  = "/${local.ssm_path_prefix}/Config/AzureMinNumAgents"
+  type  = "String"
+  value = var.azure_min_running_agents
+  lifecycle {
+    ignore_changes = [value]
+    precondition {
+      condition     = var.azure_min_running_agents <= var.azure_max_running_agents
+      error_message = "`azure_min_running_agents` Cannot be greater than `azure_max_running_agents`"
+    }
+  }
+}
+
+resource "aws_ssm_parameter" "azure_queue_scaling_threshold" {
+  name  = "/${local.ssm_path_prefix}/Config/AzureQueueScalingThreshold"
+  type  = "String"
+  value = "1000"
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "azure_only_scan_when_queue_threshold_exceeded" {
+  name  = "/${local.ssm_path_prefix}/Config/AzureOnlyScanWhenQueueThresholdExceeded"
+  type  = "String"
+  value = "false"
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
