@@ -90,6 +90,15 @@ resource "aws_ssm_parameter" "enable_large_file_scanning" {
   }
 }
 
+resource "aws_ssm_parameter" "large_file_engine" {
+  name  = "/${local.ssm_path_prefix}/Config/LargeFileEngine"
+  type  = "String"
+  value = var.large_file_engine
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "storage_assessment_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/StorageAssessmentEnabled"
   type  = "String"
