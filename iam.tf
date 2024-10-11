@@ -543,7 +543,7 @@ resource "aws_iam_policy" "aws_bedrock" {
         ]
         Effect   = "Allow"
         Sid      = "Bedrock"
-        Resource = "arn:aws:bedrock:*::foundation-model/*"
+        Resource = "arn:${data.aws_partition.current.partition}:bedrock:*::foundation-model/*"
       },
     ]
   })
