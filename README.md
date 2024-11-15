@@ -14,6 +14,8 @@ Our primary listing may be found at the link below. `Click Continue to Subscribe
 
 ## Usage example
 
+**Warning:** Please ensure `source` points to the Terraform Registry and not Github. Only Terraform Registry releases are considered stable. Pointing to the `main` branch on Github could result in undesirable behavior and complicate upgrades.
+
 Example of a minimal deploy using only required inputs: 
 ```hcl
 module "cloud-storage-security" {
