@@ -345,7 +345,7 @@ variable "set_log_group_retention_policy" {
 }
 
 variable "product_mode" {
-  description = "Set to true if you would like to use Aws Bedrock features"
+  description = "Select Whether to have AV, DC or Both enabled by default (these can be changed later in the console as well)"
   type        = string
   default     = "AV"
   validation {
@@ -355,12 +355,12 @@ variable "product_mode" {
 }
 
 variable "product_listing" {
-  description = "Set to true if you would like to use Aws Bedrock features"
+  description = "Select which product marketplace listing is subscribed"
   type        = string
   default     = "AV"
   validation {
-    condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi"], var.product_listing)
-    error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi'."
+    condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi", "BYOL"], var.product_listing)
+    error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi', BYOL'."
   }
 }
 
