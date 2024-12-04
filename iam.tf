@@ -881,7 +881,8 @@ resource "aws_iam_policy" "proactive_notifications_event_bridge" {
         Sid    = "PutEvents${local.application_id}"
         Effect = "Allow"
         Action = [
-          "events:PutEvents"
+          "events:PutEvents",
+          "events:DescribeEventBus"
         ]
         Resource = [
           "arn:${data.aws_partition.current.partition}:events:*:${local.account_id}:event-bus/*${var.eventbridge_notifications_bus_name}"
