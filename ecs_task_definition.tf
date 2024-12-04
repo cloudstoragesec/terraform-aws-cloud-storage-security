@@ -29,7 +29,6 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "PARAMETER_STORE_NAME_PREFIX", "value" : "/${var.parameter_prefix}-${local.application_id}" },
         { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${aws_security_group.load_balancer[0].id}" : "${aws_security_group.console[0].id}" },
         { "name" : "AGENT_AUTO_ASSIGN_PUBLIC_IP", "value" : "${var.agent_auto_assign_public_ip}" ? "ENABLED" : "DISABLED" },
-        { "name" : "BYOL_MODE", "value" : "False" },
         { "name" : "BLANKET_KMS_ACCESS", "value" : "${tostring(var.allow_access_to_all_kms_keys)}" },
         { "name" : "HAS_LOAD_BALANCER", "value" : "${tostring(var.configure_load_balancer)}" },
         { "name" : "TRUSTED_LOAD_BALANCER_NETWORK", "value" : "${tostring(var.trusted_load_balancer_network)}" },
