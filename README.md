@@ -5,6 +5,8 @@
 This Terraform module facilitates the seamless setup and deployment of Cloud Storage Security (CSS) within an AWS environment as an alternative to the CloudFormation deployment method.
 
 ## Prerequisites
+
+### PAYG Deployment
 Subscribe to AWS Marketplace Listing
 In order to run the product, you must be subscribed to one of Cloud Storage Security's listings in AWS Marketplace.
 
@@ -12,9 +14,15 @@ Our primary listing may be found at the link below. `Click Continue to Subscribe
 
 [Antivirus for Amazon S3 - PAYG with 30 DAY FREE TRIAL](https://aws.amazon.com/marketplace/pp/prodview-q7oc4shdnpc4w)
 
+### BYOL/GovCloud Deployment
+If you are looking to deploy our BYOL version of this software which does not use AWS Marketplace then you need to update the `product_listing` input to be set to `BYOL`
+(`product_listing="BYOL"`). This will allow you skip subscribing in AWS Marketplace and deploy the solution directly. Please note: you will have to reach out to our team to receive a license for continued use of our solution.
+
+For AWS GovCloud customers, you are required to deploy the `BYOL` version of our solution as GovCloud does not currently support AWS Marketplace billing.
+
 ## Usage example
 
-**Warning:** Please ensure `source` points to the Terraform Registry and not Github. Only Terraform Registry releases are considered stable. Pointing to the `main` branch on Github could result in undesirable behavior and complicate upgrades.
+**Warning:** Please ensure `source` points to the Terraform Registry and not GitHub. Only Terraform Registry releases are considered stable. Pointing to the `main` branch on GitHub could result in undesirable behavior and complicate upgrades.
 
 Example of a minimal deploy using only required inputs: 
 ```hcl
@@ -45,7 +53,7 @@ output "username" {
   value = module.cloud-storage-security.username
 }
 ```
-Additionally the module provides the outputs for use in the linked account sub-module used to link an additional AWS account to the main Cloud Storage Security (CSS) deployment.
+Additionally, the module provides the outputs for use in the linked account sub-module used to link an additional AWS account to the main Cloud Storage Security (CSS) deployment.
 
 ## Warning
 This module uses `aws` and `awscc` providers, and both providers must be set to the same region. Below is an example configuration:
@@ -58,6 +66,8 @@ provider "awscc" {
   region = "us-east-1"
 }
 ```
+
+If you are deploying to GovCloud make sure to use `us-gov-west-1`
 ## Solution Cleanup / Uninstall
 
 After the deployment, additional items may be created through console operations. 
