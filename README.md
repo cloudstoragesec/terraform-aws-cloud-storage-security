@@ -17,6 +17,7 @@ Our primary listing may be found at the link below. `Click Continue to Subscribe
 ### BYOL/GovCloud Deployment
 If you are looking to deploy our BYOL version of this software which does not use AWS Marketplace then you need to update the `product_listing` input to be set to `BYOL`
 (`product_listing="BYOL"`). This will allow you skip subscribing in AWS Marketplace and deploy the solution directly. Please note: you will have to reach out to our team to receive a license for continued use of our solution.
+As several services such as Cognito are not available in `us-gov-east-1` make sure to use `us-gov-west-1` for GovCloud Deployments.
 
 For AWS GovCloud customers, you are required to deploy the `BYOL` version of our solution as GovCloud does not currently support AWS Marketplace billing.
 
