@@ -32,24 +32,18 @@ locals {
   application_bucket_name       = "${var.application_bucket_prefix}-${local.application_id}"
   product_name = lookup(
     {
-      "AV"    = "Antivirus"
-      "DC"    = "Data Classification"
-      "S3"    = "Malware protection for Amazon S3"
-      "MFT"   = "Antivirus for Managed File Transfers"
-      "DLP"   = "Data Loss Prevention (DLP) for Amazon S3 & EC2"
-      "EFS"   = "Malware protection for EFS"
-      "GenAi" = "GenAI Secure Malware protection & Data Loss Prevention (DLP)"
+      "AV"  = "Antivirus"
+      "DC"  = "Data Classification"
+      "S3"  = "Malware protection for Amazon S3"
+      "MFT" = "Antivirus for Managed File Transfers"
+      "EFS" = "Malware protection for EFS"
     },
     var.product_listing,
     "Antivirus"
   )
   product_mode = lookup(
     {
-      "S3"    = "Both"
-      "MFT"   = "Both"
-      "DLP"   = "Both"
-      "EFS"   = "Both"
-      "GenAi" = "Both"
+      "DC" = "DC"
     },
     var.product_listing,
     var.product_mode
