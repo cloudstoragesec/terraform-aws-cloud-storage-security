@@ -151,6 +151,18 @@ resource "aws_cognito_user_pool_client" "main" {
   name            = "${var.service_name}UserPoolClient-${local.application_id}"
   user_pool_id    = aws_cognito_user_pool.main.id
   generate_secret = true
+
+  supported_identity_providers = [
+    try(aws_cognito_identity_provider.main[0].provider_name, null)
+  ]
+
+  allowed_oauth_flows_user_pool_client = var.identity_provider_name != null && var.identity_provider_name != "" ? true : false
+  callback_urls                        = var.client_callback_urls
+  logout_urls                          = var.client_logout_urls
+  allowed_oauth_flows                  = var.client_allowed_oauth_flows
+  allowed_oauth_scopes                 = var.client_allowed_oauth_scopes
+
+  enable_token_revocation = true
 }
 
 resource "aws_cognito_user_group" "admins" {
@@ -202,4 +214,22 @@ resource "aws_cognito_user_in_group" "admin" {
   user_pool_id = aws_cognito_user_pool.main.id
   group_name   = aws_cognito_user_group.admins.name
   username     = aws_cognito_user.admin.username
+}
+
+resource "aws_cognito_user_pool_domain" "main" {
+  count = var.cognito_domain_prefix != null && var.cognito_domain_prefix != "" ? 1 : 0
+
+  domain       = var.cognito_domain_prefix
+  user_pool_id = aws_cognito_user_pool.main.id
+}
+
+resource "aws_cognito_identity_provider" "main" {
+  count = var.identity_provider_name != null && var.identity_provider_name != "" ? 1 : 0
+
+  user_pool_id  = aws_cognito_user_pool.main.id
+  provider_name = var.identity_provider_name
+  provider_type = var.identity_provider_type
+
+  provider_details  = var.identity_provider_details
+  attribute_mapping = var.identity_attribute_mapping
 }
