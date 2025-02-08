@@ -427,3 +427,12 @@ resource "aws_ssm_parameter" "azure_only_scan_when_queue_threshold_exceeded" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "use_fips_endpoints" {
+  name  = "/${local.ssm_path_prefix}/Config/UseFipsEndpoints"
+  type  = "String"
+  value = var.use_fips_endpoints
+  lifecycle {
+    ignore_changes = [value]
+  }
+}

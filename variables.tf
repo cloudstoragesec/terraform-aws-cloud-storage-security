@@ -403,3 +403,11 @@ variable "azure_max_running_agents" {
   type        = number
   default     = 12
 }
+
+variable "use_fips_endpoints" {
+  description = <<EOF
+  Would you like us to use AWS FIPS endpoints?
+  EOF
+  type        = bool
+  default     = false
+}
