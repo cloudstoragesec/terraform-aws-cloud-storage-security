@@ -1172,6 +1172,31 @@ resource "aws_dynamodb_table" "azure" {
   )
 }
 
+resource "aws_dynamodb_table" "gcp" {
+  name         = "${local.application_id}.GCP"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "PK"
+  range_key    = "SK"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+  attribute {
+    name = "PK"
+    type = "S"
+  }
+  attribute {
+    name = "SK"
+    type = "S"
+  }
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
+
 resource "aws_dynamodb_table" "malware_detection" {
   name         = "${local.application_id}.MalwareDetection"
   billing_mode = "PAY_PER_REQUEST"
