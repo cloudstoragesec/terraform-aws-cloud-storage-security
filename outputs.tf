@@ -67,3 +67,17 @@ output "cross_account_event_bridge_policy_name" {
   description = "Cross-Account Event Bridge Scanning Policy Name"
   value       = aws_iam_policy.event_bridge.name
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# These outputs are provided for convenience to be used with SSO integration.
+# ---------------------------------------------------------------------------------------------------------------------
+
+output "cognito_user_pool_id" {
+  description = "Cognito User Pool ID"
+  value       = aws_cognito_user_pool.main.id
+}
+
+output "cognito_domain" {
+  description = "Cognito Domain"
+  value       = length(aws_cognito_user_pool_domain.main) > 0 ? "${aws_cognito_user_pool_domain.main[0].domain}.auth.${local.aws_region}.amazoncognito.com" : null
+}
