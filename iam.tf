@@ -90,10 +90,15 @@ resource "aws_iam_role" "console_task" {
       },
     ]
   })
-  managed_policy_arns = local.is_gov ? null : ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSInfrastructureRolePolicyForVolumes"]
   tags = merge({ (local.application_tag_key) = "ConsoleTaskRole" },
     var.custom_resource_tags
   )
+}
+
+resource "aws_iam_role_policy_attachment" "console_amazon_ecs_infrastructure_role_policy_for_volumes" {
+  count      = local.is_gov ? 1 : 0
+  role       = aws_iam_role.console_task.id
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSInfrastructureRolePolicyForVolumes"
 }
 
 resource "aws_iam_role_policy" "console_task" {
@@ -718,11 +723,14 @@ resource "aws_iam_role" "execution" {
       },
     ]
   })
-  managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
-
   tags = merge({ (local.application_tag_key) = "ExecutionRole" },
     var.custom_resource_tags
   )
+}
+
+resource "aws_iam_role_policy_attachment" "execution_ecs_task_execution_role_policy" {
+  role       = aws_iam_role.execution.id
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role" "ec2_container" {
@@ -740,11 +748,14 @@ resource "aws_iam_role" "ec2_container" {
       },
     ]
   })
-  managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]
-
   tags = merge({ (local.application_tag_key) = "Ec2ContainerRole" },
     var.custom_resource_tags
   )
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_container_ec2_container_service_for_ec2_role" {
+  role       = aws_iam_role.ec2_container.id
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_role_policy" "ec2_container" {
