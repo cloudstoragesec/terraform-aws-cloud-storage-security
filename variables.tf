@@ -139,7 +139,7 @@ variable "large_file_disk_size_gb" {
 
 variable "agent_scanning_engine" {
   description = <<EOF
-    The initial scanning engine to use. ClamAV is included with no additional charges.
+    The initial scanning engine to use. CSS Secure is included with no additional charges.
     Premium engines incur an additional licensing charge per GB (see Marketplace listing for pricing)
     Valid values: `ClamAV`, `Sophos`, `Bitdefender`
     This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
@@ -152,7 +152,7 @@ variable "multi_engine_scanning_mode" {
   description = <<EOF
     Initial setting for whether or not multiple av engines should be utilized to scan files. If this is enabled, the `agent_scanning_engine` variable must be set to `Sophos` or `Bitdefender`.
     When set to `All`, every file will be scanned by all selected engines. 
-    When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos` or `CSS Premium`, and 2GB and smaller will be scanned with `ClamAV`.
+    When set to `LargeFiles`, only files larger than 2GB will be scanned with `Sophos` or `CSS Premium`, and 2GB and smaller will be scanned with `CSS Secure`.
     Valid values: `Disabled`, `All`, `LargeFiles`
     This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
   EOF
