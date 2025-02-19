@@ -139,6 +139,15 @@ resource "aws_ssm_parameter" "subdomain" {
   }
 }
 
+resource "aws_ssm_parameter" "console_domain_url" {
+  name  = "/${local.ssm_path_prefix}/Config/ConsoleDomainURL"
+  type  = "String"
+  value = local.console_url
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "email" {
   name  = "/${local.ssm_path_prefix}/Config/Email"
   type  = "String"
