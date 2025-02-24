@@ -209,11 +209,40 @@ variable "dynamo_cmk_key_arn" {
 
 variable "sns_cmk_key_arn" {
   description = <<EOF
-    Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic. 
+    Optional ARN for the CMK that should be used for the AWS KMS encryption for Notifications SNS topic in the console region. 
     Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
+    Ensure the key resource policy grants the S3 and EventBridge services permission to decrypt and generate data keys.
   EOF
   type        = string
   default     = null
+}
+
+variable "sqs_cmk_key_arn" {
+  description = <<EOF
+    Optional ARN for the CMK that should be used for the AWS KMS encryption for the SQS Queues in the console region. 
+    Cloud Storage Security Console and Agent IAM Roles will be given permission to use this key.
+    Ensure the key resource policy grants the SNS service permission to decrypt and generate data keys.
+  EOF
+  type        = string
+  default     = null
+}
+
+variable "sns_cmk_keys_arn" {
+  description = <<EOT
+    Enter an optional list of KMS Key ARNs for encrypting the SNS service for each region you want to protect. 
+    Ensure each key resource policy grants the S3 and EventBridge services permission to decrypt and generate data keys.
+  EOT
+  type        = list(string)
+  default     = []
+}
+
+variable "sqs_cmk_keys_arn" {
+  description = <<EOT
+    Enter an optional list of KMS Key ARNs for encrypting the SNS service for each region you want to protect. 
+    Ensure each key resource policy grants the SNS service permission to decrypt and generate data keys.
+  EOT
+  type        = list(string)
+  default     = []
 }
 
 variable "console_auto_assign_public_ip" {
