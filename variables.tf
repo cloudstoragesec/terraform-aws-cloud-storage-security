@@ -432,3 +432,82 @@ variable "azure_max_running_agents" {
   type        = number
   default     = 12
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# OPTIONAL PARAMETERS FOR SSO INTEGRATION
+# These parameters have reasonable defaults.
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "cognito_domain_prefix" {
+  description = "This is the prefix of the Cognito domain."
+  type        = string
+  default     = null
+}
+
+variable "identity_provider_name" {
+  description = "The name of the identity provider"
+  type        = string
+  default     = null
+}
+
+variable "identity_provider_type" {
+  description = "The type of identity provider. Required if `identity_provider_name` is set."
+  type        = string
+  default     = "SAML"
+
+  validation {
+    condition     = contains(["SAML", "Facebook", "Google", "LoginWithAmazon", "SignInWithApple", "OIDC"], var.identity_provider_type)
+    error_message = "AWS API valid values: https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateIdentityProvider.html#CognitoUserPools-CreateIdentityProvider-request-ProviderType"
+  }
+}
+
+
+variable "identity_provider_details" {
+  description = "The map of identity detials, such as access token or 'MetadataURL'"
+  type        = map(string)
+  default     = {}
+}
+
+variable "identity_attribute_mapping" {
+  description = "The map of attribute mapping of user pool attributes."
+  type        = map(string)
+  default     = {}
+}
+
+variable "client_callback_urls" {
+  description = "List of allowed callback URLs for the identity providers."
+  type        = list(string)
+  default     = []
+}
+
+variable "client_logout_urls" {
+  description = "List of allowed logout URLs for the identity providers."
+  type        = list(string)
+  default     = []
+}
+
+variable "client_allowed_oauth_flows" {
+  description = "List of allowed OAuth flows for the identity providers."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for item in var.client_allowed_oauth_flows : contains(["code", "implicit", "client_credentials"], item)
+    ])
+    error_message = "Allowed values are 'code', 'implicit', 'client_credentials'"
+  }
+}
+
+variable "client_allowed_oauth_scopes" {
+  description = "List of allowed OAuth scopes for the identity providers."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for item in var.client_allowed_oauth_scopes : contains(["openid", "email", "phone", "profile", "aws.cognito.signin.user.admin"], item)
+    ])
+    error_message = "Allowed values are 'openid', 'email', 'phone', 'profile', 'aws.cognito.signin.user.admin'"
+  }
+}
