@@ -139,6 +139,15 @@ resource "aws_ssm_parameter" "subdomain" {
   }
 }
 
+resource "aws_ssm_parameter" "console_domain_url" {
+  name  = "/${local.ssm_path_prefix}/Config/ConsoleDomainURL"
+  type  = "String"
+  value = local.console_url
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "email" {
   name  = "/${local.ssm_path_prefix}/Config/Email"
   type  = "String"
@@ -423,6 +432,15 @@ resource "aws_ssm_parameter" "azure_only_scan_when_queue_threshold_exceeded" {
   name  = "/${local.ssm_path_prefix}/Config/AzureOnlyScanWhenQueueThresholdExceeded"
   type  = "String"
   value = "false"
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "use_fips_endpoints" {
+  name  = "/${local.ssm_path_prefix}/Config/UseFipsEndpoints"
+  type  = "String"
+  value = var.use_fips_endpoints
   lifecycle {
     ignore_changes = [value]
   }
