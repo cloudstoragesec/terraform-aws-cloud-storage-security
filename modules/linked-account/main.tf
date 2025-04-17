@@ -84,6 +84,7 @@ resource "aws_iam_policy" "remote_access" {
           "s3:GetObjectTagging",
           "s3:GetObjectAttributes",
           "s3:PutObjectTagging",
+          "s3:PutObjectVersionTagging",
           "s3:DeleteObject",
           "s3:DeleteObjectTagging",
           "s3:DeleteObjectVersion",
@@ -99,6 +100,7 @@ resource "aws_iam_policy" "remote_access" {
         Action = [
           "s3:PutObject",
           "s3:PutObjectTagging",
+          "s3:PutObjectVersionTagging",
           "s3:PutBucketLogging",
           "s3:PutBucketNotification",
           "s3:PutBucketPolicy",
