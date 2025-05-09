@@ -48,7 +48,7 @@ resource "aws_ssm_parameter" "min_num_agents" {
 resource "aws_ssm_parameter" "queue_scaling_threshold" {
   name  = "/${local.ssm_path_prefix}/Config/QueueScalingThreshold"
   type  = "String"
-  value = "1000"
+  value = var.num_messages_in_queue_scaling_threshold
   lifecycle {
     ignore_changes = [value]
   }
@@ -219,7 +219,7 @@ resource "aws_ssm_parameter" "user_pool_id" {
 resource "aws_ssm_parameter" "only_scan_when_queue_threshold_exceeded" {
   name  = "/${local.ssm_path_prefix}/Config/OnlyScanWhenQueueThresholdExceeded"
   type  = "String"
-  value = "false"
+  value = var.only_scan_when_queue_threshold_exceeded
   lifecycle {
     ignore_changes = [value]
   }
