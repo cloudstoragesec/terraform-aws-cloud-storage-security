@@ -440,3 +440,21 @@ variable "use_fips_endpoints" {
   type        = bool
   default     = false
 }
+
+variable "num_messages_in_queue_scaling_threshold" {
+  description = <<EOF
+  The number of pending files to be scanned before adding or removing agents
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
+  type        = number
+  default     = 1000
+}
+
+variable "only_scan_when_queue_threshold_exceeded" {
+  description = <<EOF
+  Pick True if you would like to only run scanning agents when the number of files waiting to be scanned exceeds the queue scaling threshold
+  This value represents the initial setting upon deployment and can be modified via the console's UI after the initial deployment using Terraform.
+  EOF
+  type        = bool
+  default     = false  
+}
