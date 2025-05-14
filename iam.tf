@@ -877,7 +877,7 @@ resource "aws_iam_role_policy_attachment" "event_bridge" {
 }
 
 resource "aws_iam_policy" "proactive_notifications_event_bridge" {
-  count = local.create_custom_event_bus ? 1 : 0
+  count = var.eventbridge_notifications_enabled ? 1 : 0
   name  = "ProactiveNotificationsEventBridgePolicy-${local.application_id}"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -890,7 +890,7 @@ resource "aws_iam_policy" "proactive_notifications_event_bridge" {
           "events:DescribeEventBus"
         ]
         Resource = [
-          "arn:${data.aws_partition.current.partition}:events:*:${local.account_id}:event-bus/*${var.eventbridge_notifications_bus_name}"
+          "arn:${data.aws_partition.current.partition}:events:*:${local.account_id}:event-bus/${var.eventbridge_notifications_bus_name}"
         ]
       }
     ]
@@ -898,13 +898,13 @@ resource "aws_iam_policy" "proactive_notifications_event_bridge" {
 }
 
 resource "aws_iam_role_policy_attachment" "custom_event_bridge_console" {
-  count      = local.create_custom_event_bus ? 1 : 0
+  count      = var.eventbridge_notifications_enabled ? 1 : 0
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.proactive_notifications_event_bridge[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "custom_event_bridge_agent" {
-  count      = local.create_custom_event_bus ? 1 : 0
+  count      = var.eventbridge_notifications_enabled ? 1 : 0
   role       = aws_iam_role.agent_task.name
   policy_arn = aws_iam_policy.proactive_notifications_event_bridge[0].arn
 }
