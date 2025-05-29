@@ -361,18 +361,12 @@ resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsEnabled"
   type  = "String"
   value = var.eventbridge_notifications_enabled
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
   name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsBusName"
   type  = "String"
   value = var.eventbridge_notifications_bus_name
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "set_log_group_retention_policy" {
