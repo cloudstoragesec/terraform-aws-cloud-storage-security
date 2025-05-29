@@ -123,7 +123,7 @@ resource "aws_ssm_parameter" "large_file_disk_size" {
 
 resource "aws_ssm_parameter" "large_file_ec2_tags" {
   name  = "/${local.ssm_path_prefix}/Config/LargeFileEC2Tags"
-  type  = "String"
+  type  = "StringList"
   value = "CloudStorageSec-[appId]=EC2Instance"
   lifecycle {
     ignore_changes = [value]
