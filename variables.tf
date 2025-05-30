@@ -137,6 +137,22 @@ variable "large_file_disk_size_gb" {
   default     = 2000
 }
 
+variable "ebs_volume_encryption" {
+  description = <<EOF
+    Enable EBS Volume Encryption
+  EOF
+  type        = bool
+  default     = false
+}
+
+variable "ebs_volume_encryption_kms_key_id" {
+  description = <<EOF
+    Enter an optional custom KMS Key ARN to use for EBS encryption; otherwise, the default AWS-managed key will be applied
+  EOF
+  type        = string
+  default     = "default"
+}
+
 variable "agent_scanning_engine" {
   description = <<EOF
     The initial scanning engine to use. CSS Secure is included with no additional charges.

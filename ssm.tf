@@ -121,6 +121,24 @@ resource "aws_ssm_parameter" "large_file_disk_size" {
   }
 }
 
+resource "aws_ssm_parameter" "ebs_volume_encryption" {
+  name  = "/${local.ssm_path_prefix}/Config/ScanEbsEncryption"
+  type  = "String"
+  value = var.ebs_volume_encryption
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "ebs_volume_encryption_kms_key_id" {
+  name  = "/${local.ssm_path_prefix}/Config/ScanEbsKmsKeyIdEncryption"
+  type  = "String"
+  value = var.ebs_volume_encryption_kms_key_id
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "large_file_ec2_tags" {
   name  = "/${local.ssm_path_prefix}/Config/LargeFileEC2Tags"
   type  = "StringList"
