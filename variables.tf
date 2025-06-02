@@ -24,6 +24,18 @@ variable "email" {
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "cpu" {
+  description = "The CPU for the CSS Console"
+  type        = string
+  default     = "512"
+}
+
+variable "memory" {
+  description = "The Memory for the CSS Console"
+  type        = string
+  default     = "1024"
+}
+
 variable "aws_account" {
   description = "The AWS account number where resources are being deployed. Defaults to the effective Account ID in which Terraform is authorized if not set."
   default     = null
