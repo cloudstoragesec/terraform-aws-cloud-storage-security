@@ -502,7 +502,7 @@ resource "aws_iam_role_policy" "cloud_trail_lake_policy" {
 }
 
 resource "aws_iam_policy" "custom_CMK" {
-  count = (local.use_dynamo_cmk || local.use_sns_cmk || local.use_sqs_cmk) ? 1 : 0
+  count = (local.use_dynamo_cmk || local.use_sns_cmk || local.use_sqs_cmk || local.ebs_volume_encryption_kms_key != null) ? 1 : 0
   name  = "${var.service_name}KMSPolicy-${local.application_id}-CustomCMK"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -524,13 +524,13 @@ resource "aws_iam_policy" "custom_CMK" {
 }
 
 resource "aws_iam_role_policy_attachment" "dynamo_cmk_console" {
-  count      = (local.use_dynamo_cmk || local.use_sns_cmk || local.use_sqs_cmk) ? 1 : 0
+  count      = (local.use_dynamo_cmk || local.use_sns_cmk || local.use_sqs_cmk || local.ebs_volume_encryption_kms_key != null) ? 1 : 0
   role       = aws_iam_role.console_task.name
   policy_arn = aws_iam_policy.custom_CMK[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "dynamo_cmk_agent" {
-  count      = (local.use_dynamo_cmk || local.use_sns_cmk) ? 1 : 0
+  count      = (local.use_dynamo_cmk || local.use_sns_cmk || local.ebs_volume_encryption_kms_key != null) ? 1 : 0
   role       = aws_iam_role.agent_task.name
   policy_arn = aws_iam_policy.custom_CMK[0].arn
 }
