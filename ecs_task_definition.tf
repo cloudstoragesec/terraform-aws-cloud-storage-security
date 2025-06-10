@@ -2,17 +2,17 @@ resource "aws_ecs_task_definition" "console" {
   family                   = "${var.service_name}Console-${local.application_id}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "512"
-  memory                   = "1024"
+  cpu                      = "${var.cpu}"
+  memory                   = "${var.memory}"
   execution_role_arn       = aws_iam_role.execution.arn
   task_role_arn            = aws_iam_role.console_task.arn
   container_definitions = jsonencode([
     {
       name                   = "${var.service_name}Console-${local.application_id}"
       image                  = "${local.console_image_url}"
-      cpu                    = 512
-      memory                 = 1024
-      memoryReservation      = 1024
+      cpu                    = tonumber(var.cpu)
+      memory                 = tonumber(var.memory)
+      memoryReservation      = tonumber(var.memory)
       readonlyRootFilesystem = true
       environment : [
         { "name" : "IMAGE_VERSION_CONSOLE", "value" : local.image_version_console },
