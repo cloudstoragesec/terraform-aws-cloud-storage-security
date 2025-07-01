@@ -2,8 +2,8 @@ locals {
   # Terraform module and the associated app version are tightly coupled for compatibility. 
   # Specified 'image_version' corresponds to a tested combination of Terraform and app release.
   # Avoid manually changing the 'image_version' unless you have explicit instructions to do so.
-  image_version_console   = "v8.07.002"
-  image_version_agent     = "v8.07.002"
+  image_version_console   = "v9.01.000"
+  image_version_agent     = "v9.01.000"
   ecr_account             = coalesce(var.ecr_account, local.is_gov ? "822167061992" : "564477214187")
   console_image_url       = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/console:${local.image_version_console}"
   agent_image_url         = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
@@ -18,10 +18,12 @@ locals {
   use_sns_cmk             = var.sns_cmk_key_arn != null
   use_sqs_cmk             = var.sqs_cmk_key_arn != null
   use_lb_subnets          = var.lb_subnet_a_id != null && var.lb_subnet_b_id != null
+  ebs_volume_encryption_kms_key = var.ebs_volume_encryption && var.ebs_volume_encryption_kms_key_id != "default" ? var.ebs_volume_encryption_kms_key_id : null
   custom_key_list = concat(compact([
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn,
-    var.sqs_cmk_key_arn
+    var.sqs_cmk_key_arn,
+    local.ebs_volume_encryption_kms_key
   ]), var.sns_cmk_keys_arn, var.sqs_cmk_keys_arn)
   application_tag_key           = (join("-", ["${var.service_name}", "${local.application_id}"]))
   create_event_bridge_role      = var.event_bridge_role_name == null

@@ -24,6 +24,18 @@ variable "email" {
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "cpu" {
+  description = "The CPU for the CSS Console"
+  type        = string
+  default     = "512"
+}
+
+variable "memory" {
+  description = "The Memory for the CSS Console"
+  type        = string
+  default     = "1024"
+}
+
 variable "aws_account" {
   description = "The AWS account number where resources are being deployed. Defaults to the effective Account ID in which Terraform is authorized if not set."
   default     = null
@@ -135,6 +147,22 @@ variable "large_file_disk_size_gb" {
   EOF
   type        = number
   default     = 2000
+}
+
+variable "ebs_volume_encryption" {
+  description = <<EOF
+    Enable EBS Volume Encryption
+  EOF
+  type        = bool
+  default     = false
+}
+
+variable "ebs_volume_encryption_kms_key_id" {
+  description = <<EOF
+    Enter an optional custom KMS Key ARN to use for EBS encryption; otherwise, the default AWS-managed key will be applied
+  EOF
+  type        = string
+  default     = "default"
 }
 
 variable "agent_scanning_engine" {
@@ -441,6 +469,7 @@ variable "use_fips_endpoints" {
   default     = false
 }
 
+
 variable "num_messages_in_queue_scaling_threshold" {
   description = <<EOF
   The number of pending files to be scanned before adding or removing agents
@@ -457,4 +486,10 @@ variable "only_scan_when_queue_threshold_exceeded" {
   EOF
   type        = bool
   default     = false  
+}
+
+variable "log_retention_days" {
+  description = "Number of days to retain logs"
+  type        = number
+  default     = 7
 }

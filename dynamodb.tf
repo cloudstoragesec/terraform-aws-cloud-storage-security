@@ -430,7 +430,6 @@ resource "aws_dynamodb_table" "agents" {
   name         = "${local.application_id}.Agents"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "AgentId"
-  range_key    = "DeactivationDate"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }

@@ -121,9 +121,27 @@ resource "aws_ssm_parameter" "large_file_disk_size" {
   }
 }
 
+resource "aws_ssm_parameter" "ebs_volume_encryption" {
+  name  = "/${local.ssm_path_prefix}/Config/ScanEbsEncryption"
+  type  = "String"
+  value = var.ebs_volume_encryption
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "ebs_volume_encryption_kms_key_id" {
+  name  = "/${local.ssm_path_prefix}/Config/ScanEbsKmsKeyIdEncryption"
+  type  = "String"
+  value = var.ebs_volume_encryption_kms_key_id
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "aws_ssm_parameter" "large_file_ec2_tags" {
   name  = "/${local.ssm_path_prefix}/Config/LargeFileEC2Tags"
-  type  = "String"
+  type  = "StringList"
   value = "CloudStorageSec-[appId]=EC2Instance"
   lifecycle {
     ignore_changes = [value]
@@ -361,18 +379,12 @@ resource "aws_ssm_parameter" "event_bridge_notifications_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsEnabled"
   type  = "String"
   value = var.eventbridge_notifications_enabled
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
   name  = "/${local.ssm_path_prefix}/Config/EventBridgeNotificationsBusName"
   type  = "String"
   value = var.eventbridge_notifications_bus_name
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "set_log_group_retention_policy" {
