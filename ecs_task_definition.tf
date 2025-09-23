@@ -106,7 +106,7 @@ resource "aws_ecs_task_definition" "console" {
         ] : [],
         local.use_sns_cmk ? [
             { name = "SNS_CUSTOM_CONSOLE_KMS_KEY", value = var.sns_cmk_key_arn }
-        ] : []
+        ] : [],
         { "name" : "SQS_CUSTOM_AGENT_KMS_KEYS", "value" : join(",", var.sqs_cmk_keys_arn) },
         { "name" : "SNS_CUSTOM_AGENT_KMS_KEYS", "value" : join(",", var.sns_cmk_keys_arn) },
       ]
