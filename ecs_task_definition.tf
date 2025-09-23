@@ -110,10 +110,12 @@ resource "aws_ecs_task_definition" "console" {
       portMappings = [
         {
           containerPort = 80
+          hostPort      = 80
           protocol      = "tcp"
         },
         {
           containerPort = 443
+          hostPort      = 443
           protocol      = "tcp"
         }
       ]
