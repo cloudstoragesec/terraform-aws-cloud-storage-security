@@ -110,11 +110,9 @@ resource "aws_ecs_task_definition" "console" {
       portMappings = [
         {
           containerPort = 80
-          hostPort      = 80
         },
         {
           containerPort = 443
-          hostPort      = 443
         }
       ]
       LogConfiguration = {
