@@ -110,11 +110,16 @@ resource "aws_ecs_task_definition" "console" {
       portMappings = [
         {
           containerPort = 80
+          protocol      = "tcp"
         },
         {
           containerPort = 443
+          protocol      = "tcp"
         }
       ]
+      mountPoints = []
+      systemControls = []
+      volumesFrom =[]
       LogConfiguration = {
         LogDriver = "awslogs"
         Options = {
