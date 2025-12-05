@@ -457,3 +457,9 @@ resource "aws_ssm_parameter" "use_fips_endpoints" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "s3_kms_key_id" {
+  name  = "/${local.ssm_path_prefix}/Config/S3KmsKeyId"
+  type  = "String"
+  value = var.s3_cmk_key_arn
+}
