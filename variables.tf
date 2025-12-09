@@ -311,6 +311,12 @@ variable "proxy_port" {
   default     = null
 }
 
+variable "proxy_force" {
+  description = "Use Proxy For All Requests"
+  type        = bool
+  default     = false
+}
+
 variable "guard_duty_s3_integration_enabled_regions" {
   description = <<EOF
   If you are utilizing GuardDuty S3 Malware scanning, you may enable an integration with CSS. To enable, specify the regions to enable, pipe-delimited. Example: "us-east-1|us-west-2|ca-central-1|eu-west-1"
