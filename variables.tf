@@ -426,8 +426,8 @@ variable "product_listing" {
   type        = string
   default     = "AV"
   validation {
-    condition     = contains(["AV", "DC", "S3", "MFT", "DLP", "EFS", "GenAi", "BYOL"], var.product_listing)
-    error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'DLP', 'EFS', 'GenAi', BYOL'."
+    condition     = contains(["AV", "DC", "S3", "MFT", "EFS", "BYOL"], var.product_listing)
+    error_message = "product_type must be one of 'AV', 'DC', 'S3', 'MFT', 'EFS', 'BYOL'."
   }
 }
 
