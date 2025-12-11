@@ -92,6 +92,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "DLP_CCL_FILE_NAME", "value" : "PredefinedContentControlLists.xml" },
         { "name" : "PROXY_HOST", "value" : "${local.use_proxy}" ? "${var.proxy_host}" : "" },
         { "name" : "PROXY_PORT", "value" : "${local.use_proxy}" ? "${var.proxy_port}" : "" },
+        { "name" : "PROXY_FORCE", "value" : "${local.use_proxy}" ? "${var.proxy_force}" : "" },
         { "name" : "PRODUCT_MODE", "value" : "${local.product_mode}" },
         { "name" : "TEMPLATE_VARIATION", "value" : "default" },
         { "name" : "DEPLOYMENT_TYPE", "value" : "terraform" },
