@@ -17,12 +17,14 @@ locals {
   use_dynamo_cmk          = var.dynamo_cmk_key_arn != null
   use_sns_cmk             = var.sns_cmk_key_arn != null
   use_sqs_cmk             = var.sqs_cmk_key_arn != null
+  use_s3_cmk              = var.s3_cmk_key_arn != "default"
   use_lb_subnets          = var.lb_subnet_a_id != null && var.lb_subnet_b_id != null
   ebs_volume_encryption_kms_key = var.ebs_volume_encryption && var.ebs_volume_encryption_kms_key_id != "default" ? var.ebs_volume_encryption_kms_key_id : null
   custom_key_list = concat(compact([
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn,
     var.sqs_cmk_key_arn,
+    var.s3_cmk_key_arn,
     local.ebs_volume_encryption_kms_key
   ]), var.sns_cmk_keys_arn, var.sqs_cmk_keys_arn)
   application_tag_key           = (join("-", ["${var.service_name}", "${local.application_id}"]))

@@ -385,9 +385,9 @@ resource "aws_iam_role_policy" "console_task" {
         ]
         Effect   = "Allow"
         Sid      = "KmsConsole${local.application_id}"
-        Resource = var.allow_access_to_all_kms_keys ? "*" : "arn:${data.aws_partition.current.partition}:kms:::key/no-blanket-kms-access"
+        Resource = var.allow_access_to_all_kms_keys ? "arn:${data.aws_partition.current.partition}:kms:*:${local.account_id}:key/*" : "arn:${data.aws_partition.current.partition}:kms:::key/no-blanket-kms-access"
         Condition = {
-          StringEquals = {
+          StringLike = {
             "kms:ViaService" = "s3.*.amazonaws.com"
           }
         }
