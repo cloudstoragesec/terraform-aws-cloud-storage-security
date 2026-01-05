@@ -205,7 +205,7 @@ resource "aws_iam_policy" "remote_access_ec2_management" {
         Effect = "Allow"
         Condition = {
           StringEquals = {
-            "ec2:RequestTag/CloudStorageSecApplication" = "${var.application_id}"
+            "aws:RequestTag/CloudStorageSec-${var.application_id}": "Snapshot"
           }
         }
         Action = [
