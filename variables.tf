@@ -19,6 +19,19 @@ variable "email" {
   description = "The email address to be used for the initial admin account created for the CSS Console"
 }
 
+variable "initial_password" {
+  description = <<EOF
+    Optional permanent password to set for the initial admin account on first deployment.
+    Must satisfy the Cognito password policy (min 12 chars, upper, lower, number, symbol).
+    When set, the user will NOT be forced to change their password on first login.
+    When left as null (default), Cognito sends a temporary password via email and forces a change on first login.
+    NOTE: This value is sensitive. Store it in a secrets manager or use -var flags rather than committing it.
+  EOF
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
@@ -488,4 +501,108 @@ variable "log_retention_days" {
   description = "Number of days to retain logs"
   type        = number
   default     = 7
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# API AGENT PARAMETERS
+# These parameters are only required when deploy_api_agent is true.
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "deploy_api_agent" {
+  description = "Deploy an API Agent alongside the Console? If true, complete the API Agent configuration variables below."
+  type        = bool
+  default     = false
+}
+
+variable "api_agent_vpc" {
+  description = "The VPC in which to place the API Agent and its load balancer. Required when deploy_api_agent is true."
+  type        = string
+  default     = null
+}
+
+variable "api_agent_subnets" {
+  description = "At least 2 subnets in different Availability Zones for the API Agent tasks. Must belong to the api_agent_vpc. Required when deploy_api_agent is true."
+  type        = list(string)
+  default     = null
+}
+
+variable "api_agent_lb_subnets" {
+  description = "At least 2 subnets in different Availability Zones for the API Agent load balancer. Must match the AZs of api_agent_subnets. Required when deploy_api_agent is true."
+  type        = list(string)
+  default     = null
+}
+
+variable "api_agent_inbound_cidr" {
+  description = "The IP address range (CIDR) allowed to access the API Agent load balancer (e.g. 0.0.0.0/0 for open access). Required when deploy_api_agent is true."
+  type        = string
+  default     = ""
+}
+
+variable "api_agent_ssl_cert_arn" {
+  description = "ARN of an existing ACM certificate for the API Agent load balancer. Required when deploy_api_agent is true."
+  type        = string
+  default     = null
+}
+
+variable "api_agent_internet_facing_lb" {
+  description = "Should the API Agent load balancer be internet-facing? Set to false for an internal load balancer."
+  type        = bool
+  default     = true
+}
+
+variable "api_agent_allowed_origins" {
+  description = "(Optional) Comma-separated list of allowed origins for API Agent CORS (e.g. https://example.com). Leave blank to allow no origins."
+  type        = string
+  default     = ""
+}
+
+variable "api_agent_min_agents" {
+  description = "Minimum number of running API Agent tasks. Cannot be greater than api_agent_max_agents."
+  type        = number
+  default     = 1
+}
+
+variable "api_agent_max_agents" {
+  description = "Maximum number of running API Agent tasks. Cannot be less than api_agent_min_agents."
+  type        = number
+  default     = 3
+}
+
+variable "api_agent_cpu" {
+  description = "The number of CPU units for the API Agent (1024 = 1 vCPU)."
+  type        = number
+  default     = 1024
+}
+
+variable "api_agent_memory" {
+  description = "The amount of memory (in MB) for the API Agent (e.g. 3072 = 3 GB)."
+  type        = number
+  default     = 3072
+}
+
+variable "api_agent_disk_size" {
+  description = "Disk size (GB) for the API Agent container. Use a larger value (up to 200 GB) to enable scanning of larger files."
+  type        = number
+  default     = 20
+}
+
+variable "api_agent_scanning_engine" {
+  description = <<EOF
+    The scanning engine for the API Agent.
+    Select 'Default' to use the same engine as the global Agent setting.
+    Select 'All' to scan every file with ClamAV, Sophos, and Bitdefender simultaneously.
+    Valid values: `Default`, `ClamAV`, `Sophos`, `Bitdefender`, `All`
+  EOF
+  type        = string
+  default     = "Default"
+  validation {
+    condition     = contains(["Default", "ClamAV", "Sophos", "Bitdefender", "All"], var.api_agent_scanning_engine)
+    error_message = "`api_agent_scanning_engine` must be one of 'Default', 'ClamAV', 'Sophos', 'Bitdefender', 'All'."
+  }
+}
+
+variable "api_agent_enable_asynchronous_scanning" {
+  description = "(Optional) Enable asynchronous scanning for the API Agent. When enabled, scan requests are queued and processed asynchronously via SQS."
+  type        = bool
+  default     = false
 }
