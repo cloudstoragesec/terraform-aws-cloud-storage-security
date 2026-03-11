@@ -6,7 +6,7 @@ locals {
   image_version_agent     = "v9.06.000"
   ecr_account             = coalesce(var.ecr_account, local.is_gov ? "822167061992" : "564477214187")
   console_image_url       = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/console:${local.image_version_console}"
-  agent_image_url         = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
+  agent_image_url         = "${local.ecr_account}.dkr.ecr.<region>.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
   application_id          = aws_appconfig_application.agent.id
   account_id              = coalesce(var.aws_account, data.aws_caller_identity.current.account_id)
   aws_region              = data.aws_region.current.name
@@ -60,4 +60,10 @@ locals {
     var.product_listing,
     var.product_mode
   )
+  api_agent_scanning_engine = (
+    var.api_agent_scanning_engine == "Default" ? "Unknown" :
+    var.api_agent_scanning_engine == "All" ? "ClamAV, Sophos, Bitdefender" :
+    var.api_agent_scanning_engine
+  )
+  api_agent_multi_engine_scanning_mode = var.api_agent_scanning_engine == "All" ? "All" : "Disabled"
 }
