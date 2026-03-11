@@ -34,6 +34,8 @@ locals {
   cross_account_role_name       = "${var.service_name}RemoteRole-${local.application_id}"
   cross_account_policy_name     = "${var.service_name}RemotePolicy-${local.application_id}"
   cross_account_ec2_policy_name = "${var.service_name}EC2RemotePolicy-${local.application_id}"
+  organizations_role_name       = "${var.organizations_role_prefix}${local.application_id}"
+  organizations_policy_name     = "${var.organizations_policy_prefix}${local.application_id}"
   ssm_path_prefix               = "${var.parameter_prefix}-${local.application_id}"
   application_bucket_name       = "${var.application_bucket_prefix}-${local.application_id}"
   product_name = lookup(
