@@ -177,6 +177,29 @@ resource "aws_dynamodb_table" "linked_accounts" {
   )
 }
 
+resource "aws_dynamodb_table" "linked_organizations" {
+  name         = "${local.application_id}.LinkedOrganizations"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "OrganizationId"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+
+  attribute {
+    name = "OrganizationId"
+    type = "S"
+  }
+
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
+
 resource "aws_dynamodb_table" "work_docs_connections" {
   name         = "${local.application_id}.WorkDocsConnections"
   billing_mode = "PAY_PER_REQUEST"
