@@ -9,7 +9,7 @@ locals {
   agent_image_url         = "${local.ecr_account}.dkr.ecr.<region>.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
   application_id          = aws_appconfig_application.agent.id
   account_id              = coalesce(var.aws_account, data.aws_caller_identity.current.account_id)
-  aws_region              = data.aws_region.current.name
+  aws_region              = data.aws_region.current.id
   is_gov                  = data.aws_partition.current.partition == "aws-us-gov"
   console_url             = "${var.configure_load_balancer && var.existing_target_group_arn == null}" ? "https://${aws_lb.main[0].dns_name}" : "https://${local.account_id}-${local.application_id}.cloudstoragesecapp.com"
   use_proxy               = var.proxy_host != null
