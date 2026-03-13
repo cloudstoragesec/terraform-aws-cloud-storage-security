@@ -11,6 +11,7 @@ output "organizations_role_name" {
 output "external_id" {
   description = "The External ID used for this role (for reference)."
   value       = var.external_id
+  sensitive   = true
 }
 
 output "stackset_id" {

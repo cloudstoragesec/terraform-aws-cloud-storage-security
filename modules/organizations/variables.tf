@@ -6,6 +6,7 @@ variable "application_id" {
 variable "external_id" {
   description = "The unique External ID provided by the Cloud Storage Scan console when linking an organization"
   type        = string
+  sensitive   = true
 }
 
 variable "primary_account_id" {
@@ -71,6 +72,7 @@ variable "linked_account_external_id" {
   description = "The External ID for linked account cross-account role assumption. Required when deploying StackSet."
   type        = string
   default     = null
+  sensitive   = true
 }
 
 variable "allow_access_to_all_kms_keys" {
