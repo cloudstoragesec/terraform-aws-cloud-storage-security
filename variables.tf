@@ -420,6 +420,18 @@ variable "api_request_scaling_policy_prefix" {
   default     = "ApiServiceRequestScaling"
 }
 
+variable "organizations_role_prefix" {
+  description = "Prefix for the AWS Organizations Integration Role."
+  type        = string
+  default     = "CloudStorageSecOrganizationsRole-"
+}
+
+variable "organizations_policy_prefix" {
+  description = "Prefix for the AWS Organizations Integration Policy."
+  type        = string
+  default     = "CloudStorageSecOrganizationsPolicy-"
+}
+
 variable "set_log_group_retention_policy" {
   description = "Whether we should set a retention policy on CSS created log groups. AWS Landing Zone Accelerator environments must set this to false."
   type        = bool
