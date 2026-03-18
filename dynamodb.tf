@@ -1,7 +1,6 @@
 resource "aws_dynamodb_table" "buckets" {
   name         = "${local.application_id}.Buckets"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Name"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -9,6 +8,11 @@ resource "aws_dynamodb_table" "buckets" {
   attribute {
     name = "Name"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Name"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -24,8 +28,6 @@ resource "aws_dynamodb_table" "buckets" {
 resource "aws_dynamodb_table" "dashboard_reports" {
   name         = "${local.application_id}.DashboardReports"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -38,6 +40,16 @@ resource "aws_dynamodb_table" "dashboard_reports" {
   attribute {
     name = "SK"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
@@ -53,7 +65,6 @@ resource "aws_dynamodb_table" "dashboard_reports" {
 resource "aws_dynamodb_table" "efs_volumes" {
   name         = "${local.application_id}.EfsVolumes"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -61,6 +72,11 @@ resource "aws_dynamodb_table" "efs_volumes" {
   attribute {
     name = "Id"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Id"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -76,7 +92,6 @@ resource "aws_dynamodb_table" "efs_volumes" {
 resource "aws_dynamodb_table" "ebs_volumes" {
   name         = "${local.application_id}.EbsVolumes"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -84,6 +99,11 @@ resource "aws_dynamodb_table" "ebs_volumes" {
   attribute {
     name = "Id"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Id"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -99,7 +119,6 @@ resource "aws_dynamodb_table" "ebs_volumes" {
 resource "aws_dynamodb_table" "subnets" {
   name         = "${local.application_id}.Subnets"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Region"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -107,6 +126,11 @@ resource "aws_dynamodb_table" "subnets" {
   attribute {
     name = "Region"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Region"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -122,7 +146,6 @@ resource "aws_dynamodb_table" "subnets" {
 resource "aws_dynamodb_table" "console" {
   name         = "${local.application_id}.Console"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "ApplicationId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -130,6 +153,11 @@ resource "aws_dynamodb_table" "console" {
   attribute {
     name = "ApplicationId"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "ApplicationId"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -145,7 +173,6 @@ resource "aws_dynamodb_table" "console" {
 resource "aws_dynamodb_table" "linked_accounts" {
   name         = "${local.application_id}.LinkedAccounts"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "AccountId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -158,6 +185,11 @@ resource "aws_dynamodb_table" "linked_accounts" {
   attribute {
     name = "CloudProvider"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "AccountId"
+    key_type       = "HASH"
   }
 
   global_secondary_index {
@@ -180,7 +212,6 @@ resource "aws_dynamodb_table" "linked_accounts" {
 resource "aws_dynamodb_table" "work_docs_connections" {
   name         = "${local.application_id}.WorkDocsConnections"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "OrganizationId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -188,6 +219,11 @@ resource "aws_dynamodb_table" "work_docs_connections" {
   attribute {
     name = "OrganizationId"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "OrganizationId"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -203,7 +239,6 @@ resource "aws_dynamodb_table" "work_docs_connections" {
 resource "aws_dynamodb_table" "groups" {
   name         = "${local.application_id}.Groups"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -211,6 +246,11 @@ resource "aws_dynamodb_table" "groups" {
   attribute {
     name = "Id"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Id"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -226,7 +266,6 @@ resource "aws_dynamodb_table" "groups" {
 resource "aws_dynamodb_table" "visible_groups" {
   name         = "${local.application_id}.VisibleGroups"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Username"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -234,6 +273,11 @@ resource "aws_dynamodb_table" "visible_groups" {
   attribute {
     name = "Username"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Username"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -249,7 +293,6 @@ resource "aws_dynamodb_table" "visible_groups" {
 resource "aws_dynamodb_table" "scheduled_scans" {
   name         = "${local.application_id}.ScheduledScans"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "ScheduleName"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -257,6 +300,11 @@ resource "aws_dynamodb_table" "scheduled_scans" {
   attribute {
     name = "ScheduleName"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "ScheduleName"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -272,7 +320,6 @@ resource "aws_dynamodb_table" "scheduled_scans" {
 resource "aws_dynamodb_table" "scheduled_classifications" {
   name         = "${local.application_id}.ScheduledClassifications"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Name"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -280,6 +327,11 @@ resource "aws_dynamodb_table" "scheduled_classifications" {
   attribute {
     name = "Name"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Name"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -295,7 +347,6 @@ resource "aws_dynamodb_table" "scheduled_classifications" {
 resource "aws_dynamodb_table" "deployment_status" {
   name         = "${local.application_id}.DeploymentStatus"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Region"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -303,6 +354,11 @@ resource "aws_dynamodb_table" "deployment_status" {
   attribute {
     name = "Region"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Region"
+    key_type       = "HASH"
   }
 
   server_side_encryption {
@@ -318,8 +374,6 @@ resource "aws_dynamodb_table" "deployment_status" {
 resource "aws_dynamodb_table" "proactive_monitor_statuses" {
   name         = "${local.application_id}.ProactiveMonitorStatuses"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Name"
-  range_key    = "Region"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -332,6 +386,16 @@ resource "aws_dynamodb_table" "proactive_monitor_statuses" {
   attribute {
     name = "Region"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Name"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Region"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
@@ -347,8 +411,6 @@ resource "aws_dynamodb_table" "proactive_monitor_statuses" {
 resource "aws_dynamodb_table" "storage_analysis" {
   name         = "${local.application_id}.StorageAnalysis"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "BucketName"
-  range_key    = "ScanDate"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -366,6 +428,16 @@ resource "aws_dynamodb_table" "storage_analysis" {
   attribute {
     name = "TrackerFlag"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "BucketName"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "ScanDate"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -388,8 +460,6 @@ resource "aws_dynamodb_table" "storage_analysis" {
 resource "aws_dynamodb_table" "file_count" {
   name         = "${local.application_id}.FileCount"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "ScanDate"
-  range_key    = "Guid"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -407,6 +477,16 @@ resource "aws_dynamodb_table" "file_count" {
   attribute {
     name = "TrackerFlag"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "ScanDate"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Guid"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -429,7 +509,6 @@ resource "aws_dynamodb_table" "file_count" {
 resource "aws_dynamodb_table" "agents" {
   name         = "${local.application_id}.Agents"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "AgentId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -447,6 +526,11 @@ resource "aws_dynamodb_table" "agents" {
   attribute {
     name = "Active"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "AgentId"
+    key_type       = "HASH"
   }
 
   global_secondary_index {
@@ -469,8 +553,6 @@ resource "aws_dynamodb_table" "agents" {
 resource "aws_dynamodb_table" "agent_data" {
   name         = "${local.application_id}.AgentData"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "AgentId"
-  range_key    = "Tstp"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -488,6 +570,16 @@ resource "aws_dynamodb_table" "agent_data" {
   attribute {
     name = "TrackerFlag"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "AgentId"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Tstp"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -510,8 +602,6 @@ resource "aws_dynamodb_table" "agent_data" {
 resource "aws_dynamodb_table" "bucket_scan_statistics" {
   name         = "${local.application_id}.BucketScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "BucketName"
-  range_key    = "Date"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -529,6 +619,16 @@ resource "aws_dynamodb_table" "bucket_scan_statistics" {
   attribute {
     name = "TrackerFlag"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "BucketName"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -551,8 +651,6 @@ resource "aws_dynamodb_table" "bucket_scan_statistics" {
 resource "aws_dynamodb_table" "bucket_classification_statistics" {
   name         = "${local.application_id}.BucketClassificationStatistics"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "BucketName"
-  range_key    = "Date"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -565,6 +663,16 @@ resource "aws_dynamodb_table" "bucket_classification_statistics" {
   attribute {
     name = "Date"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "BucketName"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -586,8 +694,6 @@ resource "aws_dynamodb_table" "bucket_classification_statistics" {
 resource "aws_dynamodb_table" "sophos_tap_data" {
   name         = "${local.application_id}.SophosTapData"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Date"
-  range_key    = "Tstp"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -602,6 +708,16 @@ resource "aws_dynamodb_table" "sophos_tap_data" {
     type = "N"
   }
 
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Tstp"
+    key_type       = "RANGE"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
@@ -611,11 +727,10 @@ resource "aws_dynamodb_table" "sophos_tap_data" {
     var.custom_resource_tags
   )
 }
+
 resource "aws_dynamodb_table" "daily_scan_statistics" {
   name         = "${local.application_id}.DailyScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "AccountId"
-  range_key    = "Date"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -629,6 +744,7 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
     name = "Date"
     type = "S"
   }
+
   attribute {
     name = "ScanType"
     type = "S"
@@ -638,9 +754,20 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
     name = "ScanEngine"
     type = "S"
   }
+
   attribute {
     name = "TrackerFlag"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "AccountId"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -649,6 +776,7 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
     range_key       = "ScanEngine"
     projection_type = "ALL"
   }
+
   global_secondary_index {
     name            = "LastRecordDate"
     hash_key        = "TrackerFlag"
@@ -669,8 +797,6 @@ resource "aws_dynamodb_table" "daily_scan_statistics" {
 resource "aws_dynamodb_table" "monthly_scan_statistics" {
   name         = "${local.application_id}.MonthlyScanStatistics"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "AccountId"
-  range_key    = "Date"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -684,6 +810,7 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
     name = "Date"
     type = "S"
   }
+
   attribute {
     name = "TrackerFlag"
     type = "N"
@@ -693,9 +820,20 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
     name = "ScanType"
     type = "S"
   }
+
   attribute {
     name = "ScanEngine"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "AccountId"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -704,6 +842,7 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
     range_key       = "ScanEngine"
     projection_type = "ALL"
   }
+
   global_secondary_index {
     name            = "LastRecordDate"
     hash_key        = "TrackerFlag"
@@ -724,8 +863,6 @@ resource "aws_dynamodb_table" "monthly_scan_statistics" {
 resource "aws_dynamodb_table" "problem_files" {
   name         = "${local.application_id}.ProblemFiles"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Guid"
-  range_key    = "DateScanned"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -739,13 +876,25 @@ resource "aws_dynamodb_table" "problem_files" {
     name = "DateScanned"
     type = "S"
   }
+
   attribute {
     name = "AccountId"
     type = "S"
   }
+
   attribute {
     name = "AccountIdResult"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Guid"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "DateScanned"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -775,8 +924,6 @@ resource "aws_dynamodb_table" "problem_files" {
 resource "aws_dynamodb_table" "classification_results" {
   name         = "${local.application_id}.ClassificationResults"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Date"
-  range_key    = "Guid"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -785,21 +932,35 @@ resource "aws_dynamodb_table" "classification_results" {
     name = "Date"
     type = "S"
   }
+
   attribute {
     name = "DateTime"
     type = "S"
   }
+
   attribute {
     name = "Guid"
     type = "S"
   }
+
   attribute {
     name = "AccountId"
     type = "S"
   }
+
   attribute {
     name = "AccountIdResultType"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Guid"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -829,8 +990,6 @@ resource "aws_dynamodb_table" "classification_results" {
 resource "aws_dynamodb_table" "allowed_infected_files" {
   name         = "${local.application_id}.AllowedInfectedFiles"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "BucketAndKey"
-  range_key    = "VirusName"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -844,13 +1003,25 @@ resource "aws_dynamodb_table" "allowed_infected_files" {
     name = "VirusName"
     type = "S"
   }
+
   attribute {
     name = "DateAdded"
     type = "S"
   }
+
   attribute {
     name = "Active"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "BucketAndKey"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "VirusName"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -873,8 +1044,6 @@ resource "aws_dynamodb_table" "allowed_infected_files" {
 resource "aws_dynamodb_table" "group_membership" {
   name         = "${local.application_id}.GroupMembership"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "ParentGroupId"
-  range_key    = "ChildGroupId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -887,6 +1056,16 @@ resource "aws_dynamodb_table" "group_membership" {
   attribute {
     name = "ChildGroupId"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "ParentGroupId"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "ChildGroupId"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
@@ -902,8 +1081,6 @@ resource "aws_dynamodb_table" "group_membership" {
 resource "aws_dynamodb_table" "jobs" {
   name         = "${local.application_id}.Jobs"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Type"
-  range_key    = "Date"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -912,21 +1089,35 @@ resource "aws_dynamodb_table" "jobs" {
     name = "Type"
     type = "S"
   }
+
   attribute {
     name = "Date"
     type = "S"
   }
+
   attribute {
     name = "EndDate"
     type = "S"
   }
+
   attribute {
     name = "Status"
     type = "N"
   }
+
   attribute {
     name = "ParentJobId"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Type"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -934,12 +1125,14 @@ resource "aws_dynamodb_table" "jobs" {
     hash_key        = "Status"
     projection_type = "ALL"
   }
+
   global_secondary_index {
     name            = "TypeAndParentJobId"
     hash_key        = "Type"
     range_key       = "ParentJobId"
     projection_type = "ALL"
   }
+
   global_secondary_index {
     name            = "TypeAndEndDate"
     hash_key        = "Type"
@@ -960,8 +1153,6 @@ resource "aws_dynamodb_table" "jobs" {
 resource "aws_dynamodb_table" "linked_account_membership" {
   name         = "${local.application_id}.LinkedAccountMembership"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "GroupId"
-  range_key    = "AccountId"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -974,6 +1165,16 @@ resource "aws_dynamodb_table" "linked_account_membership" {
   attribute {
     name = "AccountId"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "GroupId"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "AccountId"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
@@ -989,8 +1190,6 @@ resource "aws_dynamodb_table" "linked_account_membership" {
 resource "aws_dynamodb_table" "license_file_history" {
   name         = "${local.application_id}.LicenseFileHistory"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Type"
-  range_key    = "DateApplied"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
@@ -1003,6 +1202,16 @@ resource "aws_dynamodb_table" "license_file_history" {
   attribute {
     name = "DateApplied"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "Type"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "DateApplied"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
@@ -1018,8 +1227,6 @@ resource "aws_dynamodb_table" "license_file_history" {
 resource "aws_dynamodb_table" "notifications" {
   name         = "${local.application_id}.Notifications"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Guid"
-  range_key    = "Date"
 
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
@@ -1034,13 +1241,25 @@ resource "aws_dynamodb_table" "notifications" {
     name = "Date"
     type = "S"
   }
+
   attribute {
     name = "AccountId"
     type = "S"
   }
+
   attribute {
     name = "Read"
     type = "N"
+  }
+
+  key_schema {
+    attribute_name = "Guid"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "Date"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -1049,6 +1268,7 @@ resource "aws_dynamodb_table" "notifications" {
     range_key       = "Date"
     projection_type = "ALL"
   }
+
   global_secondary_index {
     name            = "ReadAndDate"
     hash_key        = "Read"
@@ -1069,11 +1289,10 @@ resource "aws_dynamodb_table" "notifications" {
 resource "aws_dynamodb_table" "email" {
   name         = "${local.application_id}.Email"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
@@ -1083,10 +1302,22 @@ resource "aws_dynamodb_table" "email" {
     name = "SK"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1095,44 +1326,62 @@ resource "aws_dynamodb_table" "email" {
 resource "aws_dynamodb_table" "fsx_volumes" {
   name         = "${local.application_id}.FsxVolumes"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "Id"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "Id"
+    key_type       = "HASH"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
 }
 
-
 resource "aws_dynamodb_table" "job_networking" {
   name         = "${local.application_id}.JobNetworking"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
   }
+
   attribute {
     name = "SK"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1141,18 +1390,25 @@ resource "aws_dynamodb_table" "job_networking" {
 resource "aws_dynamodb_table" "classification_custom_rules" {
   name         = "${local.application_id}.ClassificationCustomRules"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "Id"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "Id"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "Id"
+    key_type       = "HASH"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1161,37 +1417,52 @@ resource "aws_dynamodb_table" "classification_custom_rules" {
 resource "aws_dynamodb_table" "azure" {
   name         = "${local.application_id}.Azure"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
   }
+
   attribute {
     name = "SK"
     type = "S"
   }
+
   attribute {
     name = "GSI1PK"
     type = "S"
   }
+
   attribute {
     name = "GSI1SK"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
+  }
+
   global_secondary_index {
     name            = "GSI1"
     hash_key        = "GSI1PK"
     range_key       = "GSI1SK"
     projection_type = "ALL"
   }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1200,23 +1471,35 @@ resource "aws_dynamodb_table" "azure" {
 resource "aws_dynamodb_table" "gcp" {
   name         = "${local.application_id}.GCP"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
   }
+
   attribute {
     name = "SK"
     type = "S"
   }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
+  }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1225,26 +1508,38 @@ resource "aws_dynamodb_table" "gcp" {
 resource "aws_dynamodb_table" "malware_detection" {
   name         = "${local.application_id}.MalwareDetection"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
   }
+
   attribute {
     name = "SK"
     type = "S"
   }
+
   attribute {
     name = "GSI1PK"
     type = "S"
   }
+
   attribute {
     name = "GSI1SK"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
   }
 
   global_secondary_index {
@@ -1253,10 +1548,12 @@ resource "aws_dynamodb_table" "malware_detection" {
     range_key       = "GSI1SK"
     projection_type = "ALL"
   }
+
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
@@ -1265,24 +1562,35 @@ resource "aws_dynamodb_table" "malware_detection" {
 resource "aws_dynamodb_table" "scan_requests" {
   name         = "${local.application_id}.ScanRequests"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "PK"
-  range_key    = "SK"
   point_in_time_recovery {
     enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
   }
+
   attribute {
     name = "PK"
     type = "S"
   }
+
   attribute {
     name = "SK"
     type = "S"
+  }
+
+  key_schema {
+    attribute_name = "PK"
+    key_type       = "HASH"
+  }
+
+  key_schema {
+    attribute_name = "SK"
+    key_type       = "RANGE"
   }
 
   server_side_encryption {
     enabled     = local.use_dynamo_cmk
     kms_key_arn = var.dynamo_cmk_key_arn
   }
+
   tags = merge({ (local.application_tag_key) = "DynamoTable" },
     var.custom_resource_tags
   )
