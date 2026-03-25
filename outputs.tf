@@ -67,3 +67,18 @@ output "cross_account_event_bridge_policy_name" {
   description = "Cross-Account Event Bridge Scanning Policy Name"
   value       = aws_iam_policy.event_bridge.name
 }
+
+output "console_security_group_id" {
+  description = "ID of the Console security group (used when load balancer is not configured)"
+  value       = var.configure_load_balancer ? null : aws_security_group.console[0].id
+}
+
+output "console_with_load_balancer_security_group_id" {
+  description = "ID of the Console security group (used when load balancer is configured)"
+  value       = var.configure_load_balancer ? aws_security_group.console_with_load_balancer[0].id : null
+}
+
+output "load_balancer_security_group_id" {
+  description = "ID of the Load Balancer security group (used when load balancer is configured)"
+  value       = var.configure_load_balancer ? aws_security_group.load_balancer[0].id : null
+}
