@@ -85,6 +85,8 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "FSX_SCAN_SECURITY_GROUP_NAME", "value" : "${var.service_name}FSxScan-${local.application_id}" },
         { "name" : "CROSS_ACCOUNT_ROLE_NAME", "value" : local.cross_account_role_name },
         { "name" : "CROSS_ACCOUNT_POLICY_NAME", "value" : local.cross_account_policy_name },
+        { "name" : "ORGANIZATIONS_ROLE_NAME", "value" : local.organizations_role_name },
+        { "name" : "ORGANIZATIONS_POLICY_NAME", "value" : local.organizations_policy_name },
         { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_ROLE_NAME", "value" : local.event_bridge_role_name },
         { "name" : "CROSS_ACCOUNT_EVENT_BRIDGE_POLICY_NAME", "value" : aws_iam_policy.event_bridge.name },
         { "name" : "CUSTOM_RESOURCE_TAGS", "value" : join(",", [for key, value in var.custom_resource_tags : "${key}=${value}"]) },
