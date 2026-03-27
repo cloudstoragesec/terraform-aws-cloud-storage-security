@@ -723,11 +723,15 @@ resource "aws_iam_role" "execution" {
       },
     ]
   })
-  managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
 
   tags = merge({ (local.application_tag_key) = "ExecutionRole" },
     var.custom_resource_tags
   )
+}
+
+resource "aws_iam_role_policy_attachment" "execution" {
+  role       = aws_iam_role.execution.name
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role" "ec2_container" {
@@ -745,11 +749,15 @@ resource "aws_iam_role" "ec2_container" {
       },
     ]
   })
-  managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]
 
   tags = merge({ (local.application_tag_key) = "Ec2ContainerRole" },
     var.custom_resource_tags
   )
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_container" {
+  role       = aws_iam_role.ec2_container.name
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_role_policy" "ec2_container" {
