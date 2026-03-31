@@ -56,6 +56,13 @@ resource "aws_security_group" "console_with_load_balancer" {
     protocol        = "tcp"
     security_groups = ["${aws_security_group.load_balancer[0].id}"]
   }
+  ingress {
+    description = "Allow ECS to communicate ECR Endpoints"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    self        = true
+  }
 
   egress {
     protocol    = "-1"
