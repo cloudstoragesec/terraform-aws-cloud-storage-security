@@ -75,6 +75,33 @@ resource "aws_security_group" "console_with_load_balancer" {
   }
 }
 
+resource "aws_security_group" "vpc_endpoints" {
+  count       = var.create_vpc_endpoints ? 1 : 0
+  name        = "${var.service_name}VpcEndpointsSecurityGroup-${local.application_id}"
+  description = "Allow inbound 443 from within the VPC to Interface VPC Endpoints"
+  vpc_id      = var.vpc
+
+  ingress {
+    description = "HTTPS from VPC CIDR to Interface Endpoints"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.selected[0].cidr_block]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Default egress"
+  }
+
+  tags = merge({ (local.application_tag_key) = "VpcEndpointsSecurityGroup" },
+    var.custom_resource_tags
+  )
+}
+
 resource "aws_security_group" "load_balancer" {
   count       = var.configure_load_balancer ? 1 : 0
   name        = "${var.service_name}LoadBalancerSecurityGroup-${local.application_id}"

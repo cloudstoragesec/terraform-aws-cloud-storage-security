@@ -501,3 +501,24 @@ variable "log_retention_days" {
   type        = number
   default     = 7
 }
+
+variable "create_vpc_endpoints" {
+  description = <<EOF
+    Set to true to create Interface and Gateway VPC Endpoints for the AWS services used by CSS
+    (ECR, SSM, SQS, SNS, CloudWatch Logs, AppConfig, Cognito, KMS, Secrets Manager, STS, S3, DynamoDB).
+    Use this when the Console and Agents run in private subnets without internet access.
+    A dedicated endpoint security group allowing inbound 443 from the VPC CIDR will be created automatically.
+  EOF
+  type        = bool
+  default     = false
+}
+
+variable "vpc_endpoint_route_table_ids" {
+  description = <<EOF
+    List of route table IDs to associate with the S3 and DynamoDB Gateway VPC Endpoints.
+    Required when `create_vpc_endpoints` is true and you want Gateway endpoints for S3 and DynamoDB.
+    Leave empty to skip Gateway endpoint creation.
+  EOF
+  type        = list(string)
+  default     = []
+}
