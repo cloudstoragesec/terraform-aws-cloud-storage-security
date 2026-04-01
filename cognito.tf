@@ -188,13 +188,10 @@ resource "aws_cognito_user" "admin" {
   username                 = var.username
   desired_delivery_mediums = ["EMAIL"]
   password                 = var.initial_password
-  attributes = merge(
-    {
-      email          = var.email
-      email_verified = "true"
-    },
-    var.deploy_api_agent ? { "custom:aws_account_id" = local.account_id } : {}
-  )
+  attributes = {
+    email          = var.email
+    email_verified = "true"
+  }
   lifecycle {
     ignore_changes = [
       attributes,
