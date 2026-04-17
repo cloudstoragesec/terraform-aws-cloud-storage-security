@@ -62,4 +62,10 @@ locals {
     var.product_listing,
     var.product_mode
   )
+  api_agent_scanning_engine = (
+    var.api_agent_scanning_engine == "Default" ? "Unknown" :
+    var.api_agent_scanning_engine == "All" ? "ClamAV, Sophos, Bitdefender" :
+    var.api_agent_scanning_engine
+  )
+  api_agent_multi_engine_scanning_mode = var.api_agent_scanning_engine == "All" ? "All" : "Disabled"
 }
