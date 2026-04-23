@@ -463,3 +463,144 @@ resource "aws_ssm_parameter" "s3_kms_key_id" {
   type  = "String"
   value = var.s3_cmk_key_arn
 }
+
+resource "aws_ssm_parameter" "deploy_api_agent" {
+  name  = "/${local.ssm_path_prefix}/Config/DeployApiAgent"
+  type  = "String"
+  value = var.deploy_api_agent ? "Yes" : "No"
+}
+
+resource "aws_ssm_parameter" "api_agent_vpc" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentVpc"
+  type  = "String"
+  value = var.api_agent_vpc
+}
+
+resource "aws_ssm_parameter" "api_agent_subnets" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentSubnets"
+  type  = "String"
+  value = join(",", var.api_agent_subnets)
+}
+
+resource "aws_ssm_parameter" "api_agent_lb_subnets" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentLBSubnets"
+  type  = "String"
+  value = join(",", var.api_agent_lb_subnets)
+}
+
+resource "aws_ssm_parameter" "api_agent_inbound_cidr" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentInboundCidr"
+  type  = "String"
+  value = var.api_agent_inbound_cidr
+}
+
+resource "aws_ssm_parameter" "api_agent_ssl_cert_arn" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentSslCertArn"
+  type  = "String"
+  value = var.api_agent_ssl_cert_arn
+}
+
+resource "aws_ssm_parameter" "api_agent_internet_facing_lb" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentInternetFacingLB"
+  type  = "String"
+  value = var.api_agent_internet_facing_lb
+}
+
+resource "aws_ssm_parameter" "api_agent_allowed_origins" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentAllowedOrigins"
+  type  = "String"
+  value = var.api_agent_allowed_origins != "" ? var.api_agent_allowed_origins : "none"
+}
+
+resource "aws_ssm_parameter" "api_agent_min_agents" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentMinAgents"
+  type  = "String"
+  value = var.api_agent_min_agents
+  lifecycle {
+    ignore_changes = [value]
+    precondition {
+      condition     = var.api_agent_min_agents <= var.api_agent_max_agents
+      error_message = "`api_agent_min_agents` cannot be greater than `api_agent_max_agents`"
+    }
+  }
+}
+
+resource "aws_ssm_parameter" "api_agent_max_agents" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentMaxAgents"
+  type  = "String"
+  value = var.api_agent_max_agents
+  lifecycle {
+    ignore_changes = [value]
+    precondition {
+      condition     = var.api_agent_max_agents >= var.api_agent_min_agents
+      error_message = "`api_agent_max_agents` cannot be less than `api_agent_min_agents`"
+    }
+  }
+}
+
+resource "aws_ssm_parameter" "api_agent_cpu" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentCpu"
+  type  = "String"
+  value = var.api_agent_cpu
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "api_agent_memory" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentMemory"
+  type  = "String"
+  value = var.api_agent_memory
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "api_agent_disk_size" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentDiskSize"
+  type  = "String"
+  value = var.api_agent_disk_size
+  lifecycle {
+    ignore_changes = [value]
+    precondition {
+      condition     = var.api_agent_disk_size >= 20 && var.api_agent_disk_size <= 200
+      error_message = "`api_agent_disk_size` must be between 20 and 200 GB"
+    }
+  }
+}
+
+resource "aws_ssm_parameter" "api_agent_scanning_engine" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentScanningEngine"
+  type  = "String"
+  value = local.api_agent_scanning_engine
+}
+
+resource "aws_ssm_parameter" "api_agent_multi_engine_scanning_mode" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentMultiEngineScanningMode"
+  type  = "String"
+  value = local.api_agent_multi_engine_scanning_mode
+}
+
+resource "aws_ssm_parameter" "api_agent_enable_asynchronous_scanning" {
+  count = var.deploy_api_agent ? 1 : 0
+  name  = "/${local.ssm_path_prefix}/Config/ApiAgentEnableAsynchronousScanning"
+  type  = "String"
+  value = var.api_agent_enable_asynchronous_scanning
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
