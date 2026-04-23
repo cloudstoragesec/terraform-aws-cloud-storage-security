@@ -586,9 +586,6 @@ resource "aws_ssm_parameter" "api_agent_scanning_engine" {
   name  = "/${local.ssm_path_prefix}/Config/ApiAgentScanningEngine"
   type  = "String"
   value = local.api_agent_scanning_engine
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "api_agent_multi_engine_scanning_mode" {
@@ -596,9 +593,6 @@ resource "aws_ssm_parameter" "api_agent_multi_engine_scanning_mode" {
   name  = "/${local.ssm_path_prefix}/Config/ApiAgentMultiEngineScanningMode"
   type  = "String"
   value = local.api_agent_multi_engine_scanning_mode
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "api_agent_enable_asynchronous_scanning" {
