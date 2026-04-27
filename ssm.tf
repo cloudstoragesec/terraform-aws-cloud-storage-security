@@ -525,7 +525,6 @@ resource "aws_ssm_parameter" "api_agent_min_agents" {
   type  = "String"
   value = var.api_agent_min_agents
   lifecycle {
-    ignore_changes = [value]
     precondition {
       condition     = var.api_agent_min_agents <= var.api_agent_max_agents
       error_message = "`api_agent_min_agents` cannot be greater than `api_agent_max_agents`"
@@ -539,7 +538,6 @@ resource "aws_ssm_parameter" "api_agent_max_agents" {
   type  = "String"
   value = var.api_agent_max_agents
   lifecycle {
-    ignore_changes = [value]
     precondition {
       condition     = var.api_agent_max_agents >= var.api_agent_min_agents
       error_message = "`api_agent_max_agents` cannot be less than `api_agent_min_agents`"
@@ -552,9 +550,6 @@ resource "aws_ssm_parameter" "api_agent_cpu" {
   name  = "/${local.ssm_path_prefix}/Config/ApiAgentCpu"
   type  = "String"
   value = var.api_agent_cpu
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "api_agent_memory" {
@@ -562,9 +557,6 @@ resource "aws_ssm_parameter" "api_agent_memory" {
   name  = "/${local.ssm_path_prefix}/Config/ApiAgentMemory"
   type  = "String"
   value = var.api_agent_memory
-  lifecycle {
-    ignore_changes = [value]
-  }
 }
 
 resource "aws_ssm_parameter" "api_agent_disk_size" {
@@ -573,7 +565,6 @@ resource "aws_ssm_parameter" "api_agent_disk_size" {
   type  = "String"
   value = var.api_agent_disk_size
   lifecycle {
-    ignore_changes = [value]
     precondition {
       condition     = var.api_agent_disk_size >= 20 && var.api_agent_disk_size <= 200
       error_message = "`api_agent_disk_size` must be between 20 and 200 GB"
@@ -600,7 +591,4 @@ resource "aws_ssm_parameter" "api_agent_enable_asynchronous_scanning" {
   name  = "/${local.ssm_path_prefix}/Config/ApiAgentEnableAsynchronousScanning"
   type  = "String"
   value = var.api_agent_enable_asynchronous_scanning
-  lifecycle {
-    ignore_changes = [value]
-  }
 }

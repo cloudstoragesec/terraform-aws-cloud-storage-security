@@ -11,6 +11,7 @@ resource "aws_ecs_service" "main" {
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.console.arn
   desired_count                      = 1
+  force_new_deployment               = var.force_new_deployment
   deployment_maximum_percent         = "200"
   deployment_minimum_healthy_percent = "100"
   launch_type                        = "FARGATE"
@@ -38,6 +39,7 @@ resource "aws_ecs_service" "with_load_balancer" {
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.console.arn
   desired_count                      = 1
+  force_new_deployment               = var.force_new_deployment
   deployment_maximum_percent         = "200"
   deployment_minimum_healthy_percent = "100"
   launch_type                        = "FARGATE"
