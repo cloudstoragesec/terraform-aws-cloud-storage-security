@@ -11,7 +11,6 @@ resource "aws_ecs_service" "main" {
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.console.arn
   desired_count                      = 1
-  force_new_deployment               = var.force_new_deployment
   deployment_maximum_percent         = "200"
   deployment_minimum_healthy_percent = "100"
   launch_type                        = "FARGATE"
@@ -39,7 +38,6 @@ resource "aws_ecs_service" "with_load_balancer" {
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.console.arn
   desired_count                      = 1
-  force_new_deployment               = var.force_new_deployment
   deployment_maximum_percent         = "200"
   deployment_minimum_healthy_percent = "100"
   launch_type                        = "FARGATE"
@@ -141,5 +139,24 @@ resource "aws_lb" "main" {
       condition     = !local.use_lb_subnets || var.lb_subnet_a_id != var.lb_subnet_b_id
       error_message = "Load Balancer Subnet A and Subnet B must be different"
     }
+  }
+}
+
+resource "terraform_data" "console_restart_on_ssm_change" {
+  count = var.deploy_api_agent ? 1 : 0
+
+  triggers_replace = [
+    aws_ssm_parameter.api_agent_scanning_engine[0].value,
+    aws_ssm_parameter.api_agent_multi_engine_scanning_mode[0].value,
+    aws_ssm_parameter.api_agent_min_agents[0].value,
+    aws_ssm_parameter.api_agent_max_agents[0].value,
+    aws_ssm_parameter.api_agent_cpu[0].value,
+    aws_ssm_parameter.api_agent_memory[0].value,
+    aws_ssm_parameter.api_agent_disk_size[0].value,
+    aws_ssm_parameter.api_agent_enable_asynchronous_scanning[0].value,
+  ]
+
+  provisioner "local-exec" {
+    command = "aws ecs update-service --cluster ${aws_ecs_cluster.main.name} --service ${local.ecs_service_name} --force-new-deployment --region ${local.aws_region}"
   }
 }

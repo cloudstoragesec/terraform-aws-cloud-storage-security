@@ -306,12 +306,6 @@ variable "console_auto_assign_public_ip" {
   default     = true
 }
 
-variable "force_new_deployment" {
-  description = "Force a new deployment of the Console ECS service on every apply. Set to true after changing SSM-backed configuration (e.g. api_agent_scanning_engine) to restart the Console and propagate the new values."
-  type        = bool
-  default     = false
-}
-
 variable "agent_auto_assign_public_ip" {
   description = <<EOF
     Should public IPs be assigned to the Agents? 
