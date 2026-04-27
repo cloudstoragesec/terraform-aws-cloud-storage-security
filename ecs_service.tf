@@ -141,3 +141,22 @@ resource "aws_lb" "main" {
     }
   }
 }
+
+resource "terraform_data" "console_restart_on_ssm_change" {
+  count = var.deploy_api_agent ? 1 : 0
+
+  triggers_replace = [
+    aws_ssm_parameter.api_agent_scanning_engine[0].value,
+    aws_ssm_parameter.api_agent_multi_engine_scanning_mode[0].value,
+    aws_ssm_parameter.api_agent_min_agents[0].value,
+    aws_ssm_parameter.api_agent_max_agents[0].value,
+    aws_ssm_parameter.api_agent_cpu[0].value,
+    aws_ssm_parameter.api_agent_memory[0].value,
+    aws_ssm_parameter.api_agent_disk_size[0].value,
+    aws_ssm_parameter.api_agent_enable_asynchronous_scanning[0].value,
+  ]
+
+  provisioner "local-exec" {
+    command = "aws ecs update-service --cluster ${aws_ecs_cluster.main.name} --service ${local.ecs_service_name} --force-new-deployment --region ${local.aws_region}"
+  }
+}
