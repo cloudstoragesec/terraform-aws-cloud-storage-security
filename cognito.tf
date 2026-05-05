@@ -187,13 +187,15 @@ resource "aws_cognito_user" "admin" {
   user_pool_id             = aws_cognito_user_pool.main.id
   username                 = var.username
   desired_delivery_mediums = ["EMAIL"]
+  password                 = var.initial_password
   attributes = {
-    email          = "${var.email}"
-    email_verified = true
+    email          = var.email
+    email_verified = "true"
   }
   lifecycle {
     ignore_changes = [
-      attributes
+      attributes,
+      password
     ]
   }
 }
