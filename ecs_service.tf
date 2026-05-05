@@ -143,7 +143,7 @@ resource "aws_lb" "main" {
 }
 
 resource "terraform_data" "console_restart_on_ssm_change" {
-  count = var.deploy_api_agent ? 1 : 0
+  count = var.api_agent_deploy ? 1 : 0
 
   triggers_replace = [
     aws_ssm_parameter.api_agent_scanning_engine[0].value,

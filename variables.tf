@@ -517,41 +517,41 @@ variable "log_retention_days" {
 
 # ---------------------------------------------------------------------------------------------------------------------
 # API AGENT PARAMETERS
-# These parameters are only required when deploy_api_agent is true.
+# These parameters are only required when api_agent_deploy is true.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "deploy_api_agent" {
+variable "api_agent_deploy" {
   description = "Deploy an API Agent alongside the Console? If true, complete the API Agent configuration variables below."
   type        = bool
   default     = false
 }
 
 variable "api_agent_vpc" {
-  description = "The VPC in which to place the API Agent and its load balancer. Required when deploy_api_agent is true."
+  description = "The VPC in which to place the API Agent and its load balancer. Required when api_agent_deploy is true."
   type        = string
   default     = null
 }
 
 variable "api_agent_subnets" {
-  description = "At least 2 subnets in different Availability Zones for the API Agent tasks. Must belong to the api_agent_vpc. Required when deploy_api_agent is true."
+  description = "At least 2 subnets in different Availability Zones for the API Agent tasks. Must belong to the api_agent_vpc. Required when api_agent_deploy is true."
   type        = list(string)
   default     = null
 }
 
 variable "api_agent_lb_subnets" {
-  description = "At least 2 subnets in different Availability Zones for the API Agent load balancer. Must match the AZs of api_agent_subnets. Required when deploy_api_agent is true."
+  description = "At least 2 subnets in different Availability Zones for the API Agent load balancer. Must match the AZs of api_agent_subnets. Required when api_agent_deploy is true."
   type        = list(string)
   default     = null
 }
 
 variable "api_agent_inbound_cidr" {
-  description = "The IP address range (CIDR) allowed to access the API Agent load balancer (e.g. 0.0.0.0/0 for open access). Required when deploy_api_agent is true."
+  description = "The IP address range (CIDR) allowed to access the API Agent load balancer (e.g. 0.0.0.0/0 for open access). Required when api_agent_deploy is true."
   type        = string
   default     = ""
 }
 
 variable "api_agent_ssl_cert_arn" {
-  description = "ARN of an existing ACM certificate for the API Agent load balancer. Required when deploy_api_agent is true."
+  description = "ARN of an existing ACM certificate for the API Agent load balancer. Required when api_agent_deploy is true."
   type        = string
   default     = null
 }
