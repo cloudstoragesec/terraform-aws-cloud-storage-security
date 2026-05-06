@@ -618,3 +618,17 @@ variable "api_agent_enable_asynchronous_scanning" {
   type        = bool
   default     = false
 }
+
+variable "large_file_volume_type" {
+  description = <<EOF
+    (Optional) EBS volume type used by the Large File Scan (LFS) Fargate task.
+    Defaults to `gp2`. Set to `gp3` when an SCP or organizational policy requires gp3 volumes.
+    Valid values: `gp2`, `gp3`
+  EOF
+  type        = string
+  default     = "gp2"
+  validation {
+    condition     = contains(["gp2", "gp3"], var.large_file_volume_type)
+    error_message = "`large_file_volume_type` must be one of 'gp2', 'gp3'."
+  }
+}

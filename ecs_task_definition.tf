@@ -98,6 +98,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "PRODUCT_MODE", "value" : "${local.product_mode}" },
         { "name" : "TEMPLATE_VARIATION", "value" : "default" },
         { "name" : "DEPLOYMENT_TYPE", "value" : "terraform" },
+        { "name" : "LARGE_FILE_VOLUME_TYPE", "value" : var.large_file_volume_type },
         { "name" : "BUCKETS_TO_PROTECT", "value" : "${var.buckets_to_protect}" },
         { "name" : "LOG_LEVEL", "value" : "Info" },
         { "name" : "APPLICATION_BUCKET_NAME", "value" : aws_s3_bucket.application.id },
