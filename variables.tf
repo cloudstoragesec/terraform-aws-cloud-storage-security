@@ -632,3 +632,38 @@ variable "large_file_volume_type" {
     error_message = "`large_file_volume_type` must be one of 'gp2', 'gp3'."
   }
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SAML SSO (OPTIONAL)
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "sso_provider_name" {
+  description = <<EOF
+    Optional. Logical name for the SAML Identity Provider in Cognito. This name is what the CSS Console
+    renders on the sign-in button (e.g. "AzureAD", "Okta", "Auth0"). No spaces. Must start with a
+    letter and contain only letters, numbers, dots, underscores, or hyphens (3-32 chars total).
+    Leave null (default) to deploy without SSO.
+    Both sso_provider_name and sso_metadata_url must be set together.
+  EOF
+  type    = string
+  default = null
+  validation {
+    condition     = var.sso_provider_name == null || can(regex("^[A-Za-z][A-Za-z0-9._-]{2,31}$", var.sso_provider_name))
+    error_message = "sso_provider_name must start with a letter and contain only letters, numbers, dots, underscores, or hyphens (3-32 chars total)."
+  }
+}
+
+variable "sso_metadata_url" {
+  description = <<EOF
+    Optional. SAML federation metadata URL provided by the Identity Provider (e.g. Entra ID
+    "App Federation Metadata URL", Okta metadata URL, Auth0 Usage tab metadata URL).
+    Required when sso_provider_name is set. Must be an HTTPS URL.
+    Both sso_provider_name and sso_metadata_url must be set together.
+  EOF
+  type    = string
+  default = null
+  validation {
+    condition     = var.sso_metadata_url == null || can(regex("^https://", var.sso_metadata_url))
+    error_message = "sso_metadata_url must be a valid HTTPS URL."
+  }
+}
