@@ -82,3 +82,22 @@ output "load_balancer_security_group_id" {
   description = "ID of the Load Balancer security group (used when load balancer is configured)"
   value       = var.configure_load_balancer ? aws_security_group.load_balancer[0].id : null
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SSO Outputs (only populated when sso_provider_name and sso_metadata_url are set)
+# ---------------------------------------------------------------------------------------------------------------------
+
+output "sso_saml_entity_id" {
+  description = "SAML Entity ID (Audience / Identifier) to register in your Identity Provider. Null when SSO is not enabled."
+  value       = local.enable_sso ? "urn:amazon:cognito:sp:${aws_cognito_user_pool.main.id}" : null
+}
+
+output "sso_saml_reply_url" {
+  description = "SAML Reply URL (Assertion Consumer Service URL) to register in your Identity Provider. Null when SSO is not enabled."
+  value       = local.enable_sso ? "https://${local.sso_domain_prefix}.auth.${local.aws_region}.amazoncognito.com/saml2/idpresponse" : null
+}
+
+output "sso_hosted_ui_sign_in_url" {
+  description = "Cognito Hosted UI sign-in URL for testing SSO directly. Null when SSO is not enabled."
+  value       = local.enable_sso ? "https://${local.sso_domain_prefix}.auth.${local.aws_region}.amazoncognito.com/login?response_type=code&client_id=${aws_cognito_user_pool_client.main.id}&identity_provider=${var.sso_provider_name}" : null
+}

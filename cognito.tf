@@ -147,10 +147,47 @@ resource "aws_cognito_user_pool" "main" {
 }
 
 
+resource "aws_cognito_user_pool_domain" "sso" {
+  count        = local.enable_sso ? 1 : 0
+  domain       = local.sso_domain_prefix
+  user_pool_id = aws_cognito_user_pool.main.id
+}
+
+resource "aws_cognito_identity_provider" "saml" {
+  count         = local.enable_sso ? 1 : 0
+  user_pool_id  = aws_cognito_user_pool.main.id
+  provider_name = var.sso_provider_name
+  provider_type = "SAML"
+  provider_details = {
+    MetadataURL = var.sso_metadata_url
+    IDPSignout  = "true"
+  }
+  attribute_mapping = {
+    email = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+  }
+}
+
 resource "aws_cognito_user_pool_client" "main" {
-  name            = "${var.service_name}UserPoolClient-${local.application_id}"
-  user_pool_id    = aws_cognito_user_pool.main.id
-  generate_secret = true
+  name                     = "${var.service_name}UserPoolClient-${local.application_id}"
+  user_pool_id             = aws_cognito_user_pool.main.id
+  generate_secret          = true
+  enable_token_revocation  = true
+
+  allowed_oauth_flows_user_pool_client = local.enable_sso ? true : null
+  allowed_oauth_flows                  = local.enable_sso ? ["code", "implicit"] : null
+  allowed_oauth_scopes                 = local.enable_sso ? ["openid", "email", "profile"] : null
+  supported_identity_providers         = local.enable_sso ? ["COGNITO", var.sso_provider_name] : null
+  callback_urls                        = local.enable_sso ? [local.console_url] : null
+  logout_urls                          = local.enable_sso ? [local.console_url] : null
+
+  depends_on = [aws_cognito_identity_provider.saml]
+
+  lifecycle {
+    precondition {
+      condition     = (var.sso_provider_name == null) == (var.sso_metadata_url == null)
+      error_message = "sso_provider_name and sso_metadata_url must both be set or both be null."
+    }
+  }
 }
 
 resource "aws_cognito_user_group" "admins" {

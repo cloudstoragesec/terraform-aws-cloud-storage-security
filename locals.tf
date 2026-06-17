@@ -68,4 +68,6 @@ locals {
     var.api_agent_scanning_engine
   )
   api_agent_multi_engine_scanning_mode = var.api_agent_scanning_engine == "All" ? "All" : "Disabled"
+  enable_sso                           = var.sso_provider_name != null && var.sso_metadata_url != null
+  sso_domain_prefix                    = "css-${local.account_id}-${local.application_id}"
 }
