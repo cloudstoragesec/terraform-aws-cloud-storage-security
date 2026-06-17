@@ -20,11 +20,18 @@ locals {
   use_s3_cmk              = var.s3_cmk_key_arn != "default"
   use_lb_subnets          = var.lb_subnet_a_id != null && var.lb_subnet_b_id != null
   ebs_volume_encryption_kms_key = var.ebs_volume_encryption && var.ebs_volume_encryption_kms_key_id != "default" ? var.ebs_volume_encryption_kms_key_id : null
+  # When the S3 CMK is a multi-region key, the agents may be running in a different
+  # region than the supplied ARN; grant access to every replica by adding a
+  # region-wildcarded ARN alongside the original.
+  s3_cmk_arn_parts  = local.use_s3_cmk ? split(":", var.s3_cmk_key_arn) : []
+  s3_cmk_is_mrk_arn = length(local.s3_cmk_arn_parts) == 6 && local.s3_cmk_arn_parts[0] == "arn" && local.s3_cmk_arn_parts[2] == "kms" && startswith(local.s3_cmk_arn_parts[5], "key/mrk-")
+  s3_cmk_mrk_wildcard_arn = local.s3_cmk_is_mrk_arn ? "arn:${local.s3_cmk_arn_parts[1]}:kms:*:${local.s3_cmk_arn_parts[4]}:${local.s3_cmk_arn_parts[5]}" : null
   custom_key_list = concat(compact([
     var.dynamo_cmk_key_arn,
     var.sns_cmk_key_arn,
     var.sqs_cmk_key_arn,
     var.s3_cmk_key_arn,
+    local.s3_cmk_mrk_wildcard_arn,
     local.ebs_volume_encryption_kms_key
   ]), var.sns_cmk_keys_arn, var.sqs_cmk_keys_arn)
   application_tag_key           = (join("-", ["${var.service_name}", "${local.application_id}"]))

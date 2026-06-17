@@ -290,6 +290,7 @@ variable "s3_cmk_key_arn" {
   description = <<EOF
     Optional ARN for the CMK that should be used for the AWS KMS encryption for the S3 Buckets.
     The default AWS-managed key will be applied when this value is not specified.
+    Multi-region keys (`mrk-...`) are supported - supply any replica's ARN.
   EOF
   type        = string
   default     = "default"
