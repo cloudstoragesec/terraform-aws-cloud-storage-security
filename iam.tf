@@ -221,7 +221,8 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:ec2:*::volume/*",
           "arn:${data.aws_partition.current.partition}:ec2:*::vpc-peering-connection/*",
           "arn:${data.aws_partition.current.partition}:ec2:*::vpc/*",
-          "arn:${data.aws_partition.current.partition}:ec2:*:*:*",
+          "arn:${data.aws_partition.current.partition}:ec2:*::snapshot/*",
+          "arn:${data.aws_partition.current.partition}:ec2:*:${local.account_id}:*",
           "arn:${data.aws_partition.current.partition}:logs:*:*:*",
           "arn:${data.aws_partition.current.partition}:s3:::*",
           "arn:${data.aws_partition.current.partition}:elasticfilesystem:*:*:file-system/*",
@@ -231,6 +232,31 @@ resource "aws_iam_role_policy" "console_task" {
           "arn:${data.aws_partition.current.partition}:sns:*:*:*",
           "arn:${data.aws_partition.current.partition}:sqs:*:*:*"
         ]
+      },
+      {
+        Sid    = "EC2CreateSecurityGroupSharedVPC${local.application_id}"
+        Effect = "Allow"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceOrgID" = "$${aws:PrincipalOrgID}"
+          }
+        }
+        Action = [
+          "ec2:CreateSecurityGroup",
+          "ec2:CreateTags"
+        ]
+        Resource = "arn:${data.aws_partition.current.partition}:ec2:*:*:vpc/*"
+      },
+      {
+        Sid    = "EC2RunInstanceSharedSubnet${local.application_id}"
+        Effect = "Allow"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceOrgID" = "$${aws:PrincipalOrgID}"
+          }
+        }
+        Action   = "ec2:RunInstances"
+        Resource = "arn:${data.aws_partition.current.partition}:ec2:*:*:subnet/*"
       },
       {
         Action = [
