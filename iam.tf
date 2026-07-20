@@ -1,6 +1,7 @@
 
 resource "aws_iam_role" "appconfig_agent_configuration_document" {
-  name = "AppConfigAgentConfigurationDocumentRole-${local.application_id}"
+  name                 = "AppConfigAgentConfigurationDocumentRole-${local.application_id}"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -37,7 +38,8 @@ resource "aws_iam_role_policy" "appconfig_agent_configuration_document" {
 }
 
 resource "aws_iam_role" "user_pool_sns" {
-  name = "${var.service_name}UserPoolRole-${local.application_id}"
+  name                 = "${var.service_name}UserPoolRole-${local.application_id}"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -73,8 +75,9 @@ resource "aws_iam_role_policy" "user_pool_sns" {
 }
 
 resource "aws_iam_role" "console_task" {
-  name        = "${var.service_name}ConsoleRole-${local.application_id}"
-  description = "Console ECS Task IAM Role"
+  name                 = "${var.service_name}ConsoleRole-${local.application_id}"
+  description          = "Console ECS Task IAM Role"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -560,7 +563,8 @@ resource "aws_iam_role_policy_attachment" "aws_bedrock_console" {
 }
 
 resource "aws_iam_role" "agent_task" {
-  name = "${var.service_name}AgentRole-${local.application_id}"
+  name                 = "${var.service_name}AgentRole-${local.application_id}"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -709,7 +713,8 @@ resource "aws_iam_role_policy" "agent_task" {
 
 #This is exec role
 resource "aws_iam_role" "execution" {
-  name = "${var.service_name}ExecutionRole-${local.application_id}"
+  name                 = "${var.service_name}ExecutionRole-${local.application_id}"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -731,7 +736,8 @@ resource "aws_iam_role" "execution" {
 }
 
 resource "aws_iam_role" "ec2_container" {
-  name = "${var.service_name}Ec2ContainerRole-${local.application_id}"
+  name                 = "${var.service_name}Ec2ContainerRole-${local.application_id}"
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -836,8 +842,9 @@ resource "aws_iam_instance_profile" "ec2_container" {
 }
 
 resource "aws_iam_role" "event_bridge" {
-  count = local.create_event_bridge_role ? 1 : 0
-  name  = local.event_bridge_role_name
+  count                = local.create_event_bridge_role ? 1 : 0
+  name                 = local.event_bridge_role_name
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

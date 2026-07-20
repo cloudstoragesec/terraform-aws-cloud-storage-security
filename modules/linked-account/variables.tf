@@ -106,3 +106,13 @@ variable "create_workdocs_permissions" {
   type        = bool
   default     = false
 }
+
+variable "permissions_boundary_arn" {
+  description = <<EOF
+    Optional ARN of an IAM managed policy to attach as a permissions boundary on all IAM
+    roles this module creates. Leave null (default) if your account does not require a
+    permissions boundary.
+  EOF
+  type    = string
+  default = null
+}
