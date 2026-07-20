@@ -18,6 +18,7 @@ check "mutually_exclusive_deployment_targets" {
 resource "aws_iam_role" "organizations_access" {
   name        = local.role_name
   description = "Allows the Cloud Storage Scan console to read AWS Organizations structure for automatic account discovery"
+  permissions_boundary = var.permissions_boundary_arn
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -104,6 +105,7 @@ resource "aws_cloudformation_stack_set" "linked_accounts" {
     CrossAccountPolicyName           = var.cross_account_policy_name
     CrossAccountEventBridgeRoleName  = var.cross_account_event_bridge_role_name
     CrossAccountEventBridgePolicyName = var.cross_account_event_bridge_policy_name
+    PermissionsBoundaryArn            = coalesce(var.permissions_boundary_arn, "")
   }
 
   capabilities = ["CAPABILITY_NAMED_IAM"]

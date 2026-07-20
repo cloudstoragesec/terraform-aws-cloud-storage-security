@@ -122,3 +122,14 @@ variable "stackset_retain_on_removal" {
   type        = bool
   default     = false
 }
+
+variable "permissions_boundary_arn" {
+  description = <<EOF
+    Optional ARN of an IAM managed policy to attach as a permissions boundary on the IAM
+    role this module creates, and passed through as the LinkedAccount CFT StackSet's
+    PermissionsBoundaryArn parameter for org-wide rollout. Leave null (default) if your
+    account does not require a permissions boundary.
+  EOF
+  type    = string
+  default = null
+}

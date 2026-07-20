@@ -10,6 +10,7 @@ terraform {
 resource "aws_iam_role" "remote_access" {
   count = local.create_cross_account_role ? 1 : 0
   name = local.cross_account_role_name
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -269,6 +270,7 @@ resource "aws_iam_role_policy_attachment" "remote_access_ec2_management" {
 resource "aws_iam_role" "event_bridge_role" {
   count = local.create_event_bridge_role ? 1 : 0
   name = local.cross_account_event_bridge_role_name
+  permissions_boundary = var.permissions_boundary_arn
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
