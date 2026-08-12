@@ -7,7 +7,7 @@ resource "aws_ssm_parameter" "dynamo_table_name_prefix" {
 resource "aws_ssm_parameter" "dynamo_point_in_time_recovery_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/DynamoPointInTimeRecoveryEnabled"
   type  = "String"
-  value = "false"
+  value = "true"
   lifecycle {
     ignore_changes = [value]
   }
