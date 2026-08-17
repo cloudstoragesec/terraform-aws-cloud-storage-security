@@ -678,3 +678,20 @@ variable "permissions_boundary_arn" {
   type    = string
   default = null
 }
+variable "lb_deletion_protection" {
+  description = "Enable deletion protection on the Console Application Load Balancer."
+  type        = bool
+  default     = true
+}
+
+variable "lb_access_logs_bucket" {
+  description = "S3 bucket for Console Application Load Balancer access logs. Null disables access logging."
+  type        = string
+  default     = null
+}
+
+variable "lb_access_logs_prefix" {
+  description = "S3 prefix for Console Application Load Balancer access logs."
+  type        = string
+  default     = "cloud-storage-security"
+}
