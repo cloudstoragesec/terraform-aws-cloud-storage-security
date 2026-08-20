@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "CONSOLE_VPC", "value" : var.vpc },
         { "name" : "CONSOLE_SUBNET", "value" : "${var.subnet_a_id},${var.subnet_b_id}" },
         { "name" : "PARAMETER_STORE_NAME_PREFIX", "value" : "/${var.parameter_prefix}-${local.application_id}" },
-        { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${aws_security_group.load_balancer[0].id}" : "${aws_security_group.console[0].id}" },
+        { "name" : "CONSOLE_SECURITY_GROUP_ID", "value" : "${var.configure_load_balancer}" ? "${var.existing_target_group_arn == null ? aws_security_group.load_balancer[0].id : var.existing_lb_security_group_id}" : "${aws_security_group.console[0].id}" },
         { "name" : "AGENT_AUTO_ASSIGN_PUBLIC_IP", "value" : "${var.agent_auto_assign_public_ip}" ? "ENABLED" : "DISABLED" },
         { "name" : "BLANKET_KMS_ACCESS", "value" : "${tostring(var.allow_access_to_all_kms_keys)}" },
         { "name" : "HAS_LOAD_BALANCER", "value" : "${tostring(var.configure_load_balancer)}" },

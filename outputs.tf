@@ -79,8 +79,8 @@ output "console_with_load_balancer_security_group_id" {
 }
 
 output "load_balancer_security_group_id" {
-  description = "ID of the Load Balancer security group (used when load balancer is configured)"
-  value       = var.configure_load_balancer ? aws_security_group.load_balancer[0].id : null
+  description = "ID of the Load Balancer security group (used when load balancer is configured and no existing target group is supplied)"
+  value       = var.configure_load_balancer && var.existing_target_group_arn == null ? aws_security_group.load_balancer[0].id : null
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
