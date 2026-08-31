@@ -134,6 +134,7 @@ resource "aws_iam_role_policy" "console_task" {
           "application-autoscaling:TagResource",
           "aws-marketplace:MeterUsage",
           "cloudformation:GetTemplateSummary",
+          "cloudwatch:GetMetricData",
           "cloudwatch:GetMetricStatistics",
           "ec2:AcceptVpcPeeringConnection",
           "ec2:CreateVpcPeeringConnection",
