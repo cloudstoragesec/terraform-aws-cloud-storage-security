@@ -134,6 +134,7 @@ resource "aws_iam_role_policy" "console_task" {
           "application-autoscaling:TagResource",
           "aws-marketplace:MeterUsage",
           "cloudformation:GetTemplateSummary",
+          "cloudwatch:GetMetricData",
           "cloudwatch:GetMetricStatistics",
           "ec2:AcceptVpcPeeringConnection",
           "ec2:CreateVpcPeeringConnection",
@@ -187,7 +188,7 @@ resource "aws_iam_role_policy" "console_task" {
           "logs:PutLogEvents",
           "logs:*Query",
           "logs:ListTagsForResource",
-          "logs:TagResource",
+          "logs:*agResource",
           "s3:CreateBucket",
           "s3:GetBucket*",
           "s3:Get*Configuration",
@@ -369,8 +370,7 @@ resource "aws_iam_role_policy" "console_task" {
         Action = [
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
-          "logs:PutRetentionPolicy",
-          "logs:*agLogGroup"
+          "logs:PutRetentionPolicy"
         ]
         Resource = [
           "arn:${data.aws_partition.current.partition}:logs:*:*:log-group:CloudStorageSecurity.*",
@@ -595,6 +595,7 @@ resource "aws_iam_role_policy" "agent_task" {
       {
         Action = [
           "aws-marketplace:MeterUsage",
+          "cloudwatch:PutMetricData",
           "ec2:DescribeVpcs",
           "ec2:DescribeAvailabilityZones",
           "elasticfilesystem:DescribeMountTargets",

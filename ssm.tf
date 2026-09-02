@@ -461,7 +461,7 @@ resource "aws_ssm_parameter" "use_fips_endpoints" {
 resource "aws_ssm_parameter" "s3_kms_key_id" {
   name  = "/${local.ssm_path_prefix}/Config/S3KmsKeyId"
   type  = "String"
-  value = var.s3_cmk_key_arn
+  value = coalesce(var.s3_cmk_key_arn, "default")
 }
 
 resource "aws_ssm_parameter" "api_agent_deploy" {

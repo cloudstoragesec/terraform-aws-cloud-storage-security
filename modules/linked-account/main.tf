@@ -39,11 +39,12 @@ resource "aws_iam_policy" "remote_access" {
         Sid = "AllResources${var.application_id}"
         Effect = "Allow"
         Action = [
+          "cloudwatch:GetMetricData",
           "cloudwatch:GetMetricStatistics",
           "ec2:DescribeVolumes",
           "ec2:DescribeRegions",
           "ec2:DescribeSnapshots",
-          "ec2:DescribeVpc",
+          "ec2:DescribeVpcs",
           "elasticfilesystem:DescribeFileSystems",
           "elasticfilesystem:DescribeMountTargets",
           "elasticfilesystem:DescribeTags",

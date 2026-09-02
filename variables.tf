@@ -293,7 +293,7 @@ variable "s3_cmk_key_arn" {
     Multi-region keys (`mrk-...`) are supported - supply any replica's ARN.
   EOF
   type        = string
-  default     = "default"
+  default     = null
 }
 
 variable "console_auto_assign_public_ip" {
