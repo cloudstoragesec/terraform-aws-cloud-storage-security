@@ -595,6 +595,7 @@ resource "aws_iam_role_policy" "agent_task" {
       {
         Action = [
           "aws-marketplace:MeterUsage",
+          "cloudwatch:PutMetricData",
           "ec2:DescribeVpcs",
           "ec2:DescribeAvailabilityZones",
           "elasticfilesystem:DescribeMountTargets",
