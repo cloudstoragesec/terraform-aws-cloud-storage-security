@@ -1,6 +1,9 @@
 resource "aws_s3_bucket" "application" {
   bucket        = local.application_bucket_name
   force_destroy = true
+  tags = merge({ (local.application_tag_key) = "ApplicationBucket" },
+    var.custom_resource_tags
+  )
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "application" {
