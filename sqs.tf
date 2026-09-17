@@ -6,4 +6,8 @@ resource "aws_sqs_queue" "scanned_items_queue" {
   visibility_timeout_seconds = 1200
 
   kms_master_key_id = local.use_dynamo_cmk ? var.sqs_cmk_key_arn : "alias/aws/sqs"
+
+  tags = merge({ (local.application_tag_key) = "ScannedItemsQueue" },
+    var.custom_resource_tags
+  )
 }
