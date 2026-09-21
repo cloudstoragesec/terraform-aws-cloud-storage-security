@@ -1310,3 +1310,32 @@ resource "aws_dynamodb_table" "scan_requests" {
     var.custom_resource_tags
   )
 }
+
+resource "aws_dynamodb_table" "user_settings" {
+  name         = "${local.application_id}.UserSettings"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "UserId"
+  range_key    = "SettingKey"
+  point_in_time_recovery {
+    enabled = aws_ssm_parameter.dynamo_point_in_time_recovery_enabled.value
+  }
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "SettingKey"
+    type = "S"
+  }
+
+  server_side_encryption {
+    enabled     = local.use_dynamo_cmk
+    kms_key_arn = var.dynamo_cmk_key_arn
+  }
+
+  tags = merge({ (local.application_tag_key) = "DynamoTable" },
+    var.custom_resource_tags
+  )
+}
