@@ -370,6 +370,7 @@ resource "aws_iam_role_policy" "console_task" {
         Action = [
           "logs:CreateLogGroup",
           "logs:DeleteLogGroup",
+          "logs:DeleteRetentionPolicy",
           "logs:PutRetentionPolicy"
         ]
         Resource = [
@@ -687,7 +688,10 @@ resource "aws_iam_role_policy" "agent_task" {
         ]
       },
       {
-        Action   = "logs:CreateLogGroup"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:PutRetentionPolicy"
+        ]
         Effect   = "Allow"
         Sid      = "Logs${local.application_id}"
         Resource = "arn:${data.aws_partition.current.partition}:logs:*:*:*"
