@@ -7,11 +7,8 @@ resource "aws_ssm_parameter" "dynamo_table_name_prefix" {
 resource "aws_ssm_parameter" "dynamo_point_in_time_recovery_enabled" {
   name  = "/${local.ssm_path_prefix}/Config/DynamoPointInTimeRecoveryEnabled"
   type  = "String"
-  value = "false"
-  lifecycle {
-    ignore_changes = [value]
-  }
-}
+  value = "true"
+ }
 
 resource "aws_ssm_parameter" "agent_ecr_image_url" {
   name  = "/${local.ssm_path_prefix}/Config/AgentEcrImageUrl"
