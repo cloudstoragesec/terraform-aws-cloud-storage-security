@@ -29,6 +29,8 @@ Creates the IAM role **and** a CloudFormation StackSet that deploys linked-accou
 
 > **Note:** `deploy_to_organization` and `organizational_unit_ids` are mutually exclusive. Set one or the other, not both.
 
+> **Note:** When a StackSet is deployed, enter its name (the `stackset_id` output) as the **StackSet Name** in the organization's **Edit Settings** in the Console. The Console then resolves each member account's stack for version checks and updates. Deploy the StackSet in the same region as the Console.
+
 ## Example Usage
 
 ### Minimal: Organizations Role Only

@@ -63,6 +63,15 @@ resource "aws_iam_policy" "organizations_access" {
           "organizations:DescribeAccount",
         ]
         Resource = "*"
+      },
+      {
+        # Lets the Console resolve each member account's stack from the linked-account StackSet.
+        Sid    = "StackSetReadAccess"
+        Effect = "Allow"
+        Action = [
+          "cloudformation:ListStackInstances",
+        ]
+        Resource = "*"
       }
     ]
   })
