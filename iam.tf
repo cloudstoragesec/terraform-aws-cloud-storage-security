@@ -170,6 +170,23 @@ resource "aws_iam_role_policy" "console_task" {
         Resource = "*"
       },
       {
+        # Read the first block of a snapshot to identify its file system, so volumes that Fargate
+        # cannot mount are sent straight to EC2. Scoped to snapshots this deployment created: the
+        # console tags every snapshot it takes with CloudStorageSec-<application_id> = Snapshot.
+        Action = [
+          "ebs:ListSnapshotBlocks",
+          "ebs:GetSnapshotBlock"
+        ]
+        Effect   = "Allow"
+        Sid      = "EbsDirectApiReadSnapshotBlocks${local.application_id}"
+        Resource = "arn:${data.aws_partition.current.partition}:ec2:*::snapshot/*"
+        Condition = {
+          StringEquals = {
+            "aws:ResourceTag/CloudStorageSec-${local.application_id}" = "Snapshot"
+          }
+        }
+      },
+      {
         Action = [
           "ec2:*SecurityGroup*",
           "ec2:*Tags",
