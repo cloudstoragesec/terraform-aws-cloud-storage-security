@@ -131,6 +131,17 @@ resource "aws_lb" "main" {
   security_groups            = [aws_security_group.load_balancer[0].id]
   subnets                    = local.use_lb_subnets ? [var.lb_subnet_a_id, var.lb_subnet_b_id] : [var.subnet_a_id, var.subnet_b_id]
   drop_invalid_header_fields = true
+  enable_deletion_protection = var.lb_deletion_protection
+
+  dynamic "access_logs" {
+  for_each = var.lb_access_logs_bucket == null ? [] : [1]
+
+  content {
+    bucket  = var.lb_access_logs_bucket
+    prefix  = var.lb_access_logs_prefix
+    enabled = true
+  }
+}
   tags = merge({ (local.application_tag_key) = "ConsoleLoadBalancer" },
     var.custom_resource_tags
   )
