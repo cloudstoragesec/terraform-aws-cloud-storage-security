@@ -77,8 +77,17 @@ variable "configure_load_balancer" {
 
 variable "existing_target_group_arn" {
   description = <<EOF
-    If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with. 
-    If configured, 'configure_load_balancer' must be 'true', and 'trusted_load_balancer_network' must be specified.
+    If you are using your own AWS load balancer, provide the Target Group ARN that the Console service should register with.
+    If configured, 'configure_load_balancer' must be 'true', and 'existing_lb_security_group_id' and 'trusted_load_balancer_network' must be specified.
+  EOF
+  type        = string
+  default     = null
+}
+
+variable "existing_lb_security_group_id" {
+  description = <<EOF
+    If you are using your own AWS load balancer, provide the ID of its security group so the Console
+    security group can allow ingress from it. Required when 'existing_target_group_arn' is set.
   EOF
   type        = string
   default     = null
