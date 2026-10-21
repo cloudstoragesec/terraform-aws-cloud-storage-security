@@ -72,7 +72,7 @@ resource "aws_appautoscaling_target" "main" {
   role_arn           = "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
-  tags = merge({ (local.application_tag_key) = "ConsoleAutoScaling" },
+  tags = local.is_gov ? null : merge({ (local.application_tag_key) = "ConsoleAutoScaling" },
     var.custom_resource_tags
   )
   depends_on = [aws_ecs_service.main, aws_ecs_service.with_load_balancer]
