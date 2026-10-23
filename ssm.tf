@@ -234,6 +234,12 @@ resource "aws_ssm_parameter" "user_pool_id" {
   value = aws_cognito_user_pool.main.id
 }
 
+resource "aws_ssm_parameter" "identity_provider" {
+  name  = "/${local.ssm_path_prefix}/Identity/Provider"
+  type  = "String"
+  value = var.identity_provider
+}
+
 resource "aws_ssm_parameter" "only_scan_when_queue_threshold_exceeded" {
   name  = "/${local.ssm_path_prefix}/Config/OnlyScanWhenQueueThresholdExceeded"
   type  = "String"
