@@ -635,6 +635,24 @@ variable "large_file_volume_type" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# IDENTITY PROVIDER
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "identity_provider" {
+  description = <<EOF
+    Identity provider used to sign in to the Console and the API Agent. Only `Cognito` is available today.
+    This can't be changed after the stack is created.
+    Valid values: `Cognito`
+  EOF
+  type        = string
+  default     = "Cognito"
+  validation {
+    condition     = contains(["Cognito"], var.identity_provider)
+    error_message = "`identity_provider` must be 'Cognito'."
+  }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # SAML SSO (OPTIONAL)
 # ---------------------------------------------------------------------------------------------------------------------
 
