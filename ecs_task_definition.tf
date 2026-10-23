@@ -101,6 +101,7 @@ resource "aws_ecs_task_definition" "console" {
         { "name" : "LARGE_FILE_VOLUME_TYPE", "value" : var.large_file_volume_type },
         { "name" : "BUCKETS_TO_PROTECT", "value" : "${var.buckets_to_protect}" },
         { "name" : "LOG_LEVEL", "value" : "Info" },
+        { "name" : "LOG_GROUP_RETENTION_POLICY", "value" : tostring(local.log_retention_in_days) },
         { "name" : "APPLICATION_BUCKET_NAME", "value" : aws_s3_bucket.application.id },
         { "name" : "RETRY_COUNT", "value" : "5" },
         { "name" : "RETRY_MEDIAN_JITTER_DELAY", "value" : "1" },
