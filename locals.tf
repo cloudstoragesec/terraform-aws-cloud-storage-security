@@ -2,14 +2,15 @@ locals {
   # Terraform module and the associated app version are tightly coupled for compatibility. 
   # Specified 'image_version' corresponds to a tested combination of Terraform and app release.
   # Avoid manually changing the 'image_version' unless you have explicit instructions to do so.
-  image_version_console   = "v9.13.002"
-  image_version_agent     = "v9.13.002"
+  image_version_console   = "v9.14.000"
+  image_version_agent     = "v9.14.000"
   ecr_account             = coalesce(var.ecr_account, local.is_gov ? "822167061992" : "564477214187")
   console_image_url       = "${local.ecr_account}.dkr.ecr.${local.aws_region}.amazonaws.com/cloudstoragesecurity/console:${local.image_version_console}"
   agent_image_url         = "${local.ecr_account}.dkr.ecr.<region>.amazonaws.com/cloudstoragesecurity/agent:${local.image_version_agent}"
   application_id          = aws_appconfig_application.agent.id
   account_id              = coalesce(var.aws_account, data.aws_caller_identity.current.account_id)
   aws_region              = data.aws_region.current.id
+  log_retention_in_days   = var.set_log_group_retention_policy ? var.log_retention_days : 0
   is_gov                  = data.aws_partition.current.partition == "aws-us-gov"
   console_url             = "${var.configure_load_balancer && var.existing_target_group_arn == null}" ? "https://${aws_lb.main[0].dns_name}" : "https://${local.account_id}-${local.application_id}.cloudstoragesecapp.com"
   use_proxy               = var.proxy_host != null
