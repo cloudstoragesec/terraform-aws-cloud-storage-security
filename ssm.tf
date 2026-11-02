@@ -390,10 +390,7 @@ resource "aws_ssm_parameter" "event_bridge_notifications_bus_name" {
 resource "aws_ssm_parameter" "set_log_group_retention_policy" {
   name  = "/${local.ssm_path_prefix}/Config/SetLogGroupRetentionPolicy"
   type  = "String"
-  value = var.set_log_group_retention_policy
-  lifecycle {
-    ignore_changes = [value]
-  }
+  value = tostring(local.log_retention_in_days)
 }
 
 resource "aws_ssm_parameter" "product_isting" {
