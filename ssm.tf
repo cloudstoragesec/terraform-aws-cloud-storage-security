@@ -217,12 +217,6 @@ resource "aws_ssm_parameter" "region" {
   value = local.aws_region
 }
 
-resource "aws_ssm_parameter" "identity_issuer" {
-  name  = "/${local.ssm_path_prefix}/Identity/Issuer"
-  type  = "String"
-  value = "https://${aws_cognito_user_pool.main.endpoint}"
-}
-
 resource "aws_ssm_parameter" "identity_client_id" {
   name  = "/${local.ssm_path_prefix}/Identity/ClientId"
   type  = "String"
@@ -233,6 +227,12 @@ resource "aws_ssm_parameter" "identity_client_secret" {
   name  = "/${local.ssm_path_prefix}/Identity/ClientSecret"
   type  = "SecureString"
   value = aws_cognito_user_pool_client.main.client_secret
+}
+
+resource "aws_ssm_parameter" "identity_issuer" {
+  name  = "/${local.ssm_path_prefix}/Identity/Issuer"
+  type  = "String"
+  value = "https://${aws_cognito_user_pool.main.endpoint}"
 }
 
 resource "aws_ssm_parameter" "only_scan_when_queue_threshold_exceeded" {
