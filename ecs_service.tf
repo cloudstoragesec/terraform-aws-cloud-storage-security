@@ -59,8 +59,8 @@ resource "aws_ecs_service" "with_load_balancer" {
 
   lifecycle {
     precondition {
-      condition     = var.existing_target_group_arn == null || !var.configure_load_balancer && var.trusted_load_balancer_network != ""
-      error_message = "`configure_load_balancer` must be `true`, and `trusted_load_balancer_network` must be specified when `existing_target_group_arn` is set."
+      condition     = var.existing_target_group_arn == null || (var.configure_load_balancer && var.existing_lb_security_group_id != null && var.trusted_load_balancer_network != "")
+      error_message = "`configure_load_balancer` must be `true`, and `existing_lb_security_group_id` and `trusted_load_balancer_network` must be specified when `existing_target_group_arn` is set."
     }
   }
 }
