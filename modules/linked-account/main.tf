@@ -165,9 +165,7 @@ resource "aws_iam_policy" "remote_access" {
           "cloudformation:DeleteStack",
           "cloudformation:DescribeStacks",
           "cloudformation:UpdateStack",
-          "iam:AttachRolePolicy",
           "iam:PassRole",
-          "iam:PutRolePolicy",
           "s3:DeleteBucket"
         ]
         Resource = [
